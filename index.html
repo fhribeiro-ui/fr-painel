@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Painel Mestre — FR Design Joias</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0a0a0a 100%);
+    color: #e5e5e5;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #c9a961;
+    margin-bottom: 28px;
+  }
+  .header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #c9a961;
+    letter-spacing: 1px;
+  }
+  .header .gerado {
+    font-size: 12px;
+    color: #888;
+  }
+  .header .gerado strong { color: #c9a961; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 12px 24px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: #aaa;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .tab:hover { background: #2a2a2a; color: #fff; }
+  .tab.active {
+    background: linear-gradient(135deg, #c9a961 0%, #a08643 100%);
+    color: #000;
+    border-color: #c9a961;
+    font-weight: 600;
+  }
+
+  /* Aba content */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Cards de números */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .kpi {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #c9a961;
+  }
+  .kpi .value {
+    font-size: 36px;
+    font-weight: 700;
+    color: #c9a961;
+    line-height: 1;
+  }
+  .kpi .label {
+    font-size: 12px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+  }
+  .kpi.critica { border-color: #e74c3c; }
+  .kpi.critica .value { color: #e74c3c; }
+  .kpi.alerta { border-color: #f39c12; }
+  .kpi.alerta .value { color: #f39c12; }
+
+  /* Charts container */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .chart-box {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+  }
+  .chart-box h3 {
+    font-size: 14px;
+    color: #c9a961;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .chart-box canvas { max-height: 280px; }
+
+  /* Tabela de sub-projetos */
+  .subprojetos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .sub-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+    transition: all 0.2s;
+  }
+  .sub-card { cursor: pointer; }
+  .sub-card:hover { border-color: #c9a961; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 169, 97, 0.15); }
+  .sub-card .ver-mais {
+    color: #c9a961;
+    font-size: 11px;
+    margin-top: 12px;
+    text-align: right;
+    opacity: 0.6;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #1a1a1a;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid #c9a961;
+  }
+  .modal-header {
+    padding: 24px;
+    border-bottom: 1px solid #2a2a2a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: #1a1a1a;
+    z-index: 1;
+  }
+  .modal-header h2 { color: #c9a961; font-size: 22px; }
+  .modal-header .close {
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    color: #aaa;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  .modal-header .close:hover { background: #e74c3c; color: #fff; border-color: #e74c3c; }
+
+  .modal-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 24px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .modal-tab {
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 13px;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+  }
+  .modal-tab.active { color: #c9a961; border-bottom-color: #c9a961; }
+  .modal-tab-content { display: none; padding: 24px; }
+  .modal-tab-content.active { display: block; }
+
+  .kpi-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .kpi-modal {
+    background: #0f0f0f;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 3px solid #c9a961;
+  }
+  .kpi-modal.destaque { border-color: #27ae60; }
+  .kpi-modal.critico { border-color: #e74c3c; }
+  .kpi-modal .v { font-size: 24px; font-weight: 700; color: #c9a961; }
+  .kpi-modal.destaque .v { color: #27ae60; }
+  .kpi-modal.critico .v { color: #e74c3c; }
+  .kpi-modal .l { font-size: 11px; color: #888; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px; }
+
+  .tarefa-secao { margin-bottom: 24px; }
+  .tarefa-secao h4 {
+    color: #c9a961;
+    font-size: 14px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .tarefa-secao pre {
+    background: #0f0f0f;
+    padding: 16px;
+    border-radius: 8px;
+    color: #ddd;
+    font-size: 13px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    border-left: 3px solid;
+  }
+  .tarefa-secao.critica pre { border-color: #e74c3c; }
+  .tarefa-secao.media pre { border-color: #f39c12; }
+  .tarefa-secao.baixa pre { border-color: #27ae60; }
+  .tarefa-secao.futura pre { border-color: #3498db; }
+  .tarefa-secao.empty pre { color: #555; font-style: italic; }
+
+  .perfil-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+  }
+  .perfil-item {
+    background: #0f0f0f;
+    padding: 10px 12px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #ddd;
+  }
+  .perfil-item strong { color: #c9a961; }
+
+  .sub-card .header-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .sub-card .nome {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .sub-card .keyword {
+    background: #2a2212;
+    color: #c9a961;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: monospace;
+  }
+  .sub-card .meta {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .sub-card .meta strong { color: #c9a961; }
+  .sub-card .badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge.critica { background: #e74c3c; color: #fff; }
+  .badge.media { background: #f39c12; color: #000; }
+  .badge.baixa { background: #27ae60; color: #fff; }
+  .badge.concluida { background: #2a2a2a; color: #aaa; }
+  .badge.futura { background: #3498db; color: #fff; }
+  .badge.prioridade-alta { background: #c9a961; color: #000; }
+
+  /* Status indicators */
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .status-dot.ativo { background: #27ae60; }
+  .status-dot.pausado { background: #f39c12; }
+  .status-dot.planejado { background: #3498db; }
+
+  /* Novo projeto */
+  .novo-projeto-box {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2212 100%);
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #c9a961;
+  }
+  .novo-projeto-box h2 {
+    color: #c9a961;
+    margin-bottom: 16px;
+    font-size: 24px;
+  }
+  .novo-projeto-box p {
+    color: #ccc;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .novo-projeto-box .cmd {
+    background: #000;
+    padding: 16px;
+    border-radius: 8px;
+    font-family: monospace;
+    color: #c9a961;
+    display: inline-block;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .novo-projeto-box ol {
+    text-align: left;
+    color: #aaa;
+    max-width: 600px;
+    margin: 20px auto;
+    line-height: 1.8;
+  }
+  .novo-projeto-box ol li { margin-bottom: 8px; }
+
+  /* Section headers */
+  .section-title {
+    color: #c9a961;
+    margin-bottom: 16px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-left: 3px solid #c9a961;
+    padding-left: 12px;
+  }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-style: italic;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: #555;
+    font-size: 12px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #2a2a2a;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>🏛️ PAINEL MESTRE — FR DESIGN JOIAS</h1>
+    <div class="gerado">Atualizado: <strong id="gerado-em">—</strong></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="mostrarAba('geral')">🌐 GERAL</button>
+    <button class="tab" onclick="mostrarAba('fr')">💎 FR JOIAS</button>
+    <button class="tab" onclick="mostrarAba('lu')">💇 LU SALÃO</button>
+    <button class="tab" onclick="mostrarAba('novo')">➕ NOVO PROJETO</button>
+  </div>
+
+  <!-- ABA GERAL -->
+  <div id="aba-geral" class="tab-content active">
+    <div class="kpi-grid" id="kpi-geral"></div>
+
+    <div class="charts-row">
+      <div class="chart-box">
+        <h3>🥧 FR vs LU — Distribuição</h3>
+        <canvas id="chart-ramos"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>🥧 Status das Tarefas</h3>
+        <canvas id="chart-status"></canvas>
+      </div>
+    </div>
+
+    <h2 class="section-title">💎 Sub-projetos FR</h2>
+    <div class="subprojetos-grid" id="grid-fr-geral"></div>
+
+    <h2 class="section-title">💇 Módulos LU</h2>
+    <div class="subprojetos-grid" id="grid-lu-geral"></div>
+  </div>
+
+  <!-- ABA FR -->
+  <div id="aba-fr" class="tab-content">
+    <div class="kpi-grid" id="kpi-fr"></div>
+    <div class="charts-row">
+      <div class="chart-box">
+        <h3>🥧 Tarefas FR por status</h3>
+        <canvas id="chart-fr-status"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>📊 Tarefas por Sub-projeto FR</h3>
+        <canvas id="chart-fr-subs"></canvas>
+      </div>
+    </div>
+    <h2 class="section-title">Sub-projetos completos</h2>
+    <div class="subprojetos-grid" id="grid-fr"></div>
+  </div>
+
+  <!-- ABA LU -->
+  <div id="aba-lu" class="tab-content">
+    <div class="kpi-grid" id="kpi-lu"></div>
+    <div class="charts-row">
+      <div class="chart-box">
+        <h3>🥧 Tarefas LU por status</h3>
+        <canvas id="chart-lu-status"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>📊 Módulos LU</h3>
+        <canvas id="chart-lu-subs"></canvas>
+      </div>
+    </div>
+    <h2 class="section-title">Módulos completos</h2>
+    <div class="subprojetos-grid" id="grid-lu"></div>
+  </div>
+
+  <!-- ABA NOVO PROJETO -->
+  <div id="aba-novo" class="tab-content">
+    <div class="novo-projeto-box">
+      <h2>➕ Criar Novo Sub-projeto</h2>
+      <p>Cria automaticamente toda a estrutura padrão de um sub-projeto novo:<br>pasta + README + ctx_*.md + TAREFAS_*.md + registra keyword</p>
+
+      <div class="cmd">python criar_projeto.py</div>
+
+      <ol>
+        <li><strong>Abre terminal</strong> na pasta <code>Documentos/PAINEL_MESTRE/</code></li>
+        <li>Roda <code>python criar_projeto.py</code></li>
+        <li>Responde: nome do projeto, ramo (FR/LU/Outro), keyword</li>
+        <li>Script cria pasta + 3 arquivos padrão + atualiza PALAVRAS_CHAVE.md</li>
+        <li>Roda <code>python gerar_dashboard.py</code> pra ver aparecer aqui</li>
+      </ol>
+
+      <p style="margin-top: 24px; font-size: 12px; color: #666;">
+        🎯 Auto-descoberta: qualquer pasta com <code>ctx_*.md</code> no padrão é detectada automaticamente.
+        Não precisa editar listas em lugar nenhum.
+      </p>
+    </div>
+
+    <h2 class="section-title" style="margin-top: 32px;">📋 Sub-projetos descobertos</h2>
+    <div class="subprojetos-grid" id="grid-todos"></div>
+  </div>
+
+  <div class="footer">
+    Sistema dinâmico de auto-descoberta — sem hardcode • PAINEL MESTRE v1.0
+  </div>
+
+</div>
+
+<!-- MODAL DRILL-DOWN -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)fecharModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-titulo">—</h2>
+      <button class="close" onclick="fecharModal()">×</button>
+    </div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="kpis" onclick="trocarAbaModal('kpis')">📊 KPIs / Resultados</button>
+      <button class="modal-tab" data-tab="tarefas" onclick="trocarAbaModal('tarefas')">📋 Tarefas (Crescimento)</button>
+      <button class="modal-tab" data-tab="sobre" onclick="trocarAbaModal('sobre')">ℹ️ Sobre</button>
+    </div>
+    <div class="modal-tab-content active" id="modal-kpis"></div>
+    <div class="modal-tab-content" id="modal-tarefas"></div>
+    <div class="modal-tab-content" id="modal-sobre"></div>
+  </div>
+</div>
+
+<script>
+/* === DASHBOARD_DATA_START === */
+const DASHBOARD_DATA = {
+  "gerado_em": "2026-05-14 07:38",
+  "total_geral": {
+    "critica": 10,
+    "media": 16,
+    "baixa": 14,
+    "andamento": 15,
+    "concluida": 124,
+    "futura": 38,
+    "total": 40
+  },
+  "total_subprojetos": 17,
+  "fr": [
+    {
+      "slug": "crm",
+      "nome": "CRM",
+      "ramo": "FR",
+      "keyword": "crm",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "c5xELKdT47YbzMXP",
+      "workflow_futuro": "a definir (parallel migration)",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 1,
+        "concluida": 10,
+        "futura": 3,
+        "total": 3
+      },
+      "arquivo_ctx": "N8N PRONT\\_DOCS\\claude\\ctx_crm.md",
+      "tarefas_texto": {
+        "critica": "### CRM Cleanup — 185 clientes \"POSSÍVEIS\" sem trabalhar\n- **Detalhe**: análise 11/05 mostrou 295 contatos na \"Book cliente what sap.xlsx\"\n- **Bloqueio**: 185 marcados como \"POSSÍVEIS CLIENTES\" sem follow-up\n- **Ação sugerida**: campanha por interesse (BESPOKE 20, SOLITÁRIOS 20, ALIANÇAS 19)\n- **Doc**: `_DOCS/claude/crm_estado_atual.md`\n\n---",
+        "media": "### 87 clientes sem perfil (IA não classificou)\n- **Detalhe**: IA não rodou ou falhou pra esses contatos\n- **Ação**: re-analisar via N8N (rodar `Notifica Dono CRM` em massa)\n\n### Normalização de tags `[💎 DIAMANTE]` vs `💎 DIAMANTE`\n- **Detalhe**: metade dos registros tem colchetes, outra metade não\n- **Ação**: script Python pra normalizar todas as colunas\n- **Impacto**: facilita filtros e busca\n\n### Re-testar CRM completo com cliente real\n- **Cenário**: Matheus (4664) manda msg → Fernando (7982) recebe notificação com histórico\n- **Validar**: rate limit (2ª msg no mesmo dia NÃO reenvia — Redis TTL 86400s)\n- **Status**: Notifica Dono CRM foi corrigido em 07/03 — agora deve funcionar\n\n---",
+        "baixa": "### Widget CRM no DASHBOARD FR\n- **Detalhe**: gráfico perfil/status/interesse pra visão rápida\n- **Dependência**: depende do dashboard mestre ser criado primeiro\n\n---",
+        "futura": "### Separar workflow CRM do principal (parallel migration)\n- **Estratégia**: ver seção 6 do `ctx_crm.md`\n- **Prazo**: sem pressa — quando der\n\n### Comando `#campanha` segmentado\n- **Detalhe**: `#campanha solitario` → N8N filtra CRM por tag → dispara WhatsApp segmentado\n- **Tags**: ouro, prata, concerto, solitario, bespoke, joalheiro\n- **Dependência**: aba `Clientes` no Excel CRM precisa ter coluna tags + qtd_pedidos + ultima_compra\n\n---",
+        "concluida": "- ✅ 2026-03-06: CRM Pipeline Completo com Redis (Verifica + Marca + Rate limit)\n- ✅ 2026-03-07: Switch REPLICATE combinator AND→OR\n- ✅ 2026-03-07: Fix Notifica Dono CRM invalid syntax (aspas simples + `\\\\n`)\n- ✅ 2026-03-04: Append Sheet CRM campos errados\n- ✅ 2026-03-04: `resposta cliente` credencial velha → 5hqeZBlb1DxDj2UU\n- ✅ 2026-03-06: Marca Análise Hoje TTL 86400s (rate limit 1x/dia)\n- ✅ 2026-03-06: LABELS_ASSOCIATION descartado (Baileys 2.3.7 não suporta) — Redis cliente:{tel} substituiu"
+      },
+      "kpis": {
+        "titulo": "👥 Clientes CRM",
+        "metricas": [
+          {
+            "label": "Total cadastrados",
+            "valor": 294,
+            "destaque": true
+          },
+          {
+            "label": "Novos este mês",
+            "valor": 71
+          },
+          {
+            "label": "Mês anterior",
+            "valor": 50
+          },
+          {
+            "label": "Possíveis parados 🔴",
+            "valor": 185,
+            "critico": true
+          },
+          {
+            "label": "Sem perfil IA",
+            "valor": 36
+          }
+        ],
+        "por_perfil": {
+          "🤝 AMIGO FERNANDO": 49,
+          "🟡 OURO": 40,
+          "[]": 40,
+          "💎 DIAMANTE": 39,
+          "[🤝 AMIGO FERNANDO]": 16,
+          "[💎 DIAMANTE]": 15,
+          "[🟡 OURO]": 13,
+          "⚪ PRATA": 11,
+          "🚚 FORNECEDOR": 9,
+          "[⚪ PRATA]": 7,
+          "⚪ CLIENTE PRATA": 6,
+          "⚒️ JOALHEIRO": 3,
+          "[⚒️ JOALHEIRO]": 2,
+          "🟡 CLIENTE OURO": 2,
+          "🔮 GEMAS": 1,
+          "[🟡 OURO, 💎 DIAMANTE]": 1,
+          "[🎨 BESPOKE]": 1,
+          "⏳ POSSÍVEL": 1,
+          "[🚚 FORNECEDOR]": 1,
+          "[📱 MÍDIA]": 1
+        },
+        "por_status": {
+          "⏳ POSSÍVEL": 122,
+          "[⏳ POSSÍVEL]": 55,
+          "[]": 35,
+          "✅ TOP": 12,
+          "⏳ POSSÍVEL CLIENTE": 8,
+          "🤖 IA-ANALISANDO": 4,
+          "[✅ TOP]": 4,
+          "[🤖 IA-ANALISANDO]": 1,
+          "[📱 MÍDIA]": 1,
+          "❌ CANCELADOS": 1
+        }
+      }
+    },
+    {
+      "slug": "comercial",
+      "nome": "Comercial Render V3 (B2B)",
+      "ramo": "FR",
+      "keyword": "comercial",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "b9R0hFt0fanjK6gG",
+      "workflow_futuro": "já separado (não é sub-módulo do principal)",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 0,
+        "media": 0,
+        "baixa": 0,
+        "andamento": 11,
+        "concluida": 15,
+        "futura": 1,
+        "total": 0
+      },
+      "arquivo_ctx": "Documentos\\Comercial Render Joias\\ctx_comercial.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "- [ ] Backblaze B2 configurado + backup diário automático criptografado\n- [ ] Rotação de todas API keys atuais (Replicate, Cloudinary, Evolution, N8N)\n- [ ] Webhook tokens longos (32+ chars) substituindo URLs simples\n- [ ] Strip EXIF (`fl_strip_metadata`) no `Envia Imagem Final`\n- [ ] Watermark sutil opcional no output\n\n### 🟠 ETAPA 3 — PRÓXIMA SEMANA (1 sem, ~R$ 1.000)\n- [ ] Marca \"FR Design Joias\" registrada no INPI (Classes 9, 14, 35) — R$ ~426\n- [ ] Termos de Uso com cláusula IP/trade secret/anti-engenharia-reversa\n- [ ] Política de Privacidade LGPD compliant\n- [ ] NDA template cliente (assinar antes de demo)\n- [ ] NDA template freela/fornecedor\n\n### 🟣 ETAPA 4 — MÊS 1 (cliente-facing stealth)\n- [ ] Landing 1 página minimalista (Framer/Webflow)\n- [ ] Sem pricing público / sem features list / sem trial click-and-go\n- [ ] Formulário qualificação (CNPJ + volume + indicação)\n- [ ] Critérios de aprovação manual de leads\n- [ ] Trial pago R$ 197 (5 renders) como filtro de concorrente\n\n### 🔵 ETAPA 5 — MÊS 2-3 (monitoramento)\n- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
+        "baixa": "- [x] **Bitwarden instalado** (Desktop + Extensão Chrome fixada) ✅ 27/04\n- [x] **2FA GitHub** (`fhribeiro-ui`) — senha forte + Microsoft Authenticator + 16 recovery codes ✅ 27/04\n- [x] **2FA Google** (fh.ribeiro@hotmail.com) — já tinha 3 passkeys + 3 dispositivos, baixei 10 backup codes ✅ 27/04\n- [x] **Replicate** — protegido via GitHub (login social com 2FA do GitHub) ✅ 27/04\n- [x] **2FA EasyPanel** (monitor.fernandoribeirojoias.com.br) — chave secreta `EM7E2ZKTMZKDCNDQ` salva em Bitwarden + `_SEGURANCA/` ✅ 27/04\n- [x] EasyPanel salvo no Bitwarden (auto-fill funcionando) ✅ 27/04\n- [x] **2FA Hostinger** (registrar do domínio) — recovery codes em `_SEGURANCA/` + iCloud ✅ 27/04\n- [x] **Cloudinary** — protegido via GitHub OAuth (Cloudinary 2FA local não aplica a 3rd-party logins) ✅ 27/04\n- [x] **2FA Microsoft pessoal** (fh.ribeiro@hotmail.com) — recovery code SNMHD-UDZ6Z-HE5RS-SPL7P-QUZ8H em _SEGURANCA + iCloud ✅ 27/04\n- [x] **2FA Microsoft empresa** (frcontato@fernandoribeirojoias.com.br) — 4 métodos: senha + SMS + Authenticator iPhone + Authenticator Redmi loja ✅ 27/04\n- [x] **🎯 ETAPA 1.2 MFA OFICIALMENTE 100% CONCLUÍDA** ✅ 27/04 ~23h20\n\n### ETAPA 1.3 — Auditoria de chaves expostas (em andamento 28/04)\n- [x] Mapeadas 5 pastas críticas — 26 arquivos com chaves expostas\n- [x] Movidos 9 arquivos `CREDENCIAIS_*` da Comercial Render Joias pra `_SEGURANCA/_arquivos_credenciais_antigos/`\n- [x] Vigia FR migrado: `http://89.117.33.97:3000` → `https://monitor.fernandoribeirojoias.com.br` (PUT 200 + reativado)\n- [x] Scan portas servidor: SSH/HTTP/HTTPS/3000 abertas; Postgres/Redis/N8N protegidos no Docker network\n- [x] Config \"Servir no IP\" do EasyPanel marcada como OFF (sem efeito imediato — Docker mantém porta 3000)\n\n### TAREFA FUTURA — fechar porta 3000 do EasyPanel definitivamente\n- Quando: próxima atualização do EasyPanel ou em 1 mês\n- Como: SSH no servidor + `ufw deny 3000` + restart controlado + validar Vigia\n- Vigia já está blindado (usa HTTPS), então fechamento não vai derrubá-lo\n- Risco residual atual da porta aberta: muito baixo (2FA forte ativo)\n\n### ETAPA 1.3 Auditoria de uso indevido (CONCLUÍDA 28/04 ~12h)\n- [x] Microsoft Activity Log → LIMPO (só Brasil + dispositivos seus)\n- [x] Replicate billing → LIMPO (curva normal Jan $9 → Abr $143)\n- [x] Cloudinary usage → LIMPO (pico ~800/dia razoável)\n- [x] Mercado Pago → LIMPO (3 vendas R$120 = créditos reais)\n- [x] **Decisão FASE B:** NÃO rotacionar (opção A — sem evidência de breach)\n- [x] **🎯 ETAPA 1.3 oficialmente CONCLUÍDA**\n\n### Estado final do plano de segurança (28/04)\n- ✅ ETAPA 1.1 Bitwarden + senhas únicas\n- ✅ ETAPA 1.2 MFA em 8 contas críticas\n- ✅ ETAPA 1.3 Auditoria de chaves expostas + verificação de uso indevido\n- ⏳ ETAPA 1.4 Política \"nunca colar API keys em chat/email/docs\" (próxima sessão)\n- ⏳ ETAPA 2: Backblaze backup + rotação ativa de keys (semana)\n- ⏳ ETAPA 3-6: INPI, NDA, landing stealth (médio prazo)\n- [ ] **(Opcional)** GitHub Mobile como camada extra de aprovação push\n- [ ] **(Opcional)** Microsoft Authenticator também na conta Google (hoje só passkey+SMS)\n- [ ] Auditoria: nenhuma API key em local público (GitHub, fóruns, OneDrive compartilhado)\n- [ ] Política \"nunca colar API keys em chat/email/print\"\n\n**Recovery codes guardados em:**\n- ✅ OneDrive (`Documentos/_SEGURANCA/`) — sincronizado\n- ✅ iCloud — backup separado\n- 🔜 Bitwarden (Notas seguras) — opcional, fazer depois\n\n**Senhas-mestras decoradas:** Bitwarden master password (única que precisa decorar)\n\n### 🟡 ETAPA 2 — ESTA SEMANA (4-6h, ~R$ 30/mês)\n- [ ] Backblaze B2 configurado + backup diário automático criptografado\n- [ ] Rotação de todas API keys atuais (Replicate, Cloudinary, Evolution, N8N)\n- [ ] Webhook tokens longos (32+ chars) substituindo URLs simples\n- [ ] Strip EXIF (`fl_strip_metadata`) no `Envia Imagem Final`\n- [ ] Watermark sutil opcional no output\n\n### 🟠 ETAPA 3 — PRÓXIMA SEMANA (1 sem, ~R$ 1.000)\n- [ ] Marca \"FR Design Joias\" registrada no INPI (Classes 9, 14, 35) — R$ ~426\n- [ ] Termos de Uso com cláusula IP/trade secret/anti-engenharia-reversa\n- [ ] Política de Privacidade LGPD compliant\n- [ ] NDA template cliente (assinar antes de demo)\n- [ ] NDA template freela/fornecedor\n\n### 🟣 ETAPA 4 — MÊS 1 (cliente-facing stealth)\n- [ ] Landing 1 página minimalista (Framer/Webflow)\n- [ ] Sem pricing público / sem features list / sem trial click-and-go\n- [ ] Formulário qualificação (CNPJ + volume + indicação)\n- [ ] Critérios de aprovação manual de leads\n- [ ] Trial pago R$ 197 (5 renders) como filtro de concorrente\n\n### 🔵 ETAPA 5 — MÊS 2-3 (monitoramento)\n- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
+        "futura": "- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
+        "concluida": "- ✅ **msgKeyFromMe vira string** — `Merge Parse+State` campo agora `type: boolean`\n- ✅ **Prep Debit em trocas** — `Get Saldo Atual` (Redis GET) adicionado. **VALIDADO em produção 2026-04-27 01:49**: NOVO_PEDIDO \"Anel amarelo\" rodou 37 nodes, saldo decrementou pra 2, terminou em `Envia Aviso Saldo` (que vem depois de Prep Debit).\n- ✅ **Pedra Retry Incr output vazio** — substituído por sequência GET+Code+SET, Wait 20s, timeout 6min\n- ✅ **Pedra v2 anti-adicionar** — VALIDADO em produção 2026-04-26 16:14 (TROCAR_METAL Branco)\n- ✅ **Grupo 07 Render Clever Keke** — habilitado em GRUPOS_OK + TIMBRE_MANUTENCAO\n\n### ⚠️ Comportamentos intermitentes (não-bugs)\n- **Evolution `fromMe=true` bad decrypt INTERMITENTE** — mídia enviada por device da própria conta WhatsApp **às vezes** falha em `Baixa Imagem` com erro de descriptografia. Histórico mostra ~85% sucesso (17 sucessos vs 3 falhas em janela 23-26/04). Quando falhar, retentar em 1-2 min. Pra teste mais confiável, pedir Matheus enviar (fromMe=false sempre funciona).\n\n### ⏳ Investigar quando retomar\n- [ ] Aviso saldo — verificar threshold (memória cita \"verificar se manda msg de recarga no momento certo\")\n- [ ] `Prep Render Base` legado — existe em paralelo ao `Prep Base Novo`, sem uso. Decidir remover.\n- [ ] Limpeza Cloudinary — sem cleanup automático, storage cresce com pedidos\n\n---"
+      },
+      "kpis": {
+        "titulo": "💎 Comercial Render V3",
+        "metricas": [
+          {
+            "label": "Execuções este mês",
+            "valor": 250,
+            "destaque": true
+          },
+          {
+            "label": "Sucessos",
+            "valor": 250
+          },
+          {
+            "label": "Falhas",
+            "valor": 0,
+            "critico": false
+          }
+        ]
+      }
+    },
+    {
+      "slug": "render",
+      "nome": "Render Interno (CRIAR + Variantes A-J)",
+      "ramo": "FR",
+      "keyword": "render-interno",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "c5xELKdT47YbzMXP",
+      "workflow_futuro": "mantém junto (NÃO separar)",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 1,
+        "concluida": 19,
+        "futura": 5,
+        "total": 3
+      },
+      "arquivo_ctx": "N8N PRONT\\_DOCS\\claude\\ctx_render.md",
+      "tarefas_texto": {
+        "critica": "### PRIORIDADE 1: Implementar FLUX 2 Pro no N8N\n- **Detalhe**: pipeline aprovado em testes (29/03), falta aplicar no workflow\n- **Ação**: adicionar nodes após H1 para chamar FLUX 2 Pro com prompt N-style\n- **Parâmetros**: pedra_central, pedra_lateral, metal (do agente AI ou pedido)\n- **Testar antes**: esmeralda, turmalina rosa\n- **Script base**: `_SCRIPTS/teste_letra_n.js`\n\n### PRIORIDADE MÁXIMA: 50 Solitários prontos pra vender\n- **Objetivo**: SL001-SL050 com imagens geradas e URLs na aba SITE SL → anunciar e vender\n- **Etapa 1**: ✅ CONCLUÍDA (22/03) — pipeline SL050_A.png → Cloudinary → SITE SL col F\n- **Etapa 2**: Gerar CRIAR A para cada SL001-SL050 no grupo → cada um atualiza SITE SL automaticamente\n- **Etapa 3**: Exportar SITE SL e subir na plataforma de e-commerce\n- **Regra**: fechar Excel antes de renomear imagens\n\n---",
+        "media": "### PRIORIDADE 2: Validar prompt REVEAL (Pipeline H2)\n- **Status**: DEPLOYADO mas AINDA NÃO VALIDADO\n- **Ação**: enviar SIM no grupo CRIAR com anel em pé (perfil lateral)\n- **Esperado**: pedra não mais redesenhada — REVEAL preserva forma, revela brilho\n- **Se FALHAR**: investigar — talvez seed diferente ou ajuste no ps\n- **Se PASSAR**: prompt aprovado — documentar como solução definitiva\n\n### PRIORIDADE 2: Nova letra \"I\" — pipeline 3 etapas\n- **Ideia**: maior qualidade pra anéis com pedras no aro\n- **I1**: CAD → ouro branco + diamante + fundo branco (ps=0.65) → Cloudinary\n- **I2**: APENAS metal branco→amarelo (ps=0.40) — nenhuma outra mudança\n- **Por quê**: quando anel tem pedras no aro, modelo divide \"budget\" entre metal + pedras → ouro amarelo sai fraco. Com etapa dedicada ao metal, qualidade melhora.\n- **Ação**: criar script de teste primeiro (I2 isolado com H1 existente), validar, depois implementar\n\n### PRIORIDADE 3: Testar pedras coloridas via WhatsApp\n- **Comandos novos**: `SIM SAFIRA`, `SIM ESMERALDA`, `SIM RUBI`, `SIM TURMALINA` → stone type diferente no H2\n- **Arquitetura**: Switch R9 `startsWith('SIM')` → Prepara H2 lê stone type → ternário no prompt\n- **Ação**: criar script de teste que busca h1_url Redis, roda 4-5 variantes, envia URLs pro grupo CRIAR\n\n### Confirmar fix G ouro branco caixa\n- **Estado**: ps=0.35 + proibição \"Do NOT add box/bezel/basket\" aplicados\n- **Testando**: se \"caixa embaixo da pedra\" sumiu\n- **Se ainda aparecer**: reduzir ps para 0.32 E mais linguagem de proibição\n\n### Confirmar qualidade v5 sem WhatsApp\n- **Comparar**: `_TESTES_PS/SL049_C_v5_teste_24mar.jpg` vs `SL049_C_ps015_v5.jpg`\n- **Se iguais**: WhatsApp era o problema → workflow ok\n- **Se diferentes**: investigar mais\n\n---",
+        "baixa": "### Aplicar config v5 ao workflow N8N\n- **Modificar `Prepara Parametros`**:\n  - `prompt_strength`: 0.55 → 0.15 (Variante A)\n  - `guidance_scale`: 9.5 → 6.5\n  - `num_inference_steps`: 50 → 35\n- **Substituir** `prompt_fim A` pelo prompt v5 (\"TARGETED METAL RECOLOR ONLY\" + \"STRICT GEOMETRY LOCK\")\n- **Atenção**: fazer com ZERO execuções rodando\n\n### Logo via Cloudinary overlay\n- **Ideia**: usuário remove logo/750 do modelo 3D antes de renderizar\n- **Depois**: adicionar logo como overlay Cloudinary no composite final (nítido, consistente)\n- **Status**: aguardando usuário preparar modelo sem logo\n\n### Implementar Variante F no fluxo N8N\n- **Pipeline aprovado**: Flux cream ps=0.55 → BRIA remove-bg → Cloudinary vca_d7\n- **Script teste**: `variante_f_padrao.js`\n\n### SALVA I pipeline teste\n- **Detalhe**: `SALVA I SL049` → salva I2+I3 no OneDrive Catálogo/SL049_*/\n- **Pipeline adicionado (29/03)** mas não testado formalmente\n\n### I3 tom de ouro amarelo (baixa prioridade)\n- Amarelo atual (seed 5555) é o natural do modelo\n- Se quiser tom diferente: testar outros seeds (3333, 7777, 1111)\n\n### H2 brilho da pedra — melhoria futura\n- Usuário aprovou seed=42 ps=0.45 como funcional mas \"pode melhorar o brilho\"\n- Testar seeds próximos (38, 40, 44, 46) com ps=0.45\n- Script: `_SCRIPTS/test_h2_variants.js`\n\n---",
+        "futura": "### Pedra colorida I pipeline\n- Caption `I SAFIRA ARO DIAMANTE` = safira central + aro diamante\n- Requer: detectar pedra central no caption + prompt dinâmico por pedra\n- Set Caption H + Prepara I2 precisam expandir\n\n### Vídeo de Joias com IA (Kling v2.1 SHIMMER)\n- Comando `VIDEO A` no grupo CRIAR\n- Pega último render A → Kling v2.1 SHIMMER → vídeo 5s\n- Custo: ~$0.44 por vídeo\n- Scripts prontos: `gera_video_joia.js`\n\n### APIs Mídia Social (Instagram + Pinterest + Reels)\n- Doc completo na Pendência 10 do `pending_tasks.md` original\n- Fase 1 grátis: Meta Graph API + Pinterest API + GPT-4o legendas\n- Fase 2 ($19/mês): Placid carrossel\n- Fase 3 ($0.25/clip): RunwayML Gen-4 Turbo\n- Fase 3 ($54/mês): Creatomate Reels\n\n### Gravação \"FR 750\" via Replicate + Cloudinary\n- **Aprovado v8**: Replicate ps=0.15 (impressão física) → Cloudinary 3 camadas\n- **Status**: aprovado, PAUSADO para implementar depois\n- **Integração**: 2º pass no pipeline CRIAR\n\n---",
+        "concluida": "- ✅ 2026-03-28: Pipeline H completo H1+H2 (218 nodes, active=true)\n- ✅ 2026-03-28: Prompt H2 REVEAL + view-agnostic optics\n- ✅ 2026-03-28: $input bug + Code→Set node Prepara H2\n- ✅ 2026-03-28: SALVA H OneDrive implementado (11 novos nodes)\n- ✅ 2026-03-29: Pipeline FLUX 2 Pro aprovado (Branco N2, Amarelo O2 Vivara)\n- ✅ 2026-03-29: Pipeline I2/I3 Cloudinary + Prompt I2 (284 nodes)\n- ✅ 2026-03-29: I3 prompt aprovado (Van Cleef + soft natural luster, seed 5555)\n- ✅ 2026-03-30: Pipeline I2 Aro Dinâmico (P=com pedra, L=liso)\n- ✅ 2026-03-08: Variantes A/B/C/D/E ativas\n- ✅ 2026-03-08: Variante D fundo VCA (Cloudinary composite)\n- ✅ 2026-03-16: Variante F — Pipeline 3 etapas (Flux cream → BRIA → Cloudinary)\n- ✅ 2026-03-22: Watcher redesign 3D + imagens\n- ✅ 2026-03-24: watcher_catalogo.js (monitora `_PARA_RENDER/` → `_CATALOGO_RENDER/`)\n- ✅ 2026-03-28: Limpeza 13 nodes inúteis (230 → 217 nodes)\n- ✅ 2026-03-18: Fix prompts + detecção pedras (Filter1 NÃO_GERAR + ouro A escuro)"
+      },
+      "kpis": {
+        "titulo": "🎨 Render Interno (workflow principal)",
+        "metricas": [
+          {
+            "label": "Execuções este mês",
+            "valor": 250,
+            "destaque": true
+          },
+          {
+            "label": "Sucessos",
+            "valor": 250
+          },
+          {
+            "label": "Falhas",
+            "valor": 0,
+            "critico": false
+          },
+          {
+            "label": "SITE SL preenchido",
+            "valor": "58%"
+          },
+          {
+            "label": "SITE AL preenchido",
+            "valor": "100%"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "cadastro",
+      "nome": "Cadastro de Produto",
+      "ramo": "FR",
+      "keyword": "cadastro",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "c5xELKdT47YbzMXP",
+      "workflow_futuro": "a definir (parallel migration)",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 1,
+        "concluida": 12,
+        "futura": 3,
+        "total": 3
+      },
+      "arquivo_ctx": "N8N PRONT\\_DOCS\\claude\\ctx_cadastro.md",
+      "tarefas_texto": {
+        "critica": "### Recadastrar AN001 (urgente)\n- **Detalhe**: tentativa anterior falhou porque aba `Prod (3)` não existia. Pasta OneDrive criada na tentativa anterior precisa ser deletada antes do recadastro\n- **Status**: aguardando usuário deletar pasta + recadastrar\n\n### Recarregar crédito Replicate\n- **Detalhe**: conta com < $5 → rate limit 6 req/min, predições falham\n- **Solução**: acessar replicate.com/account e adicionar crédito\n- **Impacto**: cadastro com render falha\n\n---",
+        "media": "### Implementar `#atualiza site`\n- **Detalhe**: recalcula preços SITE SL+AL usando Painel de Controle → todos os produtos\n- **Beneficio**: atualizar massa de produtos sem fazer um por um\n\n### SITE AL: 70 produtos sem preço/custo/URL\n- **Detalhe**: alianças sem dados completos\n- **Ação**: rodar `#atualiza site` (depende da implementação acima)\n\n### SL025/SL026 dados incompletos\n- **Detalhe**: 2 produtos com cadastro parcial\n- **Ação**: completar manualmente ou via UPDATE\n\n---",
+        "baixa": "### Numeração de clientes novos no N8N\n- **Detalhe**: 23 pastas já renomeadas (001_ a 023_) via script local\n- **O que falta**: N8N criar pastas numeradas automaticamente\n  - Node `Gera PDF NP`: `nomePasta = cliente + '_' + ultimos4`\n  - Mudar para: Redis INCR `cliente:contador` → `{num:003d}_` + nomePasta\n  - Inicializar Redis: SET `cliente:contador` = 23 (uma vez só)\n\n### 6 features Excel planejadas\n- **Doc**: `project_excel_features.md`\n- **Features**: #atualiza site, SITE AL, inconsistências, simulador, catálogo PDF, lote\n\n---",
+        "futura": "### Separar workflow Cadastro do principal (parallel migration)\n- **Estratégia**: ver seção 6 do `ctx_cadastro.md`\n- **Atenção**: NÃO mover planilha Excel — fonte única\n- **Prazo**: sem pressa\n\n### CRM: categorias de cliente + comando #campanha\n- **Detalhe**: Agente Cadastro detecta categoria → grava na aba CRM\n- **Cross-projeto**: ver também TAREFAS_CRM.md\n\n---",
+        "concluida": "- ✅ 2026-03-10: Fix CADASTRO UPDATE completo (session key isolada + sem RESUMO + tabProduto do prefixo)\n- ✅ 2026-03-11: CADASTRO COMPLETO — preço, nome padronizado, bug pedra\n- ✅ 2026-03-11: Fix conexão Le Preco CRIAR (Grava Excel Produto → Grava Formulas → Le Preco CRIAR)\n- ✅ 2026-03-12: Fix pedra_central_ct 3 tipos (Exemplo E + REGRA CRITICA pedra_central só vem de Pedra Central Diamante)\n- ✅ 2026-03-12: Redis DEL NAO Memory após Responde Cadastro WPP\n- ✅ 2026-03-12: Fix preço UPDATE com Forca Calculo Excel\n- ✅ 2026-03-21: Fix cadastro categoria ANEL (5 nodes corrigidos: Prod(3)→Anel)\n- ✅ 2026-03-22: Watcher redesign 3D + imagens (renomeia com specs)\n- ✅ 2026-03-22: Pipeline SL050_A.png → Cloudinary → SITE SL col F"
+      },
+      "kpis": {
+        "titulo": "📦 Produtos Cadastrados",
+        "metricas": [
+          {
+            "label": "Total cadastrados",
+            "valor": 184,
+            "destaque": true
+          },
+          {
+            "label": "Solitários (SL)",
+            "valor": 57
+          },
+          {
+            "label": "Alianças (AL)",
+            "valor": 126
+          },
+          {
+            "label": "Anéis (AN)",
+            "valor": 1
+          },
+          {
+            "label": "Sem preço 🟡",
+            "valor": 19
+          }
+        ]
+      }
+    },
+    {
+      "slug": "orcamento",
+      "nome": "Gerador de Orçamento — Assistente de Precificação",
+      "ramo": "FR",
+      "keyword": "orcamento",
+      "status": "planejado",
+      "prioridade": "media",
+      "workflow_atual": "null",
+      "workflow_futuro": "a criar (provavelmente workflow N8N próprio)",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 6,
+        "futura": 3,
+        "total": 3
+      },
+      "arquivo_ctx": "Documentos\\FR_Orcamento\\ctx_orcamento.md",
+      "tarefas_texto": {
+        "critica": "### Definir escopo\n- **Bloqueio**: sem definição clara, não dá pra começar\n- 3 perguntas pendentes:\n  1. Quem usa? (Só FR / outros joalheiros / mix)\n  2. Interface? (WhatsApp / Web / Excel)\n  3. Biblioteca? (planilha atual / cadastro novo / mix)\n\n### Decidir arquitetura\n- Workflow N8N próprio OU integrar no FR Joias principal?\n\n---",
+        "media": "### Testar SerpAPI com reverse image search\n- Validar viabilidade técnica com 5-10 fotos reais de joia\n- Avaliar qualidade dos resultados retornados\n\n### Definir cálculo de preço\n- Custo materiais (ouro, prata, platina por grama)\n- Custo pedras por ct (diamante, safira, rubi, esmeralda)\n- Mão de obra (fixo ou variável por complexidade)\n- Margem (configurável)\n\n---",
+        "baixa": "### POC interface\n- Testar WhatsApp primeiro (mais barato pra MVP)\n- Decidir HTML/Excel se precisar interface visual\n\n---",
+        "futura": "### Versão B2B (vendável)\n- Joalheiros pagam mensalidade pra usar o assistente\n- Diferencial: ninguém no mercado tem isso integrado com IA\n\n### Biblioteca colaborativa\n- Joalheiros compartilham preços de peças anteriores\n- Sistema aprende com volume de transações reais\n\n### Integração com cotação ouro em tempo real\n- API de cotação ouro/prata/platina\n- Atualiza custos automaticamente\n\n---",
+        "concluida": "- ✅ 2026-05-14: Pasta FR_Orcamento criada\n- ✅ 2026-05-14: README + ctx_orcamento.md + TAREFAS_ORCAMENTO.md criados (placeholder)\n- ✅ 2026-05-14: Keyword `orcamento` registrada em PALAVRAS_CHAVE.md + CLAUDE.md global"
+      },
+      "kpis": {
+        "titulo": "💰 Gerador de Orçamento",
+        "metricas": [
+          {
+            "label": "Status",
+            "valor": "PLANEJADO",
+            "destaque": true
+          },
+          {
+            "label": "Escopo definido?",
+            "valor": "Não"
+          },
+          {
+            "label": "Workflow N8N",
+            "valor": "—"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "pedido",
+      "nome": "Geração de Pedido",
+      "ramo": "FR",
+      "keyword": "pedido",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "c5xELKdT47YbzMXP",
+      "workflow_futuro": "a definir (parallel migration)",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 1,
+        "concluida": 10,
+        "futura": 3,
+        "total": 2
+      },
+      "arquivo_ctx": "N8N PRONT\\_DOCS\\claude\\ctx_pedido.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Pendência 1: Abaixar logo no PDF\n- **Problema**: logo horizontal está muito alto, quase encostando na borda superior\n- **Solicitado**: Abaixar SOMENTE o logo, NÃO mover o texto \"Alta Joalheria Personalizada\"\n- **Detalhe técnico**: y=732 → y=755 (texto permanece em y=710)\n- **Como corrigir**: `fix_pdf_pos.js` (replace simples `187 732` → `187 755`)\n- **Atenção**: Persiste Dados pode sobrescrever — aguardar sem execuções rodando\n\n### Pendência 3: Testar joalheiro com fallback\n- **Status**: Fix aplicado mas NÃO TESTADO em produção\n- **Cenário 1**: `#novo_pedido joalheiro | Joalheiro: Karina | Envelope: 011 | ...`\n  → Esperado: pasta `Joalheiro/Karina/`, PDF `Anel_xxx_Env011_Karina.pdf`, caption `011`\n- **Cenário 2**: `#novo_pedido joalheiro | Produto: Anel | Envelope: 011 | ...` (sem Joalheiro:)\n  → Esperado: pasta `Joalheiro/{NomeWhatsApp}/`, não \"joalheiro\"\n- **Script diagnóstico**: `node check_last.js`\n\n### Pendência 5: Watcher renomear arquivos em pasta de cliente\n- **Problema**: watcher_projetos.js renomeia arquivos em pasta de produto (ex: SL046/), mas não em pasta de cliente (ex: Lu_Ribeiro_0288/)\n- **Esperado**: qualquer arquivo 3D (.vtf, .stl, .3dm, .dxf) em qualquer pasta deve ser renomeado\n\n### Pendência 7: CRIAR salvando na pasta Joalheiro\n- **Sintaxe**: `CRIAR A J Karina` (J + espaço + nome no final)\n- **Detecção**: último token começa com \"J \" + texto puro (sem dígitos) → joalheiro\n- **Não conflita**: SL046 (letra+número) nem 0288 (4 dígitos)\n- **Status**: pendente — implementar com backup + zero execuções\n\n---",
+        "baixa": "### Numeração de clientes novos no N8N (Redis INCR)\n- **Detalhe**: 23 pastas já renomeadas. Falta automatizar no N8N\n- **Cross-projeto**: ver também TAREFAS_CADASTRO.md (mesmo trabalho)\n\n---",
+        "futura": "### Separar workflow Pedido do principal (parallel migration)\n- **Estratégia**: ver seção 6 do `ctx_pedido.md`\n- **Atenção**: depende do Cadastro — separar Cadastro PRIMEIRO\n- **Prazo**: sem pressa\n\n---",
+        "concluida": "- ✅ 2026-03-04: Microsoft To Do integrado com data de vencimento (lista PRODUÇAO)\n- ✅ 2026-03-04: Aviso de erro no Replicate (IF Render OK? + Aviso Erro Render)\n- ✅ 2026-03-04: Bug PDF/mensagem pedido com PERFIL CRM (Code JS2 filtra DADOS:)\n- ✅ 2026-03-05: Bug isJoalheiro com `[]` (regex `/^\\[.*\\]$/`)\n- ✅ 2026-03-05: Fluxo #novo_pedido redirecionado para dono 7982 (Envia PDF Grupo desabilitado)\n- ✅ 2026-03-06: Fix Calendar/ToDo entrega com hora (entregaHora extraído por regex `[0-9]`)\n- ✅ 2026-03-04: Bug Pedidos de Cliente indo para pasta Joalheiro (isJoalheiro filtra N/A)"
+      },
+      "kpis": {
+        "titulo": "📁 Pedidos",
+        "metricas": [
+          {
+            "label": "Total acumulado",
+            "valor": 127
+          },
+          {
+            "label": "Pedidos este mês",
+            "valor": 8,
+            "destaque": true
+          },
+          {
+            "label": "Mês anterior",
+            "valor": 28
+          }
+        ]
+      }
+    },
+    {
+      "slug": "mkt",
+      "nome": "MKT — Anel na Mão (Mockup)",
+      "ramo": "FR",
+      "keyword": "mkt",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "AtmCpbRWQfsygaes",
+      "workflow_futuro": "integrar V11 no Comercial Render V3",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 0,
+        "media": 0,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 0,
+        "futura": 0,
+        "total": 0
+      },
+      "arquivo_ctx": "MKT\\ctx_mkt.md",
+      "tarefas_texto": {},
+      "kpis": {
+        "titulo": "📢 MKT — Anel na Mão",
+        "metricas": [
+          {
+            "label": "Execuções este mês",
+            "valor": 0,
+            "destaque": true
+          },
+          {
+            "label": "Sucessos",
+            "valor": 0
+          },
+          {
+            "label": "Falhas",
+            "valor": 0,
+            "critico": false
+          }
+        ]
+      }
+    },
+    {
+      "slug": "seguranca",
+      "nome": "Segurança Competitiva — Proteção do Sistema FR",
+      "ramo": "FR",
+      "keyword": "seguranca",
+      "status": "planejado",
+      "prioridade": "media",
+      "workflow_atual": "c5xELKdT47YbzMXP",
+      "workflow_futuro": "",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 2,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 1,
+        "futura": 0,
+        "total": 3
+      },
+      "arquivo_ctx": "Documentos\\SEGURANCA\\ctx_seguranca.md",
+      "tarefas_texto": {
+        "critica": "**Objetivo:** Detectar concorrente/curioso que manda muitos renders sem comprar\n\n**Implementação N8N:**\n- Redis: incrementar contador `tester_check:{numero}` a cada render\n- Se >3 renders em <10min sem pedido fechado → flag `suspeito:1`\n- Ação: bloquear temporariamente (24h) ou redirecionar para atendimento humano\n- Node sugerido: adicionar IF após node de render bem-sucedido\n- Reset do contador: quando pedido é fechado\n\n**Critério de aceite:** testador é bloqueado antes do 4º render gratuito\n\n---",
+        "media": "**Objetivo:** Impedir que alguém reverta o prompt pela análise do output\n\n**Implementação N8N:**\n- Criar array com 4-6 variações sinônimas do prompt principal\n- Code node: `const prompts = [...]; return prompts[Math.floor(Math.random() * prompts.length)]`\n- Output visual idêntico, prompt diferente a cada chamada\n- Fazer isso para: BASE, METAL, PEDRA e VESTIR\n\n**Critério de aceite:** 10 renders seguidos com 10 prompts diferentes (verificar logs Replicate)\n\n**⚠️ Cuidado:** Não degradar qualidade. Testar cada variação antes de subir.\n\n---",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- Cloudinary signed URLs (complexidade alta, risco baixo)\n- Mudança de stack tecnológica\n- Ofuscação de domínio N8N\n\n---"
+      },
+      "kpis": {
+        "titulo": "Segurança Competitiva — Proteção do Sistema FR",
+        "metricas": []
+      }
+    }
+  ],
+  "lu": [
+    {
+      "slug": "agenda",
+      "nome": "LU — Agenda (Web + Autocomplete)",
+      "ramo": "LU",
+      "keyword": "agenda",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 8,
+        "futura": 2,
+        "total": 3
+      },
+      "arquivo_ctx": "Documentos\\LU\\dashboard\\ctx_agenda.md",
+      "tarefas_texto": {
+        "critica": "### Onda B passo 3 — Anamnese BLOQUEADA\n- **Bloqueio**: Lu precisa confirmar 6 campos: `formula_tecnica`, `cabelo`, `alergia_restricao`, `observacao`, `instagram`, `acompanhante`\n- **Sem isso**: webhooks `/lu-anamnese` GET/POST + painel lateral não saem\n\n---",
+        "media": "### Validar Onda A+B no celular (Fernando)\n- Abrir `/lu-agenda-real` no celular\n- Criar agendamento de teste digitando \"lu\" no Cliente\n- Confirmar tag + tel automático\n\n### Webhooks /lu-anamnese (GET + POST)\n- Bloqueado pela aprovação dos campos pela Lu\n\n---",
+        "baixa": "### Painel lateral de anamnese\n- UI lateral aparece ao selecionar cliente\n\n---",
+        "futura": "### Notificação push pra Lu quando cliente novo cadastra\n### Tema escuro/claro toggle na agenda\n\n---",
+        "concluida": "- ✅ 2026-04-29/30: Onda A + Onda B 1+2 completos (autocomplete em Profissional + Serviço + Cliente)\n- ✅ 2026-04-29: Workflow `Lu Clientes Lookup` (`WTJQc4j7CG63WBDO`) com cache 4h\n- ✅ 2026-04-29: PROFS limpa (5 ativos: Lu, Giovanna, Lanna, Michele, Larissa)\n- ✅ 2026-04-29: 45 serviços Avec embutidos\n- ✅ 2026-04-29: 5.423 clientes no autocomplete\n- ✅ 2026-04-29: 2 PUTs validados, backups feitos"
+      },
+      "kpis": {
+        "titulo": "LU — Agenda (Web + Autocomplete)",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "campanhas",
+      "nome": "LU — Campanhas de Crescimento",
+      "ramo": "LU",
+      "keyword": "campanhas",
+      "status": "planejado",
+      "prioridade": "media",
+      "workflow_atual": "null",
+      "workflow_futuro": "integrar com Régua Lu (npKtKFL0xj5ovBWK)",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 5,
+        "futura": 2,
+        "total": 2
+      },
+      "arquivo_ctx": "Documentos\\LU\\campanhas de crescimento\\ctx_campanhas.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Programa Indicação (03)\n- Definir incentivo (R$ X de desconto pra quem indicou + cliente novo)\n- Material visual + texto\n\n### Clube dos Cachos (04)\n- Definir benefícios (combo, preço VIP, prioridade)\n- Quem entra (top 760 VIP)\n\n### Calendário Instagram (05)\n- Definir posts/semana\n- Quem produz (Lu ou agência)\n\n### Google My Business — Checklist (06)\n- Reviews\n- Fotos atualizadas\n- Postagens semanais\n\n---",
+        "baixa": "### Tráfego Pago (07)\n- Investimento mensal\n- Definir público (mulheres 25-50, raio 10km)\n\n### Experiência Cliente (08)\n- Brinde aniversário (R$ 30 já confirmado)\n- Welcome kit cliente novo?\n\n---",
+        "futura": "### Agência conteúdo (terceirizar Instagram)\n### Vector DB pra preditivo de campanha\n### Voz IA pra ligações de retorno\n\n---",
+        "concluida": "- ✅ 8 docs estratégicos criados (01-08)\n- ✅ Régua Aniversariantes — refactor 3 tipos (DIA + 3D + MÊS) — 2026-04-21\n- ✅ Brinde R$ 30 aniversário definido"
+      },
+      "kpis": {
+        "titulo": "LU — Campanhas de Crescimento",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "dia_das_maes",
+      "nome": "LU — Dia das Mães 2026 (campanha)",
+      "ramo": "LU",
+      "keyword": "dia-das-maes",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "null",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 4,
+        "futura": 2,
+        "total": 3
+      },
+      "arquivo_ctx": "Documentos\\LU\\lu\\DIA_DAS_MAES_2026\\ctx_dia_das_maes.md",
+      "tarefas_texto": {
+        "critica": "### Aprovar texto da campanha com Lu (se ainda não rodou)\n- Pegar texto base de `PLANO_DIA_DAS_MAES.md`\n- Validar tom com Lu\n\n---",
+        "media": "### Disparar campanha pelo Michele\n- Se cliente perguntar \"tem promoção dia das mães?\", Michele responde\n- Senão: disparo proativo via Régua adaptada\n\n### Combo Mãe & Filha\n- Definir desconto / preço\n- Banner / material visual\n\n---",
+        "baixa": "### Pós-campanha: análise de conversão\n- Quantas mães vieram?\n- Faturamento da campanha vs mês normal?\n\n---",
+        "futura": "### Template reutilizável para outras datas (Dia da Mulher, Natal, etc.)\n\n---",
+        "concluida": "- ✅ Plano da campanha criado (PLANO_DIA_DAS_MAES.md)\n- ✅ Estrutura de pasta dedicada criada"
+      },
+      "kpis": {
+        "titulo": "LU — Dia das Mães 2026 (campanha)",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "galeria",
+      "nome": "LU — Galeria de Referências",
+      "ramo": "LU",
+      "keyword": "galeria",
+      "status": "ativo",
+      "prioridade": "baixa",
+      "workflow_atual": "null",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 0,
+        "futura": 2,
+        "total": 2
+      },
+      "arquivo_ctx": "Documentos\\LU\\galeria\\ctx_galeria.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Categorizar acervo atual\n- Garantir tags por tipo (cacho, corte, cor, comprimento)\n\n### Auditar imagens com direitos pendentes\n- Filtrar fotos com marca d'água ou direito autoral\n\n---",
+        "baixa": "### Adicionar referências sazonais\n- Cabelos Natal, Carnaval, Casamento\n\n### Sub-galeria por profissional\n- Cada profissional do salão tem suas referências preferidas\n\n---",
+        "futura": "### IA sugerindo galeria baseada no perfil do cliente\n- Cliente pergunta \"que cor combina comigo?\" → IA usa galeria + perfil",
+        "concluida": ""
+      },
+      "kpis": {
+        "titulo": "LU — Galeria de Referências",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "infra_lu",
+      "nome": "LU — Infraestrutura (Backup + Error Handler + Watchers)",
+      "ramo": "LU",
+      "keyword": "infra-lu",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "H65KkTgZ2TdfXnDE",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 0,
+        "futura": 2,
+        "total": 2
+      },
+      "arquivo_ctx": "Documentos\\LU\\infraestrutura\\ctx_infra_lu.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Auditoria backup Redis diário\n- Confirmar que snapshot tá salvando (últimos 30 dias)\n- Verificar tamanho dos arquivos (alertar se cair drasticamente)\n\n### Reidx Tags Diario — validar saúde\n- Tags `cliente` e `possivel_cliente` consistentes\n- Sem clientes sem tag\n\n---",
+        "baixa": "### Documentar runbook de cada workflow\n- Pra cada um: o que faz, quando dispara, como rollback\n\n### Monitor de latência Michele\n- Watcher 3min detecta lentidão IA?\n- Configurar threshold\n\n---",
+        "futura": "### Migrar logs pra serviço externo\n- Hoje fica só no N8N execution log\n- Considerar Sentry ou LogTail",
+        "concluida": ""
+      },
+      "kpis": {
+        "titulo": "LU — Infraestrutura (Backup + Error Handler + Watchers)",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "lu",
+      "nome": "LU — Memória Salão Lu Ribeiro",
+      "ramo": "LU",
+      "keyword": "lu",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "x06hj0XUHDHVNadh",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 13,
+        "futura": 3,
+        "total": 3
+      },
+      "arquivo_ctx": "Documentos\\LU\\ctx_lu.md",
+      "tarefas_texto": {
+        "critica": "### Onda B passo 3 — Anamnese (BLOQUEADA)\n- **Bloqueio**: Lu precisa confirmar 6 campos propostos: formula_tecnica, cabelo, alergia_restricao, observacao, instagram, acompanhante\n- **Sem isso**: webhooks `/lu-anamnese` GET/POST + painel lateral não saem\n- **Impacto**: bloqueia início da FASE 1 do macro 10/10\n\n### Validar Onda A + Onda B no celular (Fernando)\n- **Detalhe**: abrir `/lu-agenda-real` no celular e validar visualmente\n- **Ação**: criar agendamento de teste digitando \"lu\" no Cliente, confirmar tag + tel automático\n\n---",
+        "media": "### Decisão: lembrete da anamnese\n- Agente cloud não serve (sem acesso OneDrive)\n- Opções: pegar quando Fernando voltar no `lu`, /loop semanal, ou evento Outlook 07/05 14h via webhook\n\n### FASE 1 do macro 10/10\n- Pronta pra começar quando Onda B passo 3 sair\n- Escopo: tags indexadas + métricas + dashboard observabilidade\n\n### Re-exportar planilha vendas (Lu)\n- Cobrir período 18-28/04\n- Pendência Lu\n\n### Validar tons IA (Lu)\n- Pendência Lu\n\n### Definir % comissão por profissional (Lu)\n- Pendência Lu\n\n### Auto-recarga Anthropic Console (Fernando)\n- Importante pra não travar IA\n\n### 2º celular pra teste e2e (Fernando)\n- Necessário pra teste end-to-end completo\n\n---",
+        "baixa": "### Caminho A (+24h validação)\n- Remover Modo 1 IMG redundante — IA principal multimodal cobre\n\n### Migrar detectores → Haiku 4.5 (+1-2 sem se Modo 1 sólido)\n- Economia: 15x mais barato\n\n### Trilha 2 — IA finaliza agendamento + cobra PIX (+1 sem se Modo 1 sem bug)\n\n### Considerar Sonnet 4.6 no fluxo principal Michele (+1 mês se sólido)\n\n---",
+        "futura": "### MACRO-2 — Operacional + monetização (6-8 sem)\n- Comissão\n- Clube Cachos\n- Ficha\n- Fila\n\n### MACRO-3 — Marketing digital (6-8 sem)\n- Reviews\n- Instagram\n- Agência conteúdo\n\n### MACRO-4 — Inteligência premium (4-8 sem)\n- Vector DB semântico\n- Preditivo churn/LTV\n- Voz IA\n\n### FASE 2 macro — Otimização contexto (3-5 dias)\n- Prompt compaction\n- Monitor token\n\n### FASE 3 macro — Segmentação inteligente (1 sem)\n- Ofertas por LTV\n- Cross-sell\n- Dormindo live\n\n---",
+        "concluida": "- ✅ 2026-04-22: FASE 0 — Fundação (backup Redis + schema v1 + Salva Nova merge)\n- ✅ 2026-04-29/30: Onda A + Onda B 1+2 — Autocomplete completo em `/lu-agenda-real` (Profissional + Serviço + Cliente)\n- ✅ 2026-04-29: Workflow `Lu Clientes Lookup` (`WTJQc4j7CG63WBDO`) com cache 4h\n- ✅ 2026-04-29: PROFS limpa (5 ativas: Lu, Giovanna, Lanna, Michele, Larissa)\n- ✅ 2026-04-29: 45 serviços Avec embutidos com valor automático\n- ✅ 2026-04-29: 5.423 clientes via lookup workflow\n- ✅ 2026-04-19: Camada 4 — Notas por cliente (lu:obs:{tel})\n- ✅ 2026-04-22: Camada 5 — Tags automáticas (cliente/possivel_cliente)\n- ✅ Backup diário Redis cron 3h BR ativo\n- ✅ Michele 156 nodes, flag=2 ATIVA, Modo 1 estabilizando"
+      },
+      "kpis": {
+        "titulo": "💇 LU — Memória Salão",
+        "metricas": [
+          {
+            "label": "Clientes Avec",
+            "valor": "5.423"
+          },
+          {
+            "label": "Michele execuções mês",
+            "valor": 0,
+            "destaque": true
+          },
+          {
+            "label": "Sucessos",
+            "valor": 0
+          },
+          {
+            "label": "Falhas",
+            "valor": 0
+          },
+          {
+            "label": "Backup Redis diário",
+            "valor": "cron 3h BR ✅"
+          }
+        ]
+      }
+    },
+    {
+      "slug": "metricas",
+      "nome": "LU — Métricas Diárias e Dashboards",
+      "ramo": "LU",
+      "keyword": "metricas-lu",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "5OBPZSUljMTwKf99",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 0,
+        "futura": 2,
+        "total": 2
+      },
+      "arquivo_ctx": "Documentos\\LU\\metricas\\ctx_metricas.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Dashboard mensal de evolução\n- Comparar Maio vs Abril (faturamento, novos clientes, conversões)\n\n### Métricas de campanha\n- Taxa de resposta da Régua Aniv\n- Taxa de conversão (resposta → agendamento)\n\n---",
+        "baixa": "### Export CSV pra Lu (relatório PDF)\n- Lu quer ver número mensal organizado\n\n---",
+        "futura": "### Preditivo: cliente que provavelmente vai retornar\n- Modelo simples baseado em padrão de visitas",
+        "concluida": ""
+      },
+      "kpis": {
+        "titulo": "LU — Métricas Diárias e Dashboards",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "aniversariantes",
+      "nome": "LU — Régua Aniversariantes",
+      "ramo": "LU",
+      "keyword": "aniversariantes",
+      "status": "pausado",
+      "prioridade": "alta",
+      "workflow_atual": "npKtKFL0xj5ovBWK",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 11,
+        "futura": 2,
+        "total": 3
+      },
+      "arquivo_ctx": "Documentos\\LU\\REATIVACAO\\ctx_aniversariantes.md",
+      "tarefas_texto": {
+        "critica": "### Reativar workflow (DESATIVADO desde 21/04)\n- **Bloqueio**: aguardando aprovação final dos 3 textos pela Lu\n- **Alvos**: 1.803 aniversariantes base\n- **Quando reativar**: cron ter-sáb 8h BR dispara automaticamente\n\n---",
+        "media": "### Aprovar 3 textos com Lu\n- Texto DIA (niver hoje)\n- Texto 3D (em 3 dias)\n- Texto MÊS (catch-up atrasado)\n\n### Catch-up Maio (se houver)\n- Se workflow só reativar em Maio, verificar dias 1-N pendentes\n- Distribuir igual fez em Abril (semana 1-N + DIA + 3D + MÊS)\n\n---",
+        "baixa": "### Monitorar primeiras execuções pós-reativação\n- Validar que mensagens chegam corretas\n- Conferir anti-dupe Redis funcionando\n- Ver respostas dos clientes (Michele responde)\n\n### Métricas pós-campanha\n- Quantas mensagens enviadas?\n- Quantas respondidas?\n- Quantas viraram agendamento?\n- Quantas usaram o brinde R$30 (conversão real)?\n\n---",
+        "futura": "### Régua de aniversário do parceiro/marido/filho\n- Se cliente tem cônjuge, lembrete pra presentear\n\n### Cupom personalizado por valor histórico\n- Cliente que gastou +R$ 500/mês → brinde melhor\n\n### A/B test entre textos\n- Variante A (atual: foco celebração) vs Variante B (foco urgência)\n\n---",
+        "concluida": "- ✅ 2026-04-21: Refactor 3 tipos (DIA + 3D + MÊS)\n- ✅ 2026-04-21: Cron `0 8 * * 2-6` (ter-sáb, pula dom+seg)\n- ✅ 2026-04-21: Timezone `America/Sao_Paulo`\n- ✅ 2026-04-21: Anti-dupe Redis por tipo (`lu:camp:aniv:{TIPO}:{tel}:2026` TTL 60d)\n- ✅ 2026-04-21: Catch-up Abril distribuído (22/23/24 com 43/42/48 msgs)\n- ✅ 2026-04-21: Injeção hist IA (3 nodes novos)\n- ✅ 2026-04-21: Teste end-to-end validado — 3 msgs chegaram pro Fernando\n- ✅ 2026-04-21: Lu APROVOU lógica geral (21/04 noite)\n- ✅ Brinde R$ 30 aniversário definido"
+      },
+      "kpis": {
+        "titulo": "LU — Régua Aniversariantes",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "reativar",
+      "nome": "Reativação — Campanhas Lu Ribeiro",
+      "ramo": "LU",
+      "keyword": "reativar",
+      "status": "pausado",
+      "prioridade": "media",
+      "workflow_atual": "npKtKFL0xj5ovBWK",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-05-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 10,
+        "futura": 3,
+        "total": 3
+      },
+      "arquivo_ctx": "Documentos\\LU\\REATIVACAO\\ctx_reativar.md",
+      "tarefas_texto": {
+        "critica": "### Reativar workflow Régua Aniv (DESATIVADO desde 21/04)\n- **Status**: workflow `npKtKFL0xj5ovBWK` está desativado\n- **Bloqueio**: aguardando aprovação final dos 3 textos pela Lu (DIA + 3D + MÊS)\n- **Alvos**: 1.803 aniversariantes base / 133 catch-up de Abril\n- **Quando reativar**: cron ter-sáb 8h BR dispara automaticamente\n\n---",
+        "media": "### Campanha \"Clientes perdidas\" (+365d) — 2.936 alvos\n- **Prazo planejado**: semana 2 (27/04 — passou)\n- **Status**: não implementado\n- **Próximo passo**: definir texto + segmentação por motivo de perda\n\n### Campanha \"Clientes dormindo\" (120-365d) — ~1.500 alvos\n- **Prazo planejado**: semana 2\n- **Status**: não implementado\n\n### Campanha \"VIP\" (top 760) — 760 alvos\n- **Prazo planejado**: semana 3\n- **Status**: não implementado\n\n---",
+        "baixa": "### Campanha \"Recompra produtos\" — ~500 alvos\n- **Prazo planejado**: mês 2\n- **Status**: não implementado\n\n---",
+        "futura": "### Fluxos condicionais IA (mês 2+)\n- IA decide qual campanha disparar baseado em contexto\n- Cross-sell automático\n- Re-engajamento contextual\n\n### Integração com Memória LU\n- Cliente que recebe campanha vê hist injetado pela Régua\n- Michele continua conversa no contexto\n\n---",
+        "concluida": "- ✅ 2026-04-21: Refactor da Régua Aniversariantes — 3 tipos (DIA + 3D + MÊS)\n- ✅ 2026-04-21: Cron `0 8 * * 2-6` (ter-sáb, pula dom+seg) + timezone America/Sao_Paulo\n- ✅ 2026-04-21: Anti-dupe Redis por tipo (`lu:camp:aniv:{TIPO}:{tel}:2026` TTL 60d)\n- ✅ 2026-04-21: Catch-up abril distribuído (22/23/24 com totais 43/42/48 msgs)\n- ✅ 2026-04-21: Injeção hist IA (3 nodes: `Hist Antes Campanha`, `Monta Hist Campanha`, `Salva Hist Campanha`)\n- ✅ 2026-04-21: Teste end-to-end validado — 3 msgs chegaram, anti-dupe funcionou\n- ✅ 2026-04-21: Lu APROVOU lógica geral (21/04 noite)"
+      },
+      "kpis": {
+        "titulo": "🎂 Reativação Lu Ribeiro",
+        "metricas": [
+          {
+            "label": "Aniversariantes base",
+            "valor": "1.803"
+          },
+          {
+            "label": "Régua execuções mês",
+            "valor": 5,
+            "destaque": true
+          },
+          {
+            "label": "Status workflow",
+            "valor": "PAUSADO 🟡"
+          },
+          {
+            "label": "Perdidas (+365d) target",
+            "valor": "2.936"
+          },
+          {
+            "label": "Dormindo (120-365d)",
+            "valor": "~1.500"
+          }
+        ]
+      }
+    }
+  ],
+  "outros": []
+};
+/* === DASHBOARD_DATA_END === */
+
+// ============================================
+// Renderização
+// ============================================
+
+document.getElementById('gerado-em').textContent = DASHBOARD_DATA.gerado_em;
+
+function mostrarAba(nome) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('aba-' + nome).classList.add('active');
+}
+
+function kpiCard(value, label, classe = '') {
+  return `<div class="kpi ${classe}"><div class="value">${value}</div><div class="label">${label}</div></div>`;
+}
+
+function badge(qtd, classe, label) {
+  if (qtd === 0) return '';
+  return `<span class="badge ${classe}">${qtd} ${label}</span>`;
+}
+
+function statusDot(status) {
+  return `<span class="status-dot ${status}"></span>`;
+}
+
+function subCard(sub) {
+  const t = sub.tarefas;
+  const prioridadeBadge = sub.prioridade === 'alta'
+    ? '<span class="badge prioridade-alta">PRIORIDADE ALTA</span>' : '';
+
+  return `
+    <div class="sub-card" onclick="abrirDetalhe('${sub.slug}')">
+      <div class="header-card">
+        <div class="nome">${statusDot(sub.status)}${sub.nome}</div>
+        <div class="keyword">/${sub.keyword || sub.slug}</div>
+      </div>
+      <div class="meta">
+        <strong>Ramo:</strong> ${sub.ramo}<br>
+        <strong>Workflow:</strong> ${sub.workflow_atual || '—'}<br>
+        <strong>Última atualização:</strong> ${sub.ultima_atualizacao || '—'}
+      </div>
+      <div class="badges">
+        ${prioridadeBadge}
+        ${badge(t.critica, 'critica', '🔴 críticas')}
+        ${badge(t.media, 'media', '🟡 médias')}
+        ${badge(t.baixa, 'baixa', '🟢 baixas')}
+        ${badge(t.concluida, 'concluida', '✅ concluídas')}
+        ${badge(t.futura, 'futura', '🔵 futuras')}
+        ${t.total === 0 ? '<span class="badge concluida">SEM PENDÊNCIAS</span>' : ''}
+      </div>
+      <div class="ver-mais">📊 Clique pra ver detalhes →</div>
+    </div>
+  `;
+}
+
+// ============================================
+// MODAL DETALHE DO SUB-PROJETO
+// ============================================
+
+function todosSubProjetos() {
+  return [...DASHBOARD_DATA.fr, ...DASHBOARD_DATA.lu, ...DASHBOARD_DATA.outros];
+}
+
+function abrirDetalhe(slug) {
+  const sub = todosSubProjetos().find(s => s.slug === slug);
+  if (!sub) return;
+
+  const modal = document.getElementById('modal-overlay');
+  const titulo = document.getElementById('modal-titulo');
+  const kpisDiv = document.getElementById('modal-kpis');
+  const tarefasDiv = document.getElementById('modal-tarefas');
+  const sobreDiv = document.getElementById('modal-sobre');
+
+  titulo.innerHTML = `${sub.nome} <span style="color:#888;font-size:14px;font-weight:normal;margin-left:8px;">/${sub.keyword || sub.slug}</span>`;
+
+  // ABA KPIs
+  const kpis = sub.kpis || {};
+  let kpisHTML = `<h3 style="color:#c9a961;margin-bottom:16px;">${kpis.titulo || 'KPIs'}</h3>`;
+
+  if (kpis.metricas && kpis.metricas.length) {
+    kpisHTML += '<div class="kpi-modal-grid">';
+    kpis.metricas.forEach(m => {
+      const classe = m.critico ? 'critico' : (m.destaque ? 'destaque' : '');
+      kpisHTML += `<div class="kpi-modal ${classe}"><div class="v">${m.valor}</div><div class="l">${m.label}</div></div>`;
+    });
+    kpisHTML += '</div>';
+  } else {
+    kpisHTML += '<p style="color:#888;font-style:italic;">Sem KPIs específicos coletados pra este sub-projeto. Rode <code>python agregar.py</code> no MESTRE_FR pra coletar.</p>';
+  }
+
+  // Por perfil (especial pra CRM)
+  if (kpis.por_perfil && Object.keys(kpis.por_perfil).length) {
+    kpisHTML += '<h4 style="color:#c9a961;margin:24px 0 12px;text-transform:uppercase;letter-spacing:1px;font-size:13px;">Distribuição por perfil</h4><div class="perfil-list">';
+    Object.entries(kpis.por_perfil).slice(0, 10).forEach(([perfil, qtd]) => {
+      kpisHTML += `<div class="perfil-item"><span>${perfil}</span><strong>${qtd}</strong></div>`;
+    });
+    kpisHTML += '</div>';
+  }
+
+  if (kpis.por_status && Object.keys(kpis.por_status).length) {
+    kpisHTML += '<h4 style="color:#c9a961;margin:24px 0 12px;text-transform:uppercase;letter-spacing:1px;font-size:13px;">Distribuição por status</h4><div class="perfil-list">';
+    Object.entries(kpis.por_status).slice(0, 10).forEach(([status, qtd]) => {
+      kpisHTML += `<div class="perfil-item"><span>${status}</span><strong>${qtd}</strong></div>`;
+    });
+    kpisHTML += '</div>';
+  }
+
+  kpisDiv.innerHTML = kpisHTML;
+
+  // ABA TAREFAS
+  const tt = sub.tarefas_texto || {};
+  const renderSecao = (key, titulo, classe) => {
+    const conteudo = (tt[key] || '').trim();
+    const vazio = !conteudo || conteudo.toLowerCase().includes('(nenhuma');
+    return `<div class="tarefa-secao ${classe} ${vazio ? 'empty' : ''}">
+      <h4>${titulo}</h4>
+      <pre>${vazio ? '(sem itens)' : conteudo}</pre>
+    </div>`;
+  };
+
+  tarefasDiv.innerHTML =
+    renderSecao('critica', '🔴 Pendentes Críticas', 'critica') +
+    renderSecao('media', '🟡 Pendentes Médias', 'media') +
+    renderSecao('baixa', '🟢 Pendentes Baixas', 'baixa') +
+    renderSecao('futura', '🔵 Ideias Futuras', 'futura');
+
+  // ABA SOBRE
+  sobreDiv.innerHTML = `
+    <div class="kpi-modal-grid">
+      <div class="kpi-modal"><div class="v">${sub.ramo}</div><div class="l">Ramo</div></div>
+      <div class="kpi-modal"><div class="v">${sub.status}</div><div class="l">Status</div></div>
+      <div class="kpi-modal ${sub.prioridade === 'alta' ? 'critico' : ''}"><div class="v">${sub.prioridade}</div><div class="l">Prioridade</div></div>
+      <div class="kpi-modal"><div class="v">${sub.tarefas.total}</div><div class="l">Pendentes total</div></div>
+      <div class="kpi-modal destaque"><div class="v">${sub.tarefas.concluida}</div><div class="l">Concluídas</div></div>
+    </div>
+    <p style="color:#aaa;margin:16px 0;line-height:1.7;">
+      <strong style="color:#c9a961;">Workflow N8N atual:</strong> ${sub.workflow_atual || '—'}<br>
+      <strong style="color:#c9a961;">Workflow futuro:</strong> ${sub.workflow_futuro || '—'}<br>
+      <strong style="color:#c9a961;">Última atualização:</strong> ${sub.ultima_atualizacao || '—'}<br>
+      <strong style="color:#c9a961;">Keyword:</strong> <code>${sub.keyword || sub.slug}</code> (use no Claude Code)<br>
+      <strong style="color:#c9a961;">Arquivo ctx:</strong> <code style="font-size:11px;">${sub.arquivo_ctx}</code>
+    </p>
+    <p style="color:#888;font-size:12px;margin-top:16px;font-style:italic;">
+      Pra trabalhar nesse sub-projeto, abra o Claude Code e digite a keyword <code>${sub.keyword || sub.slug}</code>.
+    </p>
+  `;
+
+  // Reset abas
+  modal.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+  modal.querySelectorAll('.modal-tab-content').forEach(c => c.classList.remove('active'));
+  modal.querySelector('.modal-tab[data-tab="kpis"]').classList.add('active');
+  document.getElementById('modal-kpis').classList.add('active');
+
+  modal.classList.add('active');
+}
+
+function fecharModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+}
+
+function trocarAbaModal(aba) {
+  document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.modal-tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.modal-tab[data-tab="${aba}"]`).classList.add('active');
+  document.getElementById(`modal-${aba}`).classList.add('active');
+}
+
+// Esc fecha modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') fecharModal();
+});
+
+// KPIs Geral
+const tg = DASHBOARD_DATA.total_geral;
+document.getElementById('kpi-geral').innerHTML = `
+  ${kpiCard(DASHBOARD_DATA.total_subprojetos, 'Sub-projetos')}
+  ${kpiCard(tg.total, 'Tarefas pendentes')}
+  ${kpiCard(tg.critica, 'Críticas', 'critica')}
+  ${kpiCard(tg.media, 'Médias', 'alerta')}
+  ${kpiCard(tg.concluida, 'Concluídas')}
+`;
+
+// KPIs FR
+const trf = (arr) => arr.reduce((acc, x) => {
+  for (let k of ['critica','media','baixa','andamento','concluida','futura','total']) {
+    acc[k] = (acc[k]||0) + (x.tarefas[k] || 0);
+  }
+  return acc;
+}, {});
+
+const totalFR = trf(DASHBOARD_DATA.fr);
+const totalLU = trf(DASHBOARD_DATA.lu);
+
+document.getElementById('kpi-fr').innerHTML = `
+  ${kpiCard(DASHBOARD_DATA.fr.length, 'Sub-projetos FR')}
+  ${kpiCard(totalFR.total || 0, 'Tarefas pendentes')}
+  ${kpiCard(totalFR.critica || 0, 'Críticas', 'critica')}
+  ${kpiCard(totalFR.media || 0, 'Médias', 'alerta')}
+`;
+
+document.getElementById('kpi-lu').innerHTML = `
+  ${kpiCard(DASHBOARD_DATA.lu.length, 'Módulos LU')}
+  ${kpiCard(totalLU.total || 0, 'Tarefas pendentes')}
+  ${kpiCard(totalLU.critica || 0, 'Críticas', 'critica')}
+  ${kpiCard(totalLU.media || 0, 'Médias', 'alerta')}
+`;
+
+// Grids de sub-projetos
+document.getElementById('grid-fr-geral').innerHTML = DASHBOARD_DATA.fr.map(subCard).join('') || '<div class="empty">Nenhum sub-projeto FR encontrado.</div>';
+document.getElementById('grid-lu-geral').innerHTML = DASHBOARD_DATA.lu.map(subCard).join('') || '<div class="empty">Nenhum módulo LU encontrado.</div>';
+document.getElementById('grid-fr').innerHTML = DASHBOARD_DATA.fr.map(subCard).join('') || '<div class="empty">Nenhum sub-projeto FR encontrado.</div>';
+document.getElementById('grid-lu').innerHTML = DASHBOARD_DATA.lu.map(subCard).join('') || '<div class="empty">Nenhum módulo LU encontrado.</div>';
+document.getElementById('grid-todos').innerHTML = [...DASHBOARD_DATA.fr, ...DASHBOARD_DATA.lu, ...DASHBOARD_DATA.outros].map(subCard).join('') || '<div class="empty">Nenhum sub-projeto encontrado.</div>';
+
+// ============================================
+// Gráficos Chart.js
+// ============================================
+
+const cores = {
+  fr: '#c9a961',
+  lu: '#9b59b6',
+  critica: '#e74c3c',
+  media: '#f39c12',
+  baixa: '#27ae60',
+  concluida: '#7f8c8d',
+  futura: '#3498db',
+  andamento: '#9b59b6'
+};
+
+Chart.defaults.color = '#aaa';
+Chart.defaults.borderColor = '#2a2a2a';
+
+// Gráfico Ramos (FR vs LU)
+new Chart(document.getElementById('chart-ramos'), {
+  type: 'doughnut',
+  data: {
+    labels: ['💎 FR', '💇 LU', 'Outros'],
+    datasets: [{
+      data: [DASHBOARD_DATA.fr.length, DASHBOARD_DATA.lu.length, DASHBOARD_DATA.outros.length],
+      backgroundColor: [cores.fr, cores.lu, '#555'],
+      borderColor: '#1a1a1a',
+      borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+
+// Gráfico Status geral
+new Chart(document.getElementById('chart-status'), {
+  type: 'doughnut',
+  data: {
+    labels: ['🔴 Críticas', '🟡 Médias', '🟢 Baixas', '✅ Concluídas', '🔵 Futuras'],
+    datasets: [{
+      data: [tg.critica, tg.media, tg.baixa, tg.concluida, tg.futura],
+      backgroundColor: [cores.critica, cores.media, cores.baixa, cores.concluida, cores.futura],
+      borderColor: '#1a1a1a',
+      borderWidth: 3
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Gráfico FR status
+new Chart(document.getElementById('chart-fr-status'), {
+  type: 'doughnut',
+  data: {
+    labels: ['🔴 Críticas', '🟡 Médias', '🟢 Baixas', '✅ Concluídas', '🔵 Futuras'],
+    datasets: [{
+      data: [totalFR.critica||0, totalFR.media||0, totalFR.baixa||0, totalFR.concluida||0, totalFR.futura||0],
+      backgroundColor: [cores.critica, cores.media, cores.baixa, cores.concluida, cores.futura],
+      borderColor: '#1a1a1a',
+      borderWidth: 3
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Gráfico FR por sub-projeto (barras)
+new Chart(document.getElementById('chart-fr-subs'), {
+  type: 'bar',
+  data: {
+    labels: DASHBOARD_DATA.fr.map(s => s.nome),
+    datasets: [
+      { label: '🔴 Críticas', data: DASHBOARD_DATA.fr.map(s => s.tarefas.critica), backgroundColor: cores.critica },
+      { label: '🟡 Médias', data: DASHBOARD_DATA.fr.map(s => s.tarefas.media), backgroundColor: cores.media },
+      { label: '🟢 Baixas', data: DASHBOARD_DATA.fr.map(s => s.tarefas.baixa), backgroundColor: cores.baixa }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } },
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+
+// Gráfico LU status
+new Chart(document.getElementById('chart-lu-status'), {
+  type: 'doughnut',
+  data: {
+    labels: ['🔴 Críticas', '🟡 Médias', '🟢 Baixas', '✅ Concluídas', '🔵 Futuras'],
+    datasets: [{
+      data: [totalLU.critica||0, totalLU.media||0, totalLU.baixa||0, totalLU.concluida||0, totalLU.futura||0],
+      backgroundColor: [cores.critica, cores.media, cores.baixa, cores.concluida, cores.futura],
+      borderColor: '#1a1a1a',
+      borderWidth: 3
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Gráfico LU por módulo
+new Chart(document.getElementById('chart-lu-subs'), {
+  type: 'bar',
+  data: {
+    labels: DASHBOARD_DATA.lu.map(s => s.nome),
+    datasets: [
+      { label: '🔴 Críticas', data: DASHBOARD_DATA.lu.map(s => s.tarefas.critica), backgroundColor: cores.critica },
+      { label: '🟡 Médias', data: DASHBOARD_DATA.lu.map(s => s.tarefas.media), backgroundColor: cores.media },
+      { label: '🟢 Baixas', data: DASHBOARD_DATA.lu.map(s => s.tarefas.baixa), backgroundColor: cores.baixa }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } },
+    plugins: { legend: { position: 'bottom' } }
+  }
+});
+</script>
+</body>
+</html>
