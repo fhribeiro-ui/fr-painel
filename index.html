@@ -516,17 +516,17 @@
 <script>
 /* === DASHBOARD_DATA_START === */
 const DASHBOARD_DATA = {
-  "gerado_em": "2026-05-14 09:27",
+  "gerado_em": "2026-06-04 10:31",
   "total_geral": {
     "critica": 10,
     "media": 16,
     "baixa": 14,
-    "andamento": 15,
-    "concluida": 124,
-    "futura": 38,
+    "andamento": 4,
+    "concluida": 125,
+    "futura": 37,
     "total": 40
   },
-  "total_subprojetos": 17,
+  "total_subprojetos": 19,
   "fr": [
     {
       "slug": "crm",
@@ -618,53 +618,6 @@ const DASHBOARD_DATA = {
       }
     },
     {
-      "slug": "comercial",
-      "nome": "Comercial Render V3 (B2B)",
-      "ramo": "FR",
-      "keyword": "comercial",
-      "status": "ativo",
-      "prioridade": "alta",
-      "workflow_atual": "b9R0hFt0fanjK6gG",
-      "workflow_futuro": "já separado (não é sub-módulo do principal)",
-      "ultima_atualizacao": "2026-05-14",
-      "tarefas": {
-        "critica": 0,
-        "media": 0,
-        "baixa": 0,
-        "andamento": 11,
-        "concluida": 15,
-        "futura": 1,
-        "total": 0
-      },
-      "arquivo_ctx": "Documentos\\Comercial Render Joias\\ctx_comercial.md",
-      "tarefas_texto": {
-        "critica": "",
-        "media": "- [ ] Backblaze B2 configurado + backup diário automático criptografado\n- [ ] Rotação de todas API keys atuais (Replicate, Cloudinary, Evolution, N8N)\n- [ ] Webhook tokens longos (32+ chars) substituindo URLs simples\n- [ ] Strip EXIF (`fl_strip_metadata`) no `Envia Imagem Final`\n- [ ] Watermark sutil opcional no output\n\n### 🟠 ETAPA 3 — PRÓXIMA SEMANA (1 sem, ~R$ 1.000)\n- [ ] Marca \"FR Design Joias\" registrada no INPI (Classes 9, 14, 35) — R$ ~426\n- [ ] Termos de Uso com cláusula IP/trade secret/anti-engenharia-reversa\n- [ ] Política de Privacidade LGPD compliant\n- [ ] NDA template cliente (assinar antes de demo)\n- [ ] NDA template freela/fornecedor\n\n### 🟣 ETAPA 4 — MÊS 1 (cliente-facing stealth)\n- [ ] Landing 1 página minimalista (Framer/Webflow)\n- [ ] Sem pricing público / sem features list / sem trial click-and-go\n- [ ] Formulário qualificação (CNPJ + volume + indicação)\n- [ ] Critérios de aprovação manual de leads\n- [ ] Trial pago R$ 197 (5 renders) como filtro de concorrente\n\n### 🔵 ETAPA 5 — MÊS 2-3 (monitoramento)\n- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
-        "baixa": "- [x] **Bitwarden instalado** (Desktop + Extensão Chrome fixada) ✅ 27/04\n- [x] **2FA GitHub** (`fhribeiro-ui`) — senha forte + Microsoft Authenticator + 16 recovery codes ✅ 27/04\n- [x] **2FA Google** (fh.ribeiro@hotmail.com) — já tinha 3 passkeys + 3 dispositivos, baixei 10 backup codes ✅ 27/04\n- [x] **Replicate** — protegido via GitHub (login social com 2FA do GitHub) ✅ 27/04\n- [x] **2FA EasyPanel** (monitor.fernandoribeirojoias.com.br) — chave secreta `EM7E2ZKTMZKDCNDQ` salva em Bitwarden + `_SEGURANCA/` ✅ 27/04\n- [x] EasyPanel salvo no Bitwarden (auto-fill funcionando) ✅ 27/04\n- [x] **2FA Hostinger** (registrar do domínio) — recovery codes em `_SEGURANCA/` + iCloud ✅ 27/04\n- [x] **Cloudinary** — protegido via GitHub OAuth (Cloudinary 2FA local não aplica a 3rd-party logins) ✅ 27/04\n- [x] **2FA Microsoft pessoal** (fh.ribeiro@hotmail.com) — recovery code SNMHD-UDZ6Z-HE5RS-SPL7P-QUZ8H em _SEGURANCA + iCloud ✅ 27/04\n- [x] **2FA Microsoft empresa** (frcontato@fernandoribeirojoias.com.br) — 4 métodos: senha + SMS + Authenticator iPhone + Authenticator Redmi loja ✅ 27/04\n- [x] **🎯 ETAPA 1.2 MFA OFICIALMENTE 100% CONCLUÍDA** ✅ 27/04 ~23h20\n\n### ETAPA 1.3 — Auditoria de chaves expostas (em andamento 28/04)\n- [x] Mapeadas 5 pastas críticas — 26 arquivos com chaves expostas\n- [x] Movidos 9 arquivos `CREDENCIAIS_*` da Comercial Render Joias pra `_SEGURANCA/_arquivos_credenciais_antigos/`\n- [x] Vigia FR migrado: `http://89.117.33.97:3000` → `https://monitor.fernandoribeirojoias.com.br` (PUT 200 + reativado)\n- [x] Scan portas servidor: SSH/HTTP/HTTPS/3000 abertas; Postgres/Redis/N8N protegidos no Docker network\n- [x] Config \"Servir no IP\" do EasyPanel marcada como OFF (sem efeito imediato — Docker mantém porta 3000)\n\n### TAREFA FUTURA — fechar porta 3000 do EasyPanel definitivamente\n- Quando: próxima atualização do EasyPanel ou em 1 mês\n- Como: SSH no servidor + `ufw deny 3000` + restart controlado + validar Vigia\n- Vigia já está blindado (usa HTTPS), então fechamento não vai derrubá-lo\n- Risco residual atual da porta aberta: muito baixo (2FA forte ativo)\n\n### ETAPA 1.3 Auditoria de uso indevido (CONCLUÍDA 28/04 ~12h)\n- [x] Microsoft Activity Log → LIMPO (só Brasil + dispositivos seus)\n- [x] Replicate billing → LIMPO (curva normal Jan $9 → Abr $143)\n- [x] Cloudinary usage → LIMPO (pico ~800/dia razoável)\n- [x] Mercado Pago → LIMPO (3 vendas R$120 = créditos reais)\n- [x] **Decisão FASE B:** NÃO rotacionar (opção A — sem evidência de breach)\n- [x] **🎯 ETAPA 1.3 oficialmente CONCLUÍDA**\n\n### Estado final do plano de segurança (28/04)\n- ✅ ETAPA 1.1 Bitwarden + senhas únicas\n- ✅ ETAPA 1.2 MFA em 8 contas críticas\n- ✅ ETAPA 1.3 Auditoria de chaves expostas + verificação de uso indevido\n- ⏳ ETAPA 1.4 Política \"nunca colar API keys em chat/email/docs\" (próxima sessão)\n- ⏳ ETAPA 2: Backblaze backup + rotação ativa de keys (semana)\n- ⏳ ETAPA 3-6: INPI, NDA, landing stealth (médio prazo)\n- [ ] **(Opcional)** GitHub Mobile como camada extra de aprovação push\n- [ ] **(Opcional)** Microsoft Authenticator também na conta Google (hoje só passkey+SMS)\n- [ ] Auditoria: nenhuma API key em local público (GitHub, fóruns, OneDrive compartilhado)\n- [ ] Política \"nunca colar API keys em chat/email/print\"\n\n**Recovery codes guardados em:**\n- ✅ OneDrive (`Documentos/_SEGURANCA/`) — sincronizado\n- ✅ iCloud — backup separado\n- 🔜 Bitwarden (Notas seguras) — opcional, fazer depois\n\n**Senhas-mestras decoradas:** Bitwarden master password (única que precisa decorar)\n\n### 🟡 ETAPA 2 — ESTA SEMANA (4-6h, ~R$ 30/mês)\n- [ ] Backblaze B2 configurado + backup diário automático criptografado\n- [ ] Rotação de todas API keys atuais (Replicate, Cloudinary, Evolution, N8N)\n- [ ] Webhook tokens longos (32+ chars) substituindo URLs simples\n- [ ] Strip EXIF (`fl_strip_metadata`) no `Envia Imagem Final`\n- [ ] Watermark sutil opcional no output\n\n### 🟠 ETAPA 3 — PRÓXIMA SEMANA (1 sem, ~R$ 1.000)\n- [ ] Marca \"FR Design Joias\" registrada no INPI (Classes 9, 14, 35) — R$ ~426\n- [ ] Termos de Uso com cláusula IP/trade secret/anti-engenharia-reversa\n- [ ] Política de Privacidade LGPD compliant\n- [ ] NDA template cliente (assinar antes de demo)\n- [ ] NDA template freela/fornecedor\n\n### 🟣 ETAPA 4 — MÊS 1 (cliente-facing stealth)\n- [ ] Landing 1 página minimalista (Framer/Webflow)\n- [ ] Sem pricing público / sem features list / sem trial click-and-go\n- [ ] Formulário qualificação (CNPJ + volume + indicação)\n- [ ] Critérios de aprovação manual de leads\n- [ ] Trial pago R$ 197 (5 renders) como filtro de concorrente\n\n### 🔵 ETAPA 5 — MÊS 2-3 (monitoramento)\n- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
-        "futura": "- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
-        "concluida": "- ✅ **msgKeyFromMe vira string** — `Merge Parse+State` campo agora `type: boolean`\n- ✅ **Prep Debit em trocas** — `Get Saldo Atual` (Redis GET) adicionado. **VALIDADO em produção 2026-04-27 01:49**: NOVO_PEDIDO \"Anel amarelo\" rodou 37 nodes, saldo decrementou pra 2, terminou em `Envia Aviso Saldo` (que vem depois de Prep Debit).\n- ✅ **Pedra Retry Incr output vazio** — substituído por sequência GET+Code+SET, Wait 20s, timeout 6min\n- ✅ **Pedra v2 anti-adicionar** — VALIDADO em produção 2026-04-26 16:14 (TROCAR_METAL Branco)\n- ✅ **Grupo 07 Render Clever Keke** — habilitado em GRUPOS_OK + TIMBRE_MANUTENCAO\n\n### ⚠️ Comportamentos intermitentes (não-bugs)\n- **Evolution `fromMe=true` bad decrypt INTERMITENTE** — mídia enviada por device da própria conta WhatsApp **às vezes** falha em `Baixa Imagem` com erro de descriptografia. Histórico mostra ~85% sucesso (17 sucessos vs 3 falhas em janela 23-26/04). Quando falhar, retentar em 1-2 min. Pra teste mais confiável, pedir Matheus enviar (fromMe=false sempre funciona).\n\n### ⏳ Investigar quando retomar\n- [ ] Aviso saldo — verificar threshold (memória cita \"verificar se manda msg de recarga no momento certo\")\n- [ ] `Prep Render Base` legado — existe em paralelo ao `Prep Base Novo`, sem uso. Decidir remover.\n- [ ] Limpeza Cloudinary — sem cleanup automático, storage cresce com pedidos\n\n---"
-      },
-      "kpis": {
-        "titulo": "💎 Comercial Render V3",
-        "metricas": [
-          {
-            "label": "Execuções este mês",
-            "valor": 250,
-            "destaque": true
-          },
-          {
-            "label": "Sucessos",
-            "valor": 250
-          },
-          {
-            "label": "Falhas",
-            "valor": 0,
-            "critico": false
-          }
-        ]
-      }
-    },
-    {
       "slug": "render",
       "nome": "Render Interno (CRIAR + Variantes A-J)",
       "ramo": "FR",
@@ -728,13 +681,13 @@ const DASHBOARD_DATA = {
       "prioridade": "media",
       "workflow_atual": "c5xELKdT47YbzMXP",
       "workflow_futuro": "a definir (parallel migration)",
-      "ultima_atualizacao": "2026-05-14",
+      "ultima_atualizacao": "2026-05-25",
       "tarefas": {
         "critica": 1,
         "media": 1,
         "baixa": 1,
         "andamento": 1,
-        "concluida": 12,
+        "concluida": 18,
         "futura": 3,
         "total": 3
       },
@@ -744,7 +697,7 @@ const DASHBOARD_DATA = {
         "media": "### Implementar `#atualiza site`\n- **Detalhe**: recalcula preços SITE SL+AL usando Painel de Controle → todos os produtos\n- **Beneficio**: atualizar massa de produtos sem fazer um por um\n\n### SITE AL: 70 produtos sem preço/custo/URL\n- **Detalhe**: alianças sem dados completos\n- **Ação**: rodar `#atualiza site` (depende da implementação acima)\n\n### SL025/SL026 dados incompletos\n- **Detalhe**: 2 produtos com cadastro parcial\n- **Ação**: completar manualmente ou via UPDATE\n\n---",
         "baixa": "### Numeração de clientes novos no N8N\n- **Detalhe**: 23 pastas já renomeadas (001_ a 023_) via script local\n- **O que falta**: N8N criar pastas numeradas automaticamente\n  - Node `Gera PDF NP`: `nomePasta = cliente + '_' + ultimos4`\n  - Mudar para: Redis INCR `cliente:contador` → `{num:003d}_` + nomePasta\n  - Inicializar Redis: SET `cliente:contador` = 23 (uma vez só)\n\n### 6 features Excel planejadas\n- **Doc**: `project_excel_features.md`\n- **Features**: #atualiza site, SITE AL, inconsistências, simulador, catálogo PDF, lote\n\n---",
         "futura": "### Separar workflow Cadastro do principal (parallel migration)\n- **Estratégia**: ver seção 6 do `ctx_cadastro.md`\n- **Atenção**: NÃO mover planilha Excel — fonte única\n- **Prazo**: sem pressa\n\n### CRM: categorias de cliente + comando #campanha\n- **Detalhe**: Agente Cadastro detecta categoria → grava na aba CRM\n- **Cross-projeto**: ver também TAREFAS_CRM.md\n\n---",
-        "concluida": "- ✅ 2026-03-10: Fix CADASTRO UPDATE completo (session key isolada + sem RESUMO + tabProduto do prefixo)\n- ✅ 2026-03-11: CADASTRO COMPLETO — preço, nome padronizado, bug pedra\n- ✅ 2026-03-11: Fix conexão Le Preco CRIAR (Grava Excel Produto → Grava Formulas → Le Preco CRIAR)\n- ✅ 2026-03-12: Fix pedra_central_ct 3 tipos (Exemplo E + REGRA CRITICA pedra_central só vem de Pedra Central Diamante)\n- ✅ 2026-03-12: Redis DEL NAO Memory após Responde Cadastro WPP\n- ✅ 2026-03-12: Fix preço UPDATE com Forca Calculo Excel\n- ✅ 2026-03-21: Fix cadastro categoria ANEL (5 nodes corrigidos: Prod(3)→Anel)\n- ✅ 2026-03-22: Watcher redesign 3D + imagens (renomeia com specs)\n- ✅ 2026-03-22: Pipeline SL050_A.png → Cloudinary → SITE SL col F"
+        "concluida": "- ✅ 2026-03-10: Fix CADASTRO UPDATE completo (session key isolada + sem RESUMO + tabProduto do prefixo)\n- ✅ 2026-03-11: CADASTRO COMPLETO — preço, nome padronizado, bug pedra\n- ✅ 2026-03-11: Fix conexão Le Preco CRIAR (Grava Excel Produto → Grava Formulas → Le Preco CRIAR)\n- ✅ 2026-03-12: Fix pedra_central_ct 3 tipos (Exemplo E + REGRA CRITICA pedra_central só vem de Pedra Central Diamante)\n- ✅ 2026-03-12: Redis DEL NAO Memory após Responde Cadastro WPP\n- ✅ 2026-03-12: Fix preço UPDATE com Forca Calculo Excel\n- ✅ 2026-03-21: Fix cadastro categoria ANEL (5 nodes corrigidos: Prod(3)→Anel)\n- ✅ 2026-03-22: Watcher redesign 3D + imagens (renomeia com specs)\n- ✅ 2026-03-22: Pipeline SL050_A.png → Cloudinary → SITE SL col F\n- ✅ 2026-05-25: Watcher v2.0 → v2.1: subpastas _site/_midias/_arquivados por produto\n- ✅ 2026-05-25: Excel: colunas Imagem C (col24) e D (col25) adicionadas em SITE SL/AL/AN\n- ✅ 2026-05-25: 93 subpastas criadas em todos os produtos existentes (SL012-SL053 + AN001)\n- ✅ 2026-05-25: Watcher v2.1: log em arquivo (watcher_projetos.log) + fix Unicode\n- ✅ 2026-05-25: Testado OK: SL050_B.png → _site/ + Cloudinary + SITE SL linha 57\n- ✅ 2026-05-25: Vídeos de SL025-SL051 renomeados automaticamente no scan inicial"
       },
       "kpis": {
         "titulo": "📦 Produtos Cadastrados",
@@ -771,6 +724,58 @@ const DASHBOARD_DATA = {
             "valor": 19
           }
         ]
+      }
+    },
+    {
+      "slug": "contas_comercial",
+      "nome": "Contas Comercial Render",
+      "ramo": "FR",
+      "keyword": "contas comercial render",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "null",
+      "workflow_futuro": "a definir",
+      "ultima_atualizacao": "2026-05-28",
+      "tarefas": {
+        "critica": 0,
+        "media": 0,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 0,
+        "futura": 0,
+        "total": 0
+      },
+      "arquivo_ctx": "Documentos\\Comercial Render Joias\\CONTAS_COMERCIAL\\ctx_contas_comercial.md",
+      "tarefas_texto": {},
+      "kpis": {
+        "titulo": "Contas Comercial Render",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "criativo_video",
+      "nome": "Criativos FR — Vídeo Animado + Carrossel",
+      "ramo": "FR",
+      "keyword": "criativo video",
+      "status": "em desenvolvimento",
+      "prioridade": "media",
+      "workflow_atual": "a criar (separado)",
+      "workflow_futuro": "produção interna / Meta Ads",
+      "ultima_atualizacao": "2026-05-23",
+      "tarefas": {
+        "critica": 0,
+        "media": 0,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 0,
+        "futura": 0,
+        "total": 0
+      },
+      "arquivo_ctx": "Documentos\\Criativos_Video\\ctx_criativo_video.md",
+      "tarefas_texto": {},
+      "kpis": {
+        "titulo": "Criativos FR — Vídeo Animado + Carrossel",
+        "metricas": []
       }
     },
     {
@@ -834,7 +839,7 @@ const DASHBOARD_DATA = {
         "media": 1,
         "baixa": 1,
         "andamento": 1,
-        "concluida": 10,
+        "concluida": 11,
         "futura": 3,
         "total": 2
       },
@@ -844,7 +849,7 @@ const DASHBOARD_DATA = {
         "media": "### Pendência 1: Abaixar logo no PDF\n- **Problema**: logo horizontal está muito alto, quase encostando na borda superior\n- **Solicitado**: Abaixar SOMENTE o logo, NÃO mover o texto \"Alta Joalheria Personalizada\"\n- **Detalhe técnico**: y=732 → y=755 (texto permanece em y=710)\n- **Como corrigir**: `fix_pdf_pos.js` (replace simples `187 732` → `187 755`)\n- **Atenção**: Persiste Dados pode sobrescrever — aguardar sem execuções rodando\n\n### Pendência 3: Testar joalheiro com fallback\n- **Status**: Fix aplicado mas NÃO TESTADO em produção\n- **Cenário 1**: `#novo_pedido joalheiro | Joalheiro: Karina | Envelope: 011 | ...`\n  → Esperado: pasta `Joalheiro/Karina/`, PDF `Anel_xxx_Env011_Karina.pdf`, caption `011`\n- **Cenário 2**: `#novo_pedido joalheiro | Produto: Anel | Envelope: 011 | ...` (sem Joalheiro:)\n  → Esperado: pasta `Joalheiro/{NomeWhatsApp}/`, não \"joalheiro\"\n- **Script diagnóstico**: `node check_last.js`\n\n### Pendência 5: Watcher renomear arquivos em pasta de cliente\n- **Problema**: watcher_projetos.js renomeia arquivos em pasta de produto (ex: SL046/), mas não em pasta de cliente (ex: Lu_Ribeiro_0288/)\n- **Esperado**: qualquer arquivo 3D (.vtf, .stl, .3dm, .dxf) em qualquer pasta deve ser renomeado\n\n### Pendência 7: CRIAR salvando na pasta Joalheiro\n- **Sintaxe**: `CRIAR A J Karina` (J + espaço + nome no final)\n- **Detecção**: último token começa com \"J \" + texto puro (sem dígitos) → joalheiro\n- **Não conflita**: SL046 (letra+número) nem 0288 (4 dígitos)\n- **Status**: pendente — implementar com backup + zero execuções\n\n---",
         "baixa": "### Numeração de clientes novos no N8N (Redis INCR)\n- **Detalhe**: 23 pastas já renomeadas. Falta automatizar no N8N\n- **Cross-projeto**: ver também TAREFAS_CADASTRO.md (mesmo trabalho)\n\n---",
         "futura": "### Separar workflow Pedido do principal (parallel migration)\n- **Estratégia**: ver seção 6 do `ctx_pedido.md`\n- **Atenção**: depende do Cadastro — separar Cadastro PRIMEIRO\n- **Prazo**: sem pressa\n\n---",
-        "concluida": "- ✅ 2026-03-04: Microsoft To Do integrado com data de vencimento (lista PRODUÇAO)\n- ✅ 2026-03-04: Aviso de erro no Replicate (IF Render OK? + Aviso Erro Render)\n- ✅ 2026-03-04: Bug PDF/mensagem pedido com PERFIL CRM (Code JS2 filtra DADOS:)\n- ✅ 2026-03-05: Bug isJoalheiro com `[]` (regex `/^\\[.*\\]$/`)\n- ✅ 2026-03-05: Fluxo #novo_pedido redirecionado para dono 7982 (Envia PDF Grupo desabilitado)\n- ✅ 2026-03-06: Fix Calendar/ToDo entrega com hora (entregaHora extraído por regex `[0-9]`)\n- ✅ 2026-03-04: Bug Pedidos de Cliente indo para pasta Joalheiro (isJoalheiro filtra N/A)"
+        "concluida": "- ✅ 2026-03-04: Microsoft To Do integrado com data de vencimento (lista PRODUÇAO)\n- ✅ 2026-03-04: Aviso de erro no Replicate (IF Render OK? + Aviso Erro Render)\n- ✅ 2026-03-04: Bug PDF/mensagem pedido com PERFIL CRM (Code JS2 filtra DADOS:)\n- ✅ 2026-03-05: Bug isJoalheiro com `[]` (regex `/^\\[.*\\]$/`)\n- ✅ 2026-03-05: Fluxo #novo_pedido redirecionado para dono 7982 (Envia PDF Grupo desabilitado)\n- ✅ 2026-03-06: Fix Calendar/ToDo entrega com hora (entregaHora extraído por regex `[0-9]`)\n- ✅ 2026-03-04: Bug Pedidos de Cliente indo para pasta Joalheiro (isJoalheiro filtra N/A)\n- ✅ 2026-05-28: Bug Calendar/ToDo — entrega DD/MM sem ano gerava `undefined-MM-DDT09:00:00`. Fix: Code JS2 agora auto-append ano atual quando `_ep.length === 2`. Detectado no pedido Raul (exec 146782)."
       },
       "kpis": {
         "titulo": "📁 Pedidos",
@@ -867,14 +872,14 @@ const DASHBOARD_DATA = {
     },
     {
       "slug": "mkt",
-      "nome": "MKT — Anel na Mão (Mockup)",
+      "nome": "MKT — Anel na Mão + Luxo (laboratório → integrado no V3)",
       "ramo": "FR",
       "keyword": "mkt",
-      "status": "ativo",
-      "prioridade": "media",
+      "status": "integrado_producao",
+      "prioridade": "baixa",
       "workflow_atual": "AtmCpbRWQfsygaes",
-      "workflow_futuro": "integrar V11 no Comercial Render V3",
-      "ultima_atualizacao": "2026-05-14",
+      "workflow_futuro": "",
+      "ultima_atualizacao": "2026-05-23",
       "tarefas": {
         "critica": 0,
         "media": 0,
@@ -937,6 +942,32 @@ const DASHBOARD_DATA = {
         "titulo": "Segurança Competitiva — Proteção do Sistema FR",
         "metricas": []
       }
+    },
+    {
+      "slug": "video_joias",
+      "nome": "Video Joias — Geração de Vídeo IA",
+      "ramo": "FR",
+      "keyword": "cria video",
+      "status": "em desenvolvimento",
+      "prioridade": "media",
+      "workflow_atual": "a criar (separado)",
+      "workflow_futuro": "integrar em b9R0hFt0fanjK6gG (Comercial Render V3)",
+      "ultima_atualizacao": "2026-05-23",
+      "tarefas": {
+        "critica": 0,
+        "media": 0,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 0,
+        "futura": 0,
+        "total": 0
+      },
+      "arquivo_ctx": "Documentos\\Video_Joias\\ctx_video_joias.md",
+      "tarefas_texto": {},
+      "kpis": {
+        "titulo": "Video Joias — Geração de Vídeo IA",
+        "metricas": []
+      }
     }
   ],
   "lu": [
@@ -955,7 +986,7 @@ const DASHBOARD_DATA = {
         "media": 1,
         "baixa": 1,
         "andamento": 0,
-        "concluida": 8,
+        "concluida": 9,
         "futura": 2,
         "total": 3
       },
@@ -965,7 +996,7 @@ const DASHBOARD_DATA = {
         "media": "### Validar Onda A+B no celular (Fernando)\n- Abrir `/lu-agenda-real` no celular\n- Criar agendamento de teste digitando \"lu\" no Cliente\n- Confirmar tag + tel automático\n\n### Webhooks /lu-anamnese (GET + POST)\n- Bloqueado pela aprovação dos campos pela Lu\n\n---",
         "baixa": "### Painel lateral de anamnese\n- UI lateral aparece ao selecionar cliente\n\n---",
         "futura": "### Notificação push pra Lu quando cliente novo cadastra\n### Tema escuro/claro toggle na agenda\n\n---",
-        "concluida": "- ✅ 2026-04-29/30: Onda A + Onda B 1+2 completos (autocomplete em Profissional + Serviço + Cliente)\n- ✅ 2026-04-29: Workflow `Lu Clientes Lookup` (`WTJQc4j7CG63WBDO`) com cache 4h\n- ✅ 2026-04-29: PROFS limpa (5 ativos: Lu, Giovanna, Lanna, Michele, Larissa)\n- ✅ 2026-04-29: 45 serviços Avec embutidos\n- ✅ 2026-04-29: 5.423 clientes no autocomplete\n- ✅ 2026-04-29: 2 PUTs validados, backups feitos"
+        "concluida": "- ✅ 2026-04-29/30: Onda A + Onda B 1+2 completos (autocomplete em Profissional + Serviço + Cliente)\n- ✅ 2026-04-29: Workflow `Lu Clientes Lookup` (`WTJQc4j7CG63WBDO`) com cache 4h\n- ✅ 2026-05-15: Lanna removida do agenda_real (PROFS, checkbox, HORARIO_TRAB, placeholder) — equipe = Lu/Giovanna/Michele/Larissa\n- ✅ 2026-04-29: PROFS limpa (5 ativos: Lu, Giovanna, Lanna, Michele, Larissa)\n- ✅ 2026-04-29: 45 serviços Avec embutidos\n- ✅ 2026-04-29: 5.423 clientes no autocomplete\n- ✅ 2026-04-29: 2 PUTs validados, backups feitos"
       },
       "kpis": {
         "titulo": "LU — Agenda (Web + Autocomplete)",
@@ -1107,25 +1138,25 @@ const DASHBOARD_DATA = {
       "keyword": "lu",
       "status": "ativo",
       "prioridade": "alta",
-      "workflow_atual": "x06hj0XUHDHVNadh",
-      "workflow_futuro": "N/A",
-      "ultima_atualizacao": "2026-05-14",
+      "workflow_atual": "",
+      "workflow_futuro": "",
+      "ultima_atualizacao": "2026-06-04",
       "tarefas": {
         "critica": 1,
         "media": 1,
         "baixa": 1,
         "andamento": 0,
-        "concluida": 13,
+        "concluida": 21,
         "futura": 3,
         "total": 3
       },
       "arquivo_ctx": "Documentos\\LU\\ctx_lu.md",
       "tarefas_texto": {
-        "critica": "### Onda B passo 3 — Anamnese (BLOQUEADA)\n- **Bloqueio**: Lu precisa confirmar 6 campos propostos: formula_tecnica, cabelo, alergia_restricao, observacao, instagram, acompanhante\n- **Sem isso**: webhooks `/lu-anamnese` GET/POST + painel lateral não saem\n- **Impacto**: bloqueia início da FASE 1 do macro 10/10\n\n### Validar Onda A + Onda B no celular (Fernando)\n- **Detalhe**: abrir `/lu-agenda-real` no celular e validar visualmente\n- **Ação**: criar agendamento de teste digitando \"lu\" no Cliente, confirmar tag + tel automático\n\n---",
-        "media": "### Decisão: lembrete da anamnese\n- Agente cloud não serve (sem acesso OneDrive)\n- Opções: pegar quando Fernando voltar no `lu`, /loop semanal, ou evento Outlook 07/05 14h via webhook\n\n### FASE 1 do macro 10/10\n- Pronta pra começar quando Onda B passo 3 sair\n- Escopo: tags indexadas + métricas + dashboard observabilidade\n\n### Re-exportar planilha vendas (Lu)\n- Cobrir período 18-28/04\n- Pendência Lu\n\n### Validar tons IA (Lu)\n- Pendência Lu\n\n### Definir % comissão por profissional (Lu)\n- Pendência Lu\n\n### Auto-recarga Anthropic Console (Fernando)\n- Importante pra não travar IA\n\n### 2º celular pra teste e2e (Fernando)\n- Necessário pra teste end-to-end completo\n\n---",
-        "baixa": "### Caminho A (+24h validação)\n- Remover Modo 1 IMG redundante — IA principal multimodal cobre\n\n### Migrar detectores → Haiku 4.5 (+1-2 sem se Modo 1 sólido)\n- Economia: 15x mais barato\n\n### Trilha 2 — IA finaliza agendamento + cobra PIX (+1 sem se Modo 1 sem bug)\n\n### Considerar Sonnet 4.6 no fluxo principal Michele (+1 mês se sólido)\n\n---",
-        "futura": "### MACRO-2 — Operacional + monetização (6-8 sem)\n- Comissão\n- Clube Cachos\n- Ficha\n- Fila\n\n### MACRO-3 — Marketing digital (6-8 sem)\n- Reviews\n- Instagram\n- Agência conteúdo\n\n### MACRO-4 — Inteligência premium (4-8 sem)\n- Vector DB semântico\n- Preditivo churn/LTV\n- Voz IA\n\n### FASE 2 macro — Otimização contexto (3-5 dias)\n- Prompt compaction\n- Monitor token\n\n### FASE 3 macro — Segmentação inteligente (1 sem)\n- Ofertas por LTV\n- Cross-sell\n- Dormindo live\n\n---",
-        "concluida": "- ✅ 2026-04-22: FASE 0 — Fundação (backup Redis + schema v1 + Salva Nova merge)\n- ✅ 2026-04-29/30: Onda A + Onda B 1+2 — Autocomplete completo em `/lu-agenda-real` (Profissional + Serviço + Cliente)\n- ✅ 2026-04-29: Workflow `Lu Clientes Lookup` (`WTJQc4j7CG63WBDO`) com cache 4h\n- ✅ 2026-04-29: PROFS limpa (5 ativas: Lu, Giovanna, Lanna, Michele, Larissa)\n- ✅ 2026-04-29: 45 serviços Avec embutidos com valor automático\n- ✅ 2026-04-29: 5.423 clientes via lookup workflow\n- ✅ 2026-04-19: Camada 4 — Notas por cliente (lu:obs:{tel})\n- ✅ 2026-04-22: Camada 5 — Tags automáticas (cliente/possivel_cliente)\n- ✅ Backup diário Redis cron 3h BR ativo\n- ✅ Michele 156 nodes, flag=2 ATIVA, Modo 1 estabilizando"
+        "critica": "### Testar Michele (reativada 04/06)\n- Estava respondendo errado antes de ser desligada (motivo não documentado)\n- **Ação:** monitorar primeiras conversas hoje. Se erro aparecer → desligar pelo painel e investigar\n\n### Fidelidade — teste end-to-end real\n- Deployado em 22/05, mas NUNCA foi testado com cliente real\n- **Sequência:** abrir comanda → cliente com tel (do autocomplete) → serviço R$100 → finalizar → `/lu-fidelidade` → buscar → ver 10 pts\n- **Referência:** `ONDE_PARAMOS_SESSAO_23.md` seção 2 (sequência completa de 12 passos)\n\n### Apagar 3 comandas zumbis do Redis\n- CMD-1779484353151, CMD-1779484736765, CMD-1779484809114 (dia 22/05, sem tel/serviço/pontos)\n- **Script pronto:** `limpar_zumbis.js` na raiz LU/\n- **Ação:** confirmar com Fernando e rodar\n\n---",
+        "media": "### Testar features do outro PC\nFeatures novas (jun 1-2) ainda em fase de testes iniciais:\n- Vendas (`/lu-vendas`) — estoque de revenda + auto-baixa ao fechar comanda\n- Clube (`/lu-clube`) — adesão, planos 6m/12m, sessões\n- Estoque (`/lu-estoque`) — insumos + receitas por serviço\n- Caixa (`/lu-caixa-dia`) — abertura, sangria, fechamento\n- Login (`/lu-login`) — autenticação por profissional (SHA-256, sessão TTL 12h)\n- Configurações (`/lu-config`) — configurações gerais\n- Profissionais (`/lu-profissionais`) — CRUD profissionais\n\n### ⚠️ Path errado nos scripts do outro PC\nScripts `deploy_login.js`, `deploy_caixa.js`, `deploy_vendas.js` etc têm path `C:\\Users\\erica\\...`\n- Ao re-deployar neste PC, trocar para `C:\\Users\\Vencedor\\...`\n- Alternativa: usar `__dirname` em vez de path hardcoded\n\n### B1 — Histórico 20→12 msgs\n- Reduz 10% tokens de imagem no Modo 1 da Michele\n- Estimativa: 30 min\n- Pendência simples, alto valor\n\n### Catálogo de produtos Avec → autocomplete\n- Financeiro V2 tem seção Produtos (texto livre) + comissão 10%\n- Falta acesso concreto ao Avec (login / export xlsx / API) pra virar autocomplete\n\n### Verificar compatibilidade Auth com páginas existentes\n- O sistema de login (v2.0.0) precisa ser integrado ao fluxo das páginas antigas (agenda, clientes, financeiro)\n- Validar se as páginas verificam token antes de carregar\n\n### Dados reais no Clube\n- Fernando confirmou que funciona — falta popular com planos reais do salão\n- Definir nome dos clubes, nº sessões, serviços incluídos, preço, validade\n\n---",
+        "baixa": "### B3 — Compaction prompt Michele\n- Reduz 30% tokens em contexto longo\n- 2 dias de trabalho — só depois de B1 e com Michele estável\n\n### Seed de receitas no Estoque\n- Script `seed_receitas.js` presente (31/05) — rodar quando estoque estiver em uso real\n\n### Seed de vendas de teste\n- Scripts `_insert2.js`, `_tksk_insert.js` (01/06) — dados de teste\n\n### Mensagens Michele pós-comanda (Fase 3)\n- 4 templates pós-comanda no workflow `x06hj0XUHDHVNadh`\n- Templates em `LU/CARTAO_FIDELIDADE.md` seção 3\n\n### Verificar Lu Agendar põe tel no corpo do evento Outlook\n- `mve6ub7rDetK3Bak` — confirmar se bodyPreview traz tel pra Day After e Retorno +15 funcionarem\n\n---",
+        "futura": "### MACRO-2 — Operacional + monetização (6-8 sem)\n- Trilha 2 — IA finaliza agendamento + cobra PIX automático\n- Anti no-show — depósito ou bloqueio automático\n- Indique uma Cacheada — programa de indicação\n\n### MACRO-3 — Marketing digital (6-8 sem)\n- Google Reviews management automático\n- Instagram Meta Graph (publicação automática)\n- Agência de conteúdo (Replicate + aprovação Lu)\n\n### MACRO-4 — Inteligência premium (4-8 sem)\n- Vector DB semântico\n- Preditivo churn/LTV\n- Voz IA ElevenLabs\n\n### FASE 2 — Otimização contexto Michele\n- Prompt compaction (B3 expandido)\n- Monitor de token em tempo real\n\n### FASE 3 — Segmentação inteligente\n- Ofertas por LTV\n- Cross-sell por histórico\n- Dormindo live (detectar cliente que parou de responder)\n\n### Mercado Pago PIX automático\n- Integração direta no Financeiro — cliente gera PIX pela comanda\n\n### Fotos antes/depois\n- Galeria auto-upload já existe — falta UI de comparação\n\n---",
+        "concluida": "- ✅ 2026-06-04: Michele reativada (estava desligada intencionalmente)\n- ✅ 2026-06-04: Padrão de versionamento Comercial adotado para LU (CHANGELOG_LU.md criado)\n- ✅ 2026-06-02: Login/Auth (v2.0.0) — sistema de autenticação por profissional\n- ✅ 2026-06-02: Caixa + Oportunidades (v2.0.1)\n- ✅ 2026-06-01: Vendas + Clube das Cacheadas (v1.5.0)\n- ✅ 2026-06-01: Estoque + Configurações + Profissionais (v1.6.0 / v1.6.1)\n- ✅ 2026-05-22: Cartão Fidelidade deployado (v1.3.0) — teste e2e pendente\n- ✅ 2026-05-16: Toggle Michele no painel (v1.2.1)\n- ✅ 2026-05-15: Financeiro V2 (Saídas + DRE + Produtos + Taxa Cartão) (v1.2.0)\n- ✅ 2026-05-14: Painel IA — 35 habilidades Michele (v1.1.0)\n- ✅ 2026-05-14: A4 Comissões + A5 Relatórios entregues\n- ✅ 2026-05-15: Lanna removida dos 5 painéis (equipe = Lu/Gio/Michele/Larissa)\n- ✅ 2026-04-29/30: Painel base A1-A5 completo com autocomplete 5.423 clientes (v1.0.0)\n- ✅ 2026-04-22: FASE 0 Fundação (backup Redis + schema v1 + Salva Nova merge)\n- ✅ 2026-04-20: Michele galeria Cloudinary + memória 360° Avec\n- ✅ Michele 157 nodes, Sonnet 4.6, B2 ativo, envio ON global\n- ✅ Backup diário Redis cron 3h BR ativo\n- ✅ Réguas automáticas: Day After + Aniversário + Retorno +15"
       },
       "kpis": {
         "titulo": "💇 LU — Memória Salão",
