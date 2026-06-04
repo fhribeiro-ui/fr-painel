@@ -516,17 +516,17 @@
 <script>
 /* === DASHBOARD_DATA_START === */
 const DASHBOARD_DATA = {
-  "gerado_em": "2026-06-04 10:31",
+  "gerado_em": "2026-06-04 10:59",
   "total_geral": {
-    "critica": 10,
-    "media": 16,
-    "baixa": 14,
+    "critica": 13,
+    "media": 24,
+    "baixa": 15,
     "andamento": 4,
-    "concluida": 125,
+    "concluida": 171,
     "futura": 37,
-    "total": 40
+    "total": 52
   },
-  "total_subprojetos": 19,
+  "total_subprojetos": 28,
   "fr": [
     {
       "slug": "crm",
@@ -1004,6 +1004,38 @@ const DASHBOARD_DATA = {
       }
     },
     {
+      "slug": "caixa",
+      "nome": "LU — Caixa (Abertura/Fechamento)",
+      "ramo": "LU",
+      "keyword": "caixa",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 4,
+        "futura": 0,
+        "total": 1
+      },
+      "arquivo_ctx": "Documentos\\LU\\caixa\\ctx_caixa.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Treinar Lu/recepção\n- Como abrir caixa no início do dia (com troco)\n- Como registrar sangria (retirada) e suprimento (entrada)\n- Como fechar caixa (contar dinheiro físico vs esperado)\n\n### Integração com comandas pagas em dinheiro\n- Toda comanda em dinheiro deve aparecer no fechamento esperado\n\n### Relatório de diferenças\n- Mostrar histórico de fechamentos com diferenças (sobra/falta)",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- ✅ 2026-06-02: Deploy completo (4 endpoints)\n- ✅ 2026-06-02: Página `/lu-caixa-dia` no painel"
+      },
+      "kpis": {
+        "titulo": "LU — Caixa (Abertura/Fechamento)",
+        "metricas": []
+      }
+    },
+    {
       "slug": "campanhas",
       "nome": "LU — Campanhas de Crescimento",
       "ramo": "LU",
@@ -1036,6 +1068,70 @@ const DASHBOARD_DATA = {
       }
     },
     {
+      "slug": "fidelidade",
+      "nome": "LU — Cartão Fidelidade",
+      "ramo": "LU",
+      "keyword": "fidelidade",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 5,
+        "futura": 0,
+        "total": 2
+      },
+      "arquivo_ctx": "Documentos\\LU\\fidelidade\\ctx_fidelidade.md",
+      "tarefas_texto": {
+        "critica": "### Teste end-to-end real\n- Sistema deployado em 22/05 mas NUNCA foi testado com cliente real\n- Sequência: abrir comanda → selecionar cliente com tel (do autocomplete) → serviço R$100 → finalizar → `/lu-fidelidade` → buscar → ver 10 pts\n- Validar: reabrir comanda zera pontos, lock 1 por visita funciona, FIFO usa lotes antigos primeiro\n\n### Apagar 3 comandas zumbis Redis\n- CMD-1779484353151, CMD-1779484736765, CMD-1779484809114\n- Dia 22/05, sem tel/serviço/pontos\n- Script pronto: `limpar_zumbis.js` na raiz LU/",
+        "media": "### Mensagens Michele pós-comanda (Fase 3)\n- 4 templates pós-comanda no workflow x06hj0XUHDHVNadh\n- Templates em `LU/lu/CARTAO_FIDELIDADE.md` seção 3\n- \"Olá! Você ganhou X pontos no seu cartão fidelidade...\"\n\n### Aviso de pontos a vencer\n- Mandar WhatsApp 15 dias antes do lote expirar",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- ✅ 2026-05-22: Deploy completo (3 endpoints + sub-fluxo + cron 3h)\n- ✅ 2026-05-22: Action `reabrir` com reversão de pontos\n- ✅ 2026-05-22: Página `/lu-fidelidade` no painel"
+      },
+      "kpis": {
+        "titulo": "LU — Cartão Fidelidade",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "clube",
+      "nome": "LU — Clube das Cacheadas",
+      "ramo": "LU",
+      "keyword": "clube",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 5,
+        "futura": 0,
+        "total": 1
+      },
+      "arquivo_ctx": "Documentos\\LU\\clube\\ctx_clube.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Popular planos reais\n- Fernando precisa mandar lista oficial dos clubes disponíveis\n- Por plano: nome, nº sessões, serviços incluídos, preço, validade\n\n### Definir comissão por sessão\n- Quem realiza a sessão (Michele/Larissa) recebe comissão?\n- Quanto por sessão?\n\n### Regime de caixa\n- Adesão cai no caixa no dia da venda ou diluído por mês?\n\n### Mensageria pré-vencimento\n- Avisar membra X dias antes do vencimento via WhatsApp",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- ✅ 2026-06-01: Deploy completo (9 endpoints)\n- ✅ 2026-06-01: 2 planos padrão (6m / 12m) cadastrados\n- ✅ 2026-06-01: Página `/lu-clube` no painel"
+      },
+      "kpis": {
+        "titulo": "LU — Clube das Cacheadas",
+        "metricas": []
+      }
+    },
+    {
       "slug": "dia_das_maes",
       "nome": "LU — Dia das Mães 2026 (campanha)",
       "ramo": "LU",
@@ -1064,6 +1160,38 @@ const DASHBOARD_DATA = {
       },
       "kpis": {
         "titulo": "LU — Dia das Mães 2026 (campanha)",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "estoque",
+      "nome": "LU — Estoque (Insumos)",
+      "ramo": "LU",
+      "keyword": "estoque",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 4,
+        "futura": 0,
+        "total": 2
+      },
+      "arquivo_ctx": "Documentos\\LU\\estoque\\ctx_estoque.md",
+      "tarefas_texto": {
+        "critica": "### Popular estoque inicial\n- Cadastrar produtos usados pelo salão (tintura, descolorante, máscara, ampola)\n- Definir unidade (ml, g, un), custo unitário, saldo inicial\n\n### Rodar seed_receitas.js\n- Script pronto desde 31/05 — nunca foi rodado em produção\n- Cria as receitas básicas por serviço (corte, mechas, coloração, hidratação)",
+        "media": "### Validar receitas com Lu\n- Quantos ml/g de cada produto por serviço?\n- Lu precisa revisar quantidades reais antes de ativar auto-dedução\n\n### Alertas de saldo baixo\n- Mandar WhatsApp pra Lu quando produto X chega no mínimo",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- ✅ 2026-06-01: Deploy completo (8 endpoints + auto-deduction)\n- ✅ 2026-06-01: Página `/lu-estoque` no painel"
+      },
+      "kpis": {
+        "titulo": "LU — Estoque (Insumos)",
         "metricas": []
       }
     },
@@ -1132,6 +1260,38 @@ const DASHBOARD_DATA = {
       }
     },
     {
+      "slug": "login",
+      "nome": "LU — Login / Autenticação",
+      "ramo": "LU",
+      "keyword": "login-lu",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 5,
+        "futura": 0,
+        "total": 1
+      },
+      "arquivo_ctx": "Documentos\\LU\\login\\ctx_login.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Cadastrar senha das demais\n- Fernando ✅ cadastrado\n- Lu — pendente cadastrar/confirmar\n- Giovanna — pendente\n- Larissa — pendente\n- Michele — sem email\n\n### Validar restrição por nível de acesso\n- Profissional só vê própria comissão\n- Recepção não acessa Relatórios (DRE) e Configurações\n\n### Botão \"Esqueci minha senha\"\n- Reset via WhatsApp pra Fernando ou Lu (admin)",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- ✅ 2026-06-02: Deploy completo (4 endpoints + SHA-256 + sessão Redis)\n- ✅ 2026-06-04: TTL sessão 12h → 30 dias\n- ✅ 2026-06-04: Fernando cadastrado como admin"
+      },
+      "kpis": {
+        "titulo": "LU — Login / Autenticação",
+        "metricas": []
+      }
+    },
+    {
       "slug": "lu",
       "nome": "LU — Memória Salão Lu Ribeiro",
       "ramo": "LU",
@@ -1153,7 +1313,7 @@ const DASHBOARD_DATA = {
       "arquivo_ctx": "Documentos\\LU\\ctx_lu.md",
       "tarefas_texto": {
         "critica": "### Testar Michele (reativada 04/06)\n- Estava respondendo errado antes de ser desligada (motivo não documentado)\n- **Ação:** monitorar primeiras conversas hoje. Se erro aparecer → desligar pelo painel e investigar\n\n### Fidelidade — teste end-to-end real\n- Deployado em 22/05, mas NUNCA foi testado com cliente real\n- **Sequência:** abrir comanda → cliente com tel (do autocomplete) → serviço R$100 → finalizar → `/lu-fidelidade` → buscar → ver 10 pts\n- **Referência:** `ONDE_PARAMOS_SESSAO_23.md` seção 2 (sequência completa de 12 passos)\n\n### Apagar 3 comandas zumbis do Redis\n- CMD-1779484353151, CMD-1779484736765, CMD-1779484809114 (dia 22/05, sem tel/serviço/pontos)\n- **Script pronto:** `limpar_zumbis.js` na raiz LU/\n- **Ação:** confirmar com Fernando e rodar\n\n---",
-        "media": "### Testar features do outro PC\nFeatures novas (jun 1-2) ainda em fase de testes iniciais:\n- Vendas (`/lu-vendas`) — estoque de revenda + auto-baixa ao fechar comanda\n- Clube (`/lu-clube`) — adesão, planos 6m/12m, sessões\n- Estoque (`/lu-estoque`) — insumos + receitas por serviço\n- Caixa (`/lu-caixa-dia`) — abertura, sangria, fechamento\n- Login (`/lu-login`) — autenticação por profissional (SHA-256, sessão TTL 12h)\n- Configurações (`/lu-config`) — configurações gerais\n- Profissionais (`/lu-profissionais`) — CRUD profissionais\n\n### ⚠️ Path errado nos scripts do outro PC\nScripts `deploy_login.js`, `deploy_caixa.js`, `deploy_vendas.js` etc têm path `C:\\Users\\erica\\...`\n- Ao re-deployar neste PC, trocar para `C:\\Users\\Vencedor\\...`\n- Alternativa: usar `__dirname` em vez de path hardcoded\n\n### B1 — Histórico 20→12 msgs\n- Reduz 10% tokens de imagem no Modo 1 da Michele\n- Estimativa: 30 min\n- Pendência simples, alto valor\n\n### Catálogo de produtos Avec → autocomplete\n- Financeiro V2 tem seção Produtos (texto livre) + comissão 10%\n- Falta acesso concreto ao Avec (login / export xlsx / API) pra virar autocomplete\n\n### Verificar compatibilidade Auth com páginas existentes\n- O sistema de login (v2.0.0) precisa ser integrado ao fluxo das páginas antigas (agenda, clientes, financeiro)\n- Validar se as páginas verificam token antes de carregar\n\n### Dados reais no Clube\n- Fernando confirmou que funciona — falta popular com planos reais do salão\n- Definir nome dos clubes, nº sessões, serviços incluídos, preço, validade\n\n---",
+        "media": "### Testar features do outro PC\nFeatures novas (jun 1-2) ainda em fase de testes iniciais:\n- Vendas (`/lu-vendas`) — estoque de revenda + auto-baixa ao fechar comanda\n- Clube (`/lu-clube`) — adesão, planos 6m/12m, sessões\n- Estoque (`/lu-estoque`) — insumos + receitas por serviço\n- Caixa (`/lu-caixa-dia`) — abertura, sangria, fechamento\n- Login (`/lu-login`) — autenticação por profissional (SHA-256, sessão TTL 12h)\n- Configurações (`/lu-config`) — configurações gerais\n- Profissionais (`/lu-profissionais`) — CRUD profissionais\n\n### Limpeza de workflows órfãos (decidir apagar)\n\n**Desligados em 04/06 — aguardando período de observação antes de apagar:**\n| ID | Nome | Motivo OFF |\n|----|------|------------|\n| `9Lal66aIaj2kxo4r` | Lu Agenda Web | Substituído por `/lu-agenda-real` no painel |\n| `RpDd967LiUbmNLSX` | Lu Dashboard API | URL UUID estranha, não usado por nada atual |\n| `X0DSZlIdPUNRPLIt` | Lu Michele Flag | Copiloto 0/1/2 não está em uso |\n\n**Apagados em 04/06:**\n- ~~`hVvnQmZRUajRtcvq` TEMP DEL J2~~ — apagado ✅\n- ~~`NLJ2qhqOVPSkz1Ii` Lu Migração Schema v1~~ — apagado ✅\n\n**⚠️ Lu Michele Watcher 3min (`3OBtfYL4HY19ZMZq`):** ainda ON — suspeito de causar mensagens erradas. Discutir com Fernando se desliga.\n\n**Manter ativo:** `yYDSVwbqiEbBIp5A` Lu Dashboard Web → serve `/lu-dash` que a aba Michele usa para KPIs.\n\n---\n\n### ⚠️ Path errado nos scripts do outro PC\nScripts `deploy_login.js`, `deploy_caixa.js`, `deploy_vendas.js` etc têm path `C:\\Users\\erica\\...`\n- Ao re-deployar neste PC, trocar para `C:\\Users\\Vencedor\\...`\n- Alternativa: usar `__dirname` em vez de path hardcoded\n\n### B1 — Histórico 20→12 msgs\n- Reduz 10% tokens de imagem no Modo 1 da Michele\n- Estimativa: 30 min\n- Pendência simples, alto valor\n\n### Catálogo de produtos Avec → autocomplete\n- Financeiro V2 tem seção Produtos (texto livre) + comissão 10%\n- Falta acesso concreto ao Avec (login / export xlsx / API) pra virar autocomplete\n\n### Verificar compatibilidade Auth com páginas existentes\n- O sistema de login (v2.0.0) precisa ser integrado ao fluxo das páginas antigas (agenda, clientes, financeiro)\n- Validar se as páginas verificam token antes de carregar\n\n### Dados reais no Clube\n- Fernando confirmou que funciona — falta popular com planos reais do salão\n- Definir nome dos clubes, nº sessões, serviços incluídos, preço, validade\n\n---",
         "baixa": "### B3 — Compaction prompt Michele\n- Reduz 30% tokens em contexto longo\n- 2 dias de trabalho — só depois de B1 e com Michele estável\n\n### Seed de receitas no Estoque\n- Script `seed_receitas.js` presente (31/05) — rodar quando estoque estiver em uso real\n\n### Seed de vendas de teste\n- Scripts `_insert2.js`, `_tksk_insert.js` (01/06) — dados de teste\n\n### Mensagens Michele pós-comanda (Fase 3)\n- 4 templates pós-comanda no workflow `x06hj0XUHDHVNadh`\n- Templates em `LU/CARTAO_FIDELIDADE.md` seção 3\n\n### Verificar Lu Agendar põe tel no corpo do evento Outlook\n- `mve6ub7rDetK3Bak` — confirmar se bodyPreview traz tel pra Day After e Retorno +15 funcionarem\n\n---",
         "futura": "### MACRO-2 — Operacional + monetização (6-8 sem)\n- Trilha 2 — IA finaliza agendamento + cobra PIX automático\n- Anti no-show — depósito ou bloqueio automático\n- Indique uma Cacheada — programa de indicação\n\n### MACRO-3 — Marketing digital (6-8 sem)\n- Google Reviews management automático\n- Instagram Meta Graph (publicação automática)\n- Agência de conteúdo (Replicate + aprovação Lu)\n\n### MACRO-4 — Inteligência premium (4-8 sem)\n- Vector DB semântico\n- Preditivo churn/LTV\n- Voz IA ElevenLabs\n\n### FASE 2 — Otimização contexto Michele\n- Prompt compaction (B3 expandido)\n- Monitor de token em tempo real\n\n### FASE 3 — Segmentação inteligente\n- Ofertas por LTV\n- Cross-sell por histórico\n- Dormindo live (detectar cliente que parou de responder)\n\n### Mercado Pago PIX automático\n- Integração direta no Financeiro — cliente gera PIX pela comanda\n\n### Fotos antes/depois\n- Galeria auto-upload já existe — falta UI de comparação\n\n---",
         "concluida": "- ✅ 2026-06-04: Michele reativada (estava desligada intencionalmente)\n- ✅ 2026-06-04: Padrão de versionamento Comercial adotado para LU (CHANGELOG_LU.md criado)\n- ✅ 2026-06-02: Login/Auth (v2.0.0) — sistema de autenticação por profissional\n- ✅ 2026-06-02: Caixa + Oportunidades (v2.0.1)\n- ✅ 2026-06-01: Vendas + Clube das Cacheadas (v1.5.0)\n- ✅ 2026-06-01: Estoque + Configurações + Profissionais (v1.6.0 / v1.6.1)\n- ✅ 2026-05-22: Cartão Fidelidade deployado (v1.3.0) — teste e2e pendente\n- ✅ 2026-05-16: Toggle Michele no painel (v1.2.1)\n- ✅ 2026-05-15: Financeiro V2 (Saídas + DRE + Produtos + Taxa Cartão) (v1.2.0)\n- ✅ 2026-05-14: Painel IA — 35 habilidades Michele (v1.1.0)\n- ✅ 2026-05-14: A4 Comissões + A5 Relatórios entregues\n- ✅ 2026-05-15: Lanna removida dos 5 painéis (equipe = Lu/Gio/Michele/Larissa)\n- ✅ 2026-04-29/30: Painel base A1-A5 completo com autocomplete 5.423 clientes (v1.0.0)\n- ✅ 2026-04-22: FASE 0 Fundação (backup Redis + schema v1 + Salva Nova merge)\n- ✅ 2026-04-20: Michele galeria Cloudinary + memória 360° Avec\n- ✅ Michele 157 nodes, Sonnet 4.6, B2 ativo, envio ON global\n- ✅ Backup diário Redis cron 3h BR ativo\n- ✅ Réguas automáticas: Day After + Aniversário + Retorno +15"
@@ -1183,6 +1343,38 @@ const DASHBOARD_DATA = {
             "valor": "cron 3h BR ✅"
           }
         ]
+      }
+    },
+    {
+      "slug": "michele",
+      "nome": "LU — Michele IA (Atendente WhatsApp)",
+      "ramo": "LU",
+      "keyword": "michele",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "x06hj0XUHDHVNadh",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 10,
+        "futura": 0,
+        "total": 2
+      },
+      "arquivo_ctx": "Documentos\\LU\\michele\\ctx_michele.md",
+      "tarefas_texto": {
+        "critica": "### Monitorar Michele após reativação (04/06)\n- Estava OFF intencional — Fernando reportou \"respondendo errado\"\n- Watcher 3min foi desligado hoje (suspeito principal do bug)\n- Monitorar primeiras conversas — se erro persistir, desligar pelo painel `/lu-michele`\n\n### B1 — Histórico 20→12 msgs\n- Reduz 10% tokens de imagem no Modo 1\n- Estimativa: 30 min\n- Pendência simples, alto valor\n\n### B3 — Compaction prompt Michele\n- Reduz 30% tokens em contexto longo\n- 2 dias de trabalho — só depois de B1 e Michele estável",
+        "media": "### Mensagens pós-comanda (Fase 3 Fidelidade)\n- 4 templates pós-comanda pra integrar\n- Templates em `LU/lu/CARTAO_FIDELIDADE.md` seção 3\n\n### Modelo: avaliar manter Sonnet ou voltar Opus\n- Sonnet 4.6 ativo desde 16/05 — economia confirmada\n- Acompanhar taxa de erro / satisfação Lu",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- ✅ 2026-06-04: Reativada após bug investigation\n- ✅ 2026-06-04: Watcher 3min OFF (causa provável bug)\n- ✅ 2026-06-04: Renomeada para \"Lu Michele IA\" no N8N\n- ✅ 2026-05-22: B2 filtro triviais (ok/sim/👍 não chama IA)\n- ✅ 2026-05-16: Toggle ON/OFF no painel\n- ✅ 2026-05-15: Swap Opus 4.7 → Sonnet 4.6 (-70% custo)\n- ✅ 2026-04-23: Comando #regra implementado\n- ✅ 2026-04-20: Galeria Cloudinary + memória 360° Avec"
+      },
+      "kpis": {
+        "titulo": "LU — Michele IA (Atendente WhatsApp)",
+        "metricas": []
       }
     },
     {
@@ -1218,6 +1410,70 @@ const DASHBOARD_DATA = {
       }
     },
     {
+      "slug": "oportunidades",
+      "nome": "LU — Oportunidades",
+      "ramo": "LU",
+      "keyword": "oportunidades",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 4,
+        "futura": 0,
+        "total": 1
+      },
+      "arquivo_ctx": "Documentos\\LU\\oportunidades\\ctx_oportunidades.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Validar critérios de oportunidades\n- Cliente dormente = quantos dias? (60/90/180?)\n- Aniversariante próximo = X dias antes?\n- Clube vencendo = última sessão há quantos dias?\n\n### Ações 1-click\n- Botão \"Mandar WhatsApp\" direto da oportunidade pra Michele\n- Template de mensagem por tipo de oportunidade\n\n### Persistir oportunidades trabalhadas\n- Marcar quem já foi contatado pra não duplicar",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- ✅ 2026-06-02: Página `/lu-oportunidades` no painel\n- ✅ 2026-06-02: Cruzamento clientes + clube + comandas"
+      },
+      "kpis": {
+        "titulo": "LU — Oportunidades",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "profissionais",
+      "nome": "LU — Profissionais (Gestão)",
+      "ramo": "LU",
+      "keyword": "profissionais",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 0,
+        "media": 0,
+        "baixa": 1,
+        "andamento": 0,
+        "concluida": 5,
+        "futura": 0,
+        "total": 1
+      },
+      "arquivo_ctx": "Documentos\\LU\\profissionais\\ctx_profissionais.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "",
+        "baixa": "### Adicionar email da Michele\n- Hoje sem email cadastrado → não consegue logar no painel\n\n### Fotos\n- Adicionar campo foto pra cada profissional (exibir na agenda)",
+        "futura": "",
+        "concluida": "- ✅ 2026-06-01: Deploy completo (4 endpoints)\n- ✅ 2026-06-01: Página `/lu-profissionais` no painel\n- ✅ 2026-06-04: Fernando adicionado como admin"
+      },
+      "kpis": {
+        "titulo": "LU — Profissionais (Gestão)",
+        "metricas": []
+      }
+    },
+    {
       "slug": "aniversariantes",
       "nome": "LU — Régua Aniversariantes",
       "ramo": "LU",
@@ -1246,6 +1502,38 @@ const DASHBOARD_DATA = {
       },
       "kpis": {
         "titulo": "LU — Régua Aniversariantes",
+        "metricas": []
+      }
+    },
+    {
+      "slug": "vendas",
+      "nome": "LU — Vendas (Estoque Revenda)",
+      "ramo": "LU",
+      "keyword": "vendas",
+      "status": "ativo",
+      "prioridade": "media",
+      "workflow_atual": "TE1zbmHCzhc76PkN",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-04",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 4,
+        "futura": 0,
+        "total": 1
+      },
+      "arquivo_ctx": "Documentos\\LU\\vendas\\ctx_vendas.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "### Popular catálogo real\n- Cadastrar produtos reais do salão (shampoo, máscara, finalizadores)\n- Definir custo de compra + preço de venda + estoque inicial\n\n### Testar fluxo de auto-baixa\n- Abrir comanda com produto → finalizar → conferir baixa no estoque\n- Conferir comissão 10% pra quem vendeu",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- ✅ 2026-06-01: Deploy completo (7 endpoints + auto-baixa)\n- ✅ 2026-06-01: Página `/lu-vendas` no painel"
+      },
+      "kpis": {
+        "titulo": "LU — Vendas (Estoque Revenda)",
         "metricas": []
       }
     },
