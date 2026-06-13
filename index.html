@@ -516,17 +516,17 @@
 <script>
 /* === DASHBOARD_DATA_START === */
 const DASHBOARD_DATA = {
-  "gerado_em": "2026-06-04 11:01",
+  "gerado_em": "2026-06-13 17:47",
   "total_geral": {
     "critica": 13,
-    "media": 24,
+    "media": 25,
     "baixa": 15,
     "andamento": 4,
-    "concluida": 171,
-    "futura": 37,
-    "total": 52
+    "concluida": 172,
+    "futura": 38,
+    "total": 53
   },
-  "total_subprojetos": 28,
+  "total_subprojetos": 29,
   "fr": [
     {
       "slug": "crm",
@@ -980,7 +980,7 @@ const DASHBOARD_DATA = {
       "prioridade": "alta",
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
-      "ultima_atualizacao": "2026-05-14",
+      "ultima_atualizacao": "2026-06-10",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1012,7 +1012,7 @@ const DASHBOARD_DATA = {
       "prioridade": "alta",
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
-      "ultima_atualizacao": "2026-06-04",
+      "ultima_atualizacao": "2026-06-10",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1354,7 +1354,7 @@ const DASHBOARD_DATA = {
       "prioridade": "alta",
       "workflow_atual": "x06hj0XUHDHVNadh",
       "workflow_futuro": "N/A",
-      "ultima_atualizacao": "2026-06-04",
+      "ultima_atualizacao": "2026-06-10",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1410,6 +1410,38 @@ const DASHBOARD_DATA = {
       }
     },
     {
+      "slug": "observador",
+      "nome": "LU — Observador de Conversas (IA modo observação)",
+      "ramo": "LU",
+      "keyword": "observador",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "wC7cDrW7UaqTg7iZ",
+      "workflow_futuro": "",
+      "ultima_atualizacao": "2026-06-10",
+      "tarefas": {
+        "critica": 0,
+        "media": 1,
+        "baixa": 0,
+        "andamento": 0,
+        "concluida": 1,
+        "futura": 1,
+        "total": 1
+      },
+      "arquivo_ctx": "Documentos\\LU\\observador\\ctx_observador.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "- Ajustar regex de \"fechou\" se a Michele confirmar com outro texto\n- Avaliar cruzar com `lu:agenda:{dia}` (fechamento via agendamento real)",
+        "baixa": "",
+        "futura": "",
+        "concluida": "- Workflow `Lu Observador Conversas` (wC7cDrW7UaqTg7iZ) — cron 21h + run manual\n- Detecção interesse-sem-fechamento via `lu:msg`\n- Análise Claude (diagnóstico + abordagem + mensagem sugerida)\n- Aba `/lu-observador` no painel + endpoint `/lu-observador-dia`\n- Resumo diário no WhatsApp do Fernando\n- Testado com dados reais (10/06): 14 conversas, 2 perdidas, análise OK"
+      },
+      "kpis": {
+        "titulo": "LU — Observador de Conversas (IA modo observação)",
+        "metricas": []
+      }
+    },
+    {
       "slug": "oportunidades",
       "nome": "LU — Oportunidades",
       "ramo": "LU",
@@ -1450,7 +1482,7 @@ const DASHBOARD_DATA = {
       "prioridade": "media",
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
-      "ultima_atualizacao": "2026-06-04",
+      "ultima_atualizacao": "2026-06-10",
       "tarefas": {
         "critica": 0,
         "media": 0,
