@@ -390,6 +390,24 @@
     padding-top: 20px;
     border-top: 1px solid #2a2a2a;
   }
+  /* Aba Palavras-chave */
+  .kw-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:8px; }
+  .kw-search { background:#1a1a1a; border:1px solid #2a2a2a; color:#e5e5e5; padding:10px 14px; border-radius:8px; font-size:14px; min-width:240px; }
+  .kw-search:focus { outline:none; border-color:#c9a961; }
+  .kw-sub { color:#888; font-size:13px; margin-bottom:12px; }
+  .kw-grupo-titulo { color:#c9a961; font-size:14px; text-transform:uppercase; letter-spacing:1px; margin:24px 0 12px; }
+  .kw-count { color:#666; font-size:12px; font-weight:normal; }
+  .kw-hint { color:#555; font-size:11px; font-weight:normal; text-transform:none; letter-spacing:0; }
+  .kw-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:10px; }
+  .kw-chip { background:#1a1a1a; border:1px solid #2a2a2a; border-radius:10px; padding:11px 14px; display:flex; flex-direction:column; gap:4px; }
+  .kw-chip.projeto { cursor:pointer; border-left:3px solid #c9a961; transition:all .15s; }
+  .kw-chip.projeto:hover { background:#242424; border-color:#c9a961; transform:translateY(-1px); }
+  .kw-chip.comando { border-left:3px solid #3498db; }
+  .kw-chip.atalho { border-left:3px solid #7f8c8d; }
+  .kw-tag { font-family:'Consolas',monospace; color:#c9a961; font-size:14px; font-weight:700; }
+  .kw-chip.comando .kw-tag { color:#5dade2; }
+  .kw-chip.atalho .kw-tag { color:#9aa; }
+  .kw-desc { color:#888; font-size:12px; line-height:1.4; }
 </style>
 </head>
 <body>
@@ -405,6 +423,7 @@
     <button class="tab" onclick="mostrarAba('fr')">💎 FR JOIAS</button>
     <button class="tab" onclick="mostrarAba('lu')">💇 LU SALÃO</button>
     <button class="tab" onclick="mostrarAba('novo')">➕ NOVO PROJETO</button>
+    <button class="tab" onclick="mostrarAba('keywords')">🔑 PALAVRAS-CHAVE</button>
   </div>
 
   <!-- ABA GERAL -->
@@ -489,6 +508,24 @@
     <div class="subprojetos-grid" id="grid-todos"></div>
   </div>
 
+  <!-- ABA PALAVRAS-CHAVE -->
+  <div id="aba-keywords" class="tab-content">
+    <div class="kw-header">
+      <h2 class="section-title" style="margin:0;">🔑 Palavras-chave do sistema</h2>
+      <input type="text" id="kw-search" class="kw-search" placeholder="🔎 filtrar palavra-chave..." oninput="filtrarKeywords()">
+    </div>
+    <p class="kw-sub">Clique numa <strong>keyword de projeto</strong> pra abrir as tarefas direto. Comandos e atalhos mostram a ação.</p>
+
+    <h3 class="kw-grupo-titulo">💎 Projetos <span class="kw-count" id="kw-count-proj"></span> <span class="kw-hint">(clicáveis → tarefas)</span></h3>
+    <div class="kw-grid" id="kw-projetos"></div>
+
+    <h3 class="kw-grupo-titulo">⚡ Comandos <span class="kw-count" id="kw-count-cmd"></span></h3>
+    <div class="kw-grid" id="kw-comandos"></div>
+
+    <h3 class="kw-grupo-titulo">📂 Atalhos de pasta <span class="kw-count" id="kw-count-atalho"></span></h3>
+    <div class="kw-grid" id="kw-atalhos"></div>
+  </div>
+
   <div class="footer">
     Sistema dinâmico de auto-descoberta — sem hardcode • PAINEL MESTRE v1.0
   </div>
@@ -516,13 +553,13 @@
 <script>
 /* === DASHBOARD_DATA_START === */
 const DASHBOARD_DATA = {
-  "gerado_em": "2026-06-13 17:47",
+  "gerado_em": "2026-06-13 18:40",
   "total_geral": {
     "critica": 13,
     "media": 25,
     "baixa": 15,
     "andamento": 4,
-    "concluida": 172,
+    "concluida": 176,
     "futura": 38,
     "total": 53
   },
@@ -1300,23 +1337,23 @@ const DASHBOARD_DATA = {
       "prioridade": "alta",
       "workflow_atual": "",
       "workflow_futuro": "",
-      "ultima_atualizacao": "2026-06-04",
+      "ultima_atualizacao": "2026-06-13",
       "tarefas": {
         "critica": 1,
         "media": 1,
         "baixa": 1,
         "andamento": 0,
-        "concluida": 21,
+        "concluida": 25,
         "futura": 3,
         "total": 3
       },
       "arquivo_ctx": "Documentos\\LU\\ctx_lu.md",
       "tarefas_texto": {
-        "critica": "### Testar Michele (reativada 04/06)\n- Estava respondendo errado antes de ser desligada (motivo não documentado)\n- **Ação:** monitorar primeiras conversas hoje. Se erro aparecer → desligar pelo painel e investigar\n\n### Fidelidade — teste end-to-end real\n- Deployado em 22/05, mas NUNCA foi testado com cliente real\n- **Sequência:** abrir comanda → cliente com tel (do autocomplete) → serviço R$100 → finalizar → `/lu-fidelidade` → buscar → ver 10 pts\n- **Referência:** `ONDE_PARAMOS_SESSAO_23.md` seção 2 (sequência completa de 12 passos)\n\n### Apagar 3 comandas zumbis do Redis\n- CMD-1779484353151, CMD-1779484736765, CMD-1779484809114 (dia 22/05, sem tel/serviço/pontos)\n- **Script pronto:** `limpar_zumbis.js` na raiz LU/\n- **Ação:** confirmar com Fernando e rodar\n\n---",
-        "media": "### Testar features do outro PC\nFeatures novas (jun 1-2) ainda em fase de testes iniciais:\n- Vendas (`/lu-vendas`) — estoque de revenda + auto-baixa ao fechar comanda\n- Clube (`/lu-clube`) — adesão, planos 6m/12m, sessões\n- Estoque (`/lu-estoque`) — insumos + receitas por serviço\n- Caixa (`/lu-caixa-dia`) — abertura, sangria, fechamento\n- Login (`/lu-login`) — autenticação por profissional (SHA-256, sessão TTL 12h)\n- Configurações (`/lu-config`) — configurações gerais\n- Profissionais (`/lu-profissionais`) — CRUD profissionais\n\n### Limpeza de workflows órfãos (decidir apagar)\n\n**Desligados em 04/06 — aguardando período de observação antes de apagar:**\n| ID | Nome | Motivo OFF |\n|----|------|------------|\n| `9Lal66aIaj2kxo4r` | Lu Agenda Web | Substituído por `/lu-agenda-real` no painel |\n| `RpDd967LiUbmNLSX` | Lu Dashboard API | URL UUID estranha, não usado por nada atual |\n| `X0DSZlIdPUNRPLIt` | Lu Michele Flag | Copiloto 0/1/2 não está em uso |\n\n**Apagados em 04/06:**\n- ~~`hVvnQmZRUajRtcvq` TEMP DEL J2~~ — apagado ✅\n- ~~`NLJ2qhqOVPSkz1Ii` Lu Migração Schema v1~~ — apagado ✅\n\n**⚠️ Lu Michele Watcher 3min (`3OBtfYL4HY19ZMZq`):** ainda ON — suspeito de causar mensagens erradas. Discutir com Fernando se desliga.\n\n**Manter ativo:** `yYDSVwbqiEbBIp5A` Lu Dashboard Web → serve `/lu-dash` que a aba Michele usa para KPIs.\n\n---\n\n### ⚠️ Path errado nos scripts do outro PC\nScripts `deploy_login.js`, `deploy_caixa.js`, `deploy_vendas.js` etc têm path `C:\\Users\\erica\\...`\n- Ao re-deployar neste PC, trocar para `C:\\Users\\Vencedor\\...`\n- Alternativa: usar `__dirname` em vez de path hardcoded\n\n### B1 — Histórico 20→12 msgs\n- Reduz 10% tokens de imagem no Modo 1 da Michele\n- Estimativa: 30 min\n- Pendência simples, alto valor\n\n### Catálogo de produtos Avec → autocomplete\n- Financeiro V2 tem seção Produtos (texto livre) + comissão 10%\n- Falta acesso concreto ao Avec (login / export xlsx / API) pra virar autocomplete\n\n### Verificar compatibilidade Auth com páginas existentes\n- O sistema de login (v2.0.0) precisa ser integrado ao fluxo das páginas antigas (agenda, clientes, financeiro)\n- Validar se as páginas verificam token antes de carregar\n\n### Dados reais no Clube\n- Fernando confirmou que funciona — falta popular com planos reais do salão\n- Definir nome dos clubes, nº sessões, serviços incluídos, preço, validade\n\n---",
+        "critica": "### Michele respondendo em duplicata (13/06)\n- Respondeu **4x a mesma mensagem** pra Sophia (5519998649405) — \"essa mensagem veio por engano\"\n- Respondeu **múltiplas vezes \"Oi Lu, to aqui\"** pra Lu em sequência rápida\n- **Ação:** investigar dedup no workflow Michele — possível falta de lock/debounce\n\n### ✅ ~~Corrigir TTL Login 12h → 30 dias~~ — JÁ FEITO (sessão 10/06)\n- Node `Auth RSet Sess` confirmado com `ttl=2592000` (30 dias) ✅\n\n### Fidelidade — teste end-to-end real\n- Deployado em 22/05, mas NUNCA foi testado com cliente real\n- **Sequência:** abrir comanda → cliente com tel (do autocomplete) → serviço R$100 → finalizar → `/lu-fidelidade` → buscar → ver 10 pts\n- **Referência:** `ONDE_PARAMOS_SESSAO_23.md` seção 2 (sequência completa de 12 passos)\n\n### Apagar 3 comandas zumbis do Redis\n- CMD-1779484353151, CMD-1779484736765, CMD-1779484809114 (dia 22/05, sem tel/serviço/pontos)\n- **Script pronto:** `limpar_zumbis.js` na raiz LU/\n- **Ação:** confirmar com Fernando e rodar\n\n---",
+        "media": "### Testar features deployadas (jun 1-10)\nFeatures no ar mas sem uso real confirmado:\n- Vendas (`/lu-vendas`) — estoque de revenda + auto-baixa ao fechar comanda\n- Clube (`/lu-clube`) — adesão, planos 6m/12m, sessões — falta popular planos reais\n- Estoque (`/lu-estoque`) — insumos + receitas por serviço\n- Caixa (`/lu-caixa-dia`) — reformulado estilo Avec (v2.1.1)\n- Observador (`/lu-observador`) — IA detecta conversas perdidas, cron 21h\n- Config sub-módulos — Serviços, Agendamento, NF, Notificações (v2.2.1)\n- Grupos de acesso (`/lu-grupos-acesso`) — perfis de permissão (v2.1.2)\n\n### Limpeza de workflows órfãos (40 dias desligados — apagar?)\n\n**Desligados desde 04/06 — 40 dias sem uso, candidatos a apagar:**\n| ID | Nome | Motivo OFF |\n|----|------|------------|\n| `9Lal66aIaj2kxo4r` | Lu Agenda Web | Substituído por agenda nativa Redis (v2.2.0) |\n| `RpDd967LiUbmNLSX` | Lu Dashboard API | URL UUID estranha, não usado por nada atual |\n| `X0DSZlIdPUNRPLIt` | Lu Michele Flag | Copiloto 0/1/2 não está em uso |\n| `3OBtfYL4HY19ZMZq` | Lu Michele Watcher 3min | Desligado 04/06 — era suspeito do bug Michele |\n\n**Também obsoleto (mas ON):**\n| `mve6ub7rDetK3Bak` | Lu Agendar (Outlook) | Agenda agora é nativa Redis — Outlook não é mais usado |\n\n**Manter ativo:** `yYDSVwbqiEbBIp5A` Lu Dashboard Web → serve `/lu-dash` que a aba Michele usa para KPIs.\n\n---\n\n### ⚠️ Path errado nos scripts do outro PC\nScripts `deploy_login.js`, `deploy_caixa.js`, `deploy_vendas.js` etc têm path `C:\\Users\\erica\\...`\n- Ao re-deployar neste PC, trocar para `C:\\Users\\Vencedor\\...`\n- Alternativa: usar `__dirname` em vez de path hardcoded\n\n### B1 — Histórico 20→12 msgs\n- Reduz 10% tokens de imagem no Modo 1 da Michele\n- Estimativa: 30 min\n- Pendência simples, alto valor\n\n### Catálogo de produtos Avec → autocomplete\n- Financeiro V2 tem seção Produtos (texto livre) + comissão 10%\n- Falta acesso concreto ao Avec (login / export xlsx / API) pra virar autocomplete\n\n### Verificar compatibilidade Auth com páginas existentes\n- O sistema de login (v2.0.0) precisa ser integrado ao fluxo das páginas antigas (agenda, clientes, financeiro)\n- Validar se as páginas verificam token antes de carregar\n\n### Dados reais no Clube\n- Fernando confirmou que funciona — falta popular com planos reais do salão\n- Definir nome dos clubes, nº sessões, serviços incluídos, preço, validade\n\n---",
         "baixa": "### B3 — Compaction prompt Michele\n- Reduz 30% tokens em contexto longo\n- 2 dias de trabalho — só depois de B1 e com Michele estável\n\n### Seed de receitas no Estoque\n- Script `seed_receitas.js` presente (31/05) — rodar quando estoque estiver em uso real\n\n### Seed de vendas de teste\n- Scripts `_insert2.js`, `_tksk_insert.js` (01/06) — dados de teste\n\n### Mensagens Michele pós-comanda (Fase 3)\n- 4 templates pós-comanda no workflow `x06hj0XUHDHVNadh`\n- Templates em `LU/CARTAO_FIDELIDADE.md` seção 3\n\n### Verificar Lu Agendar põe tel no corpo do evento Outlook\n- `mve6ub7rDetK3Bak` — confirmar se bodyPreview traz tel pra Day After e Retorno +15 funcionarem\n\n---",
         "futura": "### MACRO-2 — Operacional + monetização (6-8 sem)\n- Trilha 2 — IA finaliza agendamento + cobra PIX automático\n- Anti no-show — depósito ou bloqueio automático\n- Indique uma Cacheada — programa de indicação\n\n### MACRO-3 — Marketing digital (6-8 sem)\n- Google Reviews management automático\n- Instagram Meta Graph (publicação automática)\n- Agência de conteúdo (Replicate + aprovação Lu)\n\n### MACRO-4 — Inteligência premium (4-8 sem)\n- Vector DB semântico\n- Preditivo churn/LTV\n- Voz IA ElevenLabs\n\n### FASE 2 — Otimização contexto Michele\n- Prompt compaction (B3 expandido)\n- Monitor de token em tempo real\n\n### FASE 3 — Segmentação inteligente\n- Ofertas por LTV\n- Cross-sell por histórico\n- Dormindo live (detectar cliente que parou de responder)\n\n### Mercado Pago PIX automático\n- Integração direta no Financeiro — cliente gera PIX pela comanda\n\n### Fotos antes/depois\n- Galeria auto-upload já existe — falta UI de comparação\n\n---",
-        "concluida": "- ✅ 2026-06-04: Michele reativada (estava desligada intencionalmente)\n- ✅ 2026-06-04: Padrão de versionamento Comercial adotado para LU (CHANGELOG_LU.md criado)\n- ✅ 2026-06-02: Login/Auth (v2.0.0) — sistema de autenticação por profissional\n- ✅ 2026-06-02: Caixa + Oportunidades (v2.0.1)\n- ✅ 2026-06-01: Vendas + Clube das Cacheadas (v1.5.0)\n- ✅ 2026-06-01: Estoque + Configurações + Profissionais (v1.6.0 / v1.6.1)\n- ✅ 2026-05-22: Cartão Fidelidade deployado (v1.3.0) — teste e2e pendente\n- ✅ 2026-05-16: Toggle Michele no painel (v1.2.1)\n- ✅ 2026-05-15: Financeiro V2 (Saídas + DRE + Produtos + Taxa Cartão) (v1.2.0)\n- ✅ 2026-05-14: Painel IA — 35 habilidades Michele (v1.1.0)\n- ✅ 2026-05-14: A4 Comissões + A5 Relatórios entregues\n- ✅ 2026-05-15: Lanna removida dos 5 painéis (equipe = Lu/Gio/Michele/Larissa)\n- ✅ 2026-04-29/30: Painel base A1-A5 completo com autocomplete 5.423 clientes (v1.0.0)\n- ✅ 2026-04-22: FASE 0 Fundação (backup Redis + schema v1 + Salva Nova merge)\n- ✅ 2026-04-20: Michele galeria Cloudinary + memória 360° Avec\n- ✅ Michele 157 nodes, Sonnet 4.6, B2 ativo, envio ON global\n- ✅ Backup diário Redis cron 3h BR ativo\n- ✅ Réguas automáticas: Day After + Aniversário + Retorno +15"
+        "concluida": "- Node `Auth RSet Sess` confirmado com `ttl=2592000` (30 dias) ✅\n\n### Fidelidade — teste end-to-end real\n- Deployado em 22/05, mas NUNCA foi testado com cliente real\n- **Sequência:** abrir comanda → cliente com tel (do autocomplete) → serviço R$100 → finalizar → `/lu-fidelidade` → buscar → ver 10 pts\n- **Referência:** `ONDE_PARAMOS_SESSAO_23.md` seção 2 (sequência completa de 12 passos)\n\n### Apagar 3 comandas zumbis do Redis\n- CMD-1779484353151, CMD-1779484736765, CMD-1779484809114 (dia 22/05, sem tel/serviço/pontos)\n- **Script pronto:** `limpar_zumbis.js` na raiz LU/\n- **Ação:** confirmar com Fernando e rodar\n\n---"
       },
       "kpis": {
         "titulo": "💇 LU — Memória Salão",
@@ -1624,7 +1661,258 @@ const DASHBOARD_DATA = {
       }
     }
   ],
-  "outros": []
+  "outros": [],
+  "keywords": {
+    "projetos": [
+      {
+        "kw": "cadastro",
+        "slug": "cadastro",
+        "nome": "Cadastro de Produto",
+        "ramo": "FR"
+      },
+      {
+        "kw": "contas comercial render",
+        "slug": "contas_comercial",
+        "nome": "Contas Comercial Render",
+        "ramo": "FR"
+      },
+      {
+        "kw": "cria video",
+        "slug": "video_joias",
+        "nome": "Video Joias — Geração de Vídeo IA",
+        "ramo": "FR"
+      },
+      {
+        "kw": "criativo video",
+        "slug": "criativo_video",
+        "nome": "Criativos FR — Vídeo Animado + Carrossel",
+        "ramo": "FR"
+      },
+      {
+        "kw": "crm",
+        "slug": "crm",
+        "nome": "CRM",
+        "ramo": "FR"
+      },
+      {
+        "kw": "mkt",
+        "slug": "mkt",
+        "nome": "MKT — Anel na Mão + Luxo (laboratório → integrado no V3)",
+        "ramo": "FR"
+      },
+      {
+        "kw": "orcamento",
+        "slug": "orcamento",
+        "nome": "Gerador de Orçamento — Assistente de Precificação",
+        "ramo": "FR"
+      },
+      {
+        "kw": "pedido",
+        "slug": "pedido",
+        "nome": "Geração de Pedido",
+        "ramo": "FR"
+      },
+      {
+        "kw": "render-interno",
+        "slug": "render",
+        "nome": "Render Interno (CRIAR + Variantes A-J)",
+        "ramo": "FR"
+      },
+      {
+        "kw": "seguranca",
+        "slug": "seguranca",
+        "nome": "Segurança Competitiva — Proteção do Sistema FR",
+        "ramo": "FR"
+      },
+      {
+        "kw": "agenda",
+        "slug": "agenda",
+        "nome": "LU — Agenda (Web + Autocomplete)",
+        "ramo": "LU"
+      },
+      {
+        "kw": "aniversariantes",
+        "slug": "aniversariantes",
+        "nome": "LU — Régua Aniversariantes",
+        "ramo": "LU"
+      },
+      {
+        "kw": "caixa",
+        "slug": "caixa",
+        "nome": "LU — Caixa (Abertura/Fechamento)",
+        "ramo": "LU"
+      },
+      {
+        "kw": "campanhas",
+        "slug": "campanhas",
+        "nome": "LU — Campanhas de Crescimento",
+        "ramo": "LU"
+      },
+      {
+        "kw": "clube",
+        "slug": "clube",
+        "nome": "LU — Clube das Cacheadas",
+        "ramo": "LU"
+      },
+      {
+        "kw": "dia-das-maes",
+        "slug": "dia_das_maes",
+        "nome": "LU — Dia das Mães 2026 (campanha)",
+        "ramo": "LU"
+      },
+      {
+        "kw": "estoque",
+        "slug": "estoque",
+        "nome": "LU — Estoque (Insumos)",
+        "ramo": "LU"
+      },
+      {
+        "kw": "fidelidade",
+        "slug": "fidelidade",
+        "nome": "LU — Cartão Fidelidade",
+        "ramo": "LU"
+      },
+      {
+        "kw": "galeria",
+        "slug": "galeria",
+        "nome": "LU — Galeria de Referências",
+        "ramo": "LU"
+      },
+      {
+        "kw": "infra-lu",
+        "slug": "infra_lu",
+        "nome": "LU — Infraestrutura (Backup + Error Handler + Watchers)",
+        "ramo": "LU"
+      },
+      {
+        "kw": "login-lu",
+        "slug": "login",
+        "nome": "LU — Login / Autenticação",
+        "ramo": "LU"
+      },
+      {
+        "kw": "lu",
+        "slug": "lu",
+        "nome": "LU — Memória Salão Lu Ribeiro",
+        "ramo": "LU"
+      },
+      {
+        "kw": "metricas-lu",
+        "slug": "metricas",
+        "nome": "LU — Métricas Diárias e Dashboards",
+        "ramo": "LU"
+      },
+      {
+        "kw": "michele",
+        "slug": "michele",
+        "nome": "LU — Michele IA (Atendente WhatsApp)",
+        "ramo": "LU"
+      },
+      {
+        "kw": "observador",
+        "slug": "observador",
+        "nome": "LU — Observador de Conversas (IA modo observação)",
+        "ramo": "LU"
+      },
+      {
+        "kw": "oportunidades",
+        "slug": "oportunidades",
+        "nome": "LU — Oportunidades",
+        "ramo": "LU"
+      },
+      {
+        "kw": "profissionais",
+        "slug": "profissionais",
+        "nome": "LU — Profissionais (Gestão)",
+        "ramo": "LU"
+      },
+      {
+        "kw": "reativar",
+        "slug": "reativar",
+        "nome": "Reativação — Campanhas Lu Ribeiro",
+        "ramo": "LU"
+      },
+      {
+        "kw": "vendas",
+        "slug": "vendas",
+        "nome": "LU — Vendas (Estoque Revenda)",
+        "ramo": "LU"
+      }
+    ],
+    "comandos": [
+      {
+        "kw": "piracicaba",
+        "desc": "Retoma contexto N8N: lê MEMORY_INDEX + pending_tasks + FLUXOGRAMA + HISTORICO e resume pendências por prioridade"
+      },
+      {
+        "kw": "backup",
+        "desc": "Roda `node backup_workflow.js` sem perguntar"
+      },
+      {
+        "kw": "salva",
+        "desc": "Backup + atualiza todos os docs do projeto ativo (6 passos — ver MEMORY_INDEX)"
+      },
+      {
+        "kw": "continua",
+        "desc": "Recupera contexto perdido: sessao_atual.md + memória + pending_tasks"
+      },
+      {
+        "kw": "quebrou",
+        "desc": "Emergência: lê debug-troubleshoot.md, checa saúde N8N + Evolution + watchers"
+      },
+      {
+        "kw": "painel / suite / fr",
+        "desc": "Roda `gerar_dashboard.py` — atualiza + publica o painel mestre"
+      },
+      {
+        "kw": "novo projeto",
+        "desc": "Roda `criar_projeto.py` — cria pasta + ctx + TAREFAS + registra keyword"
+      },
+      {
+        "kw": "visao",
+        "desc": "Resume TODOS os projetos (RESUMO_SUITE.md) em texto, sem abrir o painel"
+      }
+    ],
+    "atalhos": [
+      {
+        "kw": "preco",
+        "desc": "`precificacao 2026/`"
+      },
+      {
+        "kw": "pedidos",
+        "desc": "`NOVOS PEDIDOS/`"
+      },
+      {
+        "kw": "cliente",
+        "desc": "`Documentos/Comercial Render Joias/Clientes/`"
+      },
+      {
+        "kw": "skills",
+        "desc": "`Documentos/Skills Global/`"
+      },
+      {
+        "kw": "pedras",
+        "desc": "`Documentos/Referencias Pedras/`"
+      },
+      {
+        "kw": "excel",
+        "desc": "`Documentos/excel cadastro e presificaçao/`"
+      },
+      {
+        "kw": "organiza",
+        "desc": "`Documentos/_ORGANIZACAO_SISTEMA/`"
+      },
+      {
+        "kw": "prompts",
+        "desc": "`Documentos/Grupo Edicao/VENCEDORES/`"
+      },
+      {
+        "kw": "produtos",
+        "desc": "`Documentos/Produtos/`"
+      }
+    ],
+    "total": 46
+  }
 };
 /* === DASHBOARD_DATA_END === */
 
@@ -1692,7 +1980,7 @@ function todosSubProjetos() {
   return [...DASHBOARD_DATA.fr, ...DASHBOARD_DATA.lu, ...DASHBOARD_DATA.outros];
 }
 
-function abrirDetalhe(slug) {
+function abrirDetalhe(slug, abaInicial) {
   const sub = todosSubProjetos().find(s => s.slug === slug);
   if (!sub) return;
 
@@ -1779,8 +2067,9 @@ function abrirDetalhe(slug) {
   // Reset abas
   modal.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
   modal.querySelectorAll('.modal-tab-content').forEach(c => c.classList.remove('active'));
-  modal.querySelector('.modal-tab[data-tab="kpis"]').classList.add('active');
-  document.getElementById('modal-kpis').classList.add('active');
+  const _ini = (abaInicial === 'tarefas' || abaInicial === 'sobre') ? abaInicial : 'kpis';
+  modal.querySelector(`.modal-tab[data-tab="${_ini}"]`).classList.add('active');
+  document.getElementById('modal-' + _ini).classList.add('active');
 
   modal.classList.add('active');
 }
@@ -1842,6 +2131,45 @@ document.getElementById('grid-lu-geral').innerHTML = DASHBOARD_DATA.lu.map(subCa
 document.getElementById('grid-fr').innerHTML = DASHBOARD_DATA.fr.map(subCard).join('') || '<div class="empty">Nenhum sub-projeto FR encontrado.</div>';
 document.getElementById('grid-lu').innerHTML = DASHBOARD_DATA.lu.map(subCard).join('') || '<div class="empty">Nenhum módulo LU encontrado.</div>';
 document.getElementById('grid-todos').innerHTML = [...DASHBOARD_DATA.fr, ...DASHBOARD_DATA.lu, ...DASHBOARD_DATA.outros].map(subCard).join('') || '<div class="empty">Nenhum sub-projeto encontrado.</div>';
+
+// ============================================
+// Aba Palavras-chave
+// ============================================
+function _kwEsc(s){ return String(s||'').replace(/"/g,'&quot;'); }
+function chipProjeto(p){
+  const icon = p.ramo === 'LU' ? '💇' : (p.ramo === 'FR' ? '💎' : '•');
+  const hay = ((p.kw||'') + ' ' + (p.nome||'')).toLowerCase();
+  return `<div class="kw-chip projeto" data-kw="${_kwEsc(hay)}" onclick="abrirDetalhe('${p.slug}','tarefas')" title="${_kwEsc(p.nome)} — abrir tarefas">
+    <span class="kw-tag">${icon} ${p.kw}</span>
+    <span class="kw-desc">${p.nome||''}</span>
+  </div>`;
+}
+function chipInfo(it, classe){
+  const hay = ((it.kw||'') + ' ' + (it.desc||'')).toLowerCase();
+  return `<div class="kw-chip ${classe}" data-kw="${_kwEsc(hay)}" title="${_kwEsc(it.desc)}">
+    <span class="kw-tag">${it.kw}</span>
+    <span class="kw-desc">${it.desc||''}</span>
+  </div>`;
+}
+function renderKeywords(){
+  const kw = DASHBOARD_DATA.keywords || {projetos:[],comandos:[],atalhos:[]};
+  const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+  setHTML('kw-projetos', (kw.projetos||[]).map(chipProjeto).join('') || '<div class="empty">—</div>');
+  setHTML('kw-comandos', (kw.comandos||[]).map(x=>chipInfo(x,'comando')).join('') || '<div class="empty">—</div>');
+  setHTML('kw-atalhos', (kw.atalhos||[]).map(x=>chipInfo(x,'atalho')).join('') || '<div class="empty">—</div>');
+  const setTxt = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent='('+v+')'; };
+  setTxt('kw-count-proj', (kw.projetos||[]).length);
+  setTxt('kw-count-cmd', (kw.comandos||[]).length);
+  setTxt('kw-count-atalho', (kw.atalhos||[]).length);
+}
+function filtrarKeywords(){
+  const q = (document.getElementById('kw-search').value||'').toLowerCase().trim();
+  document.querySelectorAll('#aba-keywords .kw-chip').forEach(c=>{
+    const hay = c.getAttribute('data-kw')||'';
+    c.style.display = (!q || hay.indexOf(q)!==-1) ? '' : 'none';
+  });
+}
+renderKeywords();
 
 // ============================================
 // Gráficos Chart.js
