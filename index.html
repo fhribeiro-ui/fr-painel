@@ -553,18 +553,50 @@
 <script>
 /* === DASHBOARD_DATA_START === */
 const DASHBOARD_DATA = {
-  "gerado_em": "2026-06-13 18:40",
+  "gerado_em": "2026-06-14 18:47",
   "total_geral": {
-    "critica": 13,
-    "media": 25,
-    "baixa": 15,
-    "andamento": 4,
-    "concluida": 176,
-    "futura": 38,
-    "total": 53
+    "critica": 14,
+    "media": 26,
+    "baixa": 16,
+    "andamento": 5,
+    "concluida": 183,
+    "futura": 41,
+    "total": 56
   },
-  "total_subprojetos": 29,
+  "total_subprojetos": 30,
   "fr": [
+    {
+      "slug": "ti",
+      "nome": "Agente de TI",
+      "ramo": "FR",
+      "keyword": "ti",
+      "status": "ativo",
+      "prioridade": "alta",
+      "workflow_atual": "N/A (infra transversal — cuida de TODOS os workflows)",
+      "workflow_futuro": "N/A",
+      "ultima_atualizacao": "2026-06-14",
+      "tarefas": {
+        "critica": 1,
+        "media": 1,
+        "baixa": 1,
+        "andamento": 1,
+        "concluida": 7,
+        "futura": 3,
+        "total": 3
+      },
+      "arquivo_ctx": "Documentos\\TI\\ctx_ti.md",
+      "tarefas_texto": {
+        "critica": "### Repor 2FA no celular novo + reconfigurar EasyPanel\n- **Contexto**: iPhone 11 com tela quebrada — não dá pra ler código 2FA\n- **Ação**: instalar Microsoft Authenticator no aparelho novo → restaurar backup na nuvem (volta GitHub/Microsoft/Google de uma vez)\n- **EasyPanel**: gerar chave 2FA nova (desativa/reativa) + escanear no novo + Redmi; atualizar `_SEGURANCA/easypanel_2fa_secret` + Bitwarden\n- **Enquanto isso**: plano B = `node C:/tmp/totp_easypanel.js` gera o código no PC\n\n### Recarregar crédito Replicate\n- **Problema**: conta < $5 → rate limit 6 req/min, burst 1 → renders falham\n- **Ação**: replicate.com/account → adicionar crédito\n\n---",
+        "media": "### Token GitHub hardcoded no gerador do painel\n- **Onde**: `Documentos/PAINEL_MESTRE/gerar_dashboard.py:464` — PAT `ghp_...` em texto plano\n- **Ação**: mover pra variável de ambiente (`GITHUB_TOKEN`) ou Bitwarden; idealmente rotacionar o PAT\n- **Risco**: arquivo está no OneDrive sincronizado\n\n### Salvar EasyPanel TOTP no Bitwarden (campo TOTP)\n- **Objetivo**: Bitwarden gera o código de 6 dígitos sozinho (PC + celular) → nunca mais travar\n- **Ação**: na entrada EasyPanel do Bitwarden, colar a chave `EM7E2…` no campo \"Chave de autenticação (TOTP)\"\n\n### Verificar relógio do PC (afeta TOTP + painel)\n- **Sintoma**: painel gera data 13/06 mas a data real é 14/06 → relógio possivelmente atrasado\n- **Impacto**: TOTP pode falhar (\"código inválido\"); datas dos docs ficam erradas\n- **Ação**: sincronizar relógio do Windows (Configurações → Hora → Sincronizar agora)\n\n---",
+        "baixa": "### 2FA Cloudinary + Microsoft 365 (resto da ETAPA 1)\n- Pendentes da auditoria de segurança 27/04 — baixa prioridade, contas já protegidas indiretamente\n\n### Avaliar fechar porta 3000 do EasyPanel\n- **Status**: DECIDIDO manter aberta por ora (painel protegido com senha + 2FA)\n- **Re-avaliar se**: configurar SSH no servidor OU detectar login suspeito\n\n---",
+        "futura": "### SSH no servidor como backup de acesso\n- Antes de fechar a porta 3000, ter SSH configurado evita ficar trancado fora se o domínio HTTPS falhar\n\n### Renovar domínio fernandoribeirojoias.com.br\n- ⚠️ Vence **outubro/2026** — se cair, perde email corporativo + DNS. Renovar com antecedência (Hostinger)\n\n### Vigia FR: score na notificação do Sentinel\n- Retornar o score de saúde no webhook pra Sentinel mostrar na notificação do Windows\n\n### Rotação preventiva de chaves (FASE B)\n- Decidido NÃO rotacionar (sem evidência de breach). Revisar se aparecer atividade estranha nos dashboards\n\n---",
+        "concluida": "- ✅ 2026-06-14: Recuperação 2FA EasyPanel via TOTP de emergência (iPhone tela quebrada) — código gerado no PC com a chave secreta, acesso restaurado\n- ✅ 2026-05-14: Reconexão Evolution API após sessão morta (restart EasyPanel + logout + QR scan)\n- ✅ 2026-04-28: Migração Vigia FR → HTTPS (monitor.fernandoribeirojoias.com.br) + scan de portas (internas fechadas)\n- ✅ 2026-04-27: ETAPA 1 Segurança — Bitwarden + MFA em 8 contas + auditoria de chaves (4 dashboards limpos, sem breach)"
+      },
+      "kpis": {
+        "titulo": "Agente de TI",
+        "metricas": []
+      }
+    },
     {
       "slug": "crm",
       "nome": "CRM",
@@ -1725,6 +1757,12 @@ const DASHBOARD_DATA = {
         "ramo": "FR"
       },
       {
+        "kw": "ti",
+        "slug": "ti",
+        "nome": "Agente de TI",
+        "ramo": "FR"
+      },
+      {
         "kw": "agenda",
         "slug": "agenda",
         "nome": "LU — Agenda (Web + Autocomplete)",
@@ -1911,7 +1949,7 @@ const DASHBOARD_DATA = {
         "desc": "`Documentos/Produtos/`"
       }
     ],
-    "total": 46
+    "total": 47
   }
 };
 /* === DASHBOARD_DATA_END === */
