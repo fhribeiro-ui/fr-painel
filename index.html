@@ -596,17 +596,17 @@
 <script>
 /* === DASHBOARD_DATA_START === */
 const DASHBOARD_DATA = {
-  "gerado_em": "2026-06-15 19:33",
+  "gerado_em": "2026-06-15 19:38",
   "total_geral": {
     "critica": 14,
     "media": 26,
     "baixa": 16,
-    "andamento": 5,
-    "concluida": 185,
-    "futura": 41,
+    "andamento": 16,
+    "concluida": 218,
+    "futura": 42,
     "total": 56
   },
-  "total_subprojetos": 30,
+  "total_subprojetos": 31,
   "fr": [
     {
       "slug": "ti",
@@ -729,6 +729,54 @@ const DASHBOARD_DATA = {
           "[📱 MÍDIA]": 1,
           "❌ CANCELADOS": 1
         }
+      }
+    },
+    {
+      "slug": "comercial",
+      "nome": "Comercial Render V3 (B2B)",
+      "ramo": "FR",
+      "keyword": "comercial",
+      "status": "ativo (v1.3.13 deployado: polish SALVA — TTL 30d + Audit + JID fallback)",
+      "prioridade": "alta",
+      "workflow_atual": "b9R0hFt0fanjK6gG",
+      "workflow_futuro": "já separado (não é sub-módulo do principal)",
+      "ultima_atualizacao": "2026-05-27",
+      "versao": "v1.4.4",
+      "tarefas": {
+        "critica": 0,
+        "media": 0,
+        "baixa": 0,
+        "andamento": 11,
+        "concluida": 33,
+        "futura": 1,
+        "total": 0
+      },
+      "arquivo_ctx": "Documentos\\Comercial Render Joias\\ctx_comercial.md",
+      "tarefas_texto": {
+        "critica": "",
+        "media": "- [ ] Backblaze B2 configurado + backup diário automático criptografado\n- [ ] Rotação de todas API keys atuais (Replicate, Cloudinary, Evolution, N8N)\n- [ ] Webhook tokens longos (32+ chars) substituindo URLs simples\n- [ ] Strip EXIF (`fl_strip_metadata`) no `Envia Imagem Final`\n- [ ] Watermark sutil opcional no output\n\n### 🟠 ETAPA 3 — PRÓXIMA SEMANA (1 sem, ~R$ 1.000)\n- [ ] Marca \"FR Design Joias\" registrada no INPI (Classes 9, 14, 35) — R$ ~426\n- [ ] Termos de Uso com cláusula IP/trade secret/anti-engenharia-reversa\n- [ ] Política de Privacidade LGPD compliant\n- [ ] NDA template cliente (assinar antes de demo)\n- [ ] NDA template freela/fornecedor\n\n### 🟣 ETAPA 4 — MÊS 1 (cliente-facing stealth)\n- [ ] Landing 1 página minimalista (Framer/Webflow)\n- [ ] Sem pricing público / sem features list / sem trial click-and-go\n- [ ] Formulário qualificação (CNPJ + volume + indicação)\n- [ ] Critérios de aprovação manual de leads\n- [ ] Trial pago R$ 197 (5 renders) como filtro de concorrente\n\n### 🔵 ETAPA 5 — MÊS 2-3 (monitoramento)\n- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
+        "baixa": "- [x] **Bitwarden instalado** (Desktop + Extensão Chrome fixada) ✅ 27/04\n- [x] **2FA GitHub** (`fhribeiro-ui`) — senha forte + Microsoft Authenticator + 16 recovery codes ✅ 27/04\n- [x] **2FA Google** (fh.ribeiro@hotmail.com) — já tinha 3 passkeys + 3 dispositivos, baixei 10 backup codes ✅ 27/04\n- [x] **Replicate** — protegido via GitHub (login social com 2FA do GitHub) ✅ 27/04\n- [x] **2FA EasyPanel** (monitor.fernandoribeirojoias.com.br) — chave secreta `EM7E2ZKTMZKDCNDQ` salva em Bitwarden + `_SEGURANCA/` ✅ 27/04\n- [x] EasyPanel salvo no Bitwarden (auto-fill funcionando) ✅ 27/04\n- [x] **2FA Hostinger** (registrar do domínio) — recovery codes em `_SEGURANCA/` + iCloud ✅ 27/04\n- [x] **Cloudinary** — protegido via GitHub OAuth (Cloudinary 2FA local não aplica a 3rd-party logins) ✅ 27/04\n- [x] **2FA Microsoft pessoal** (fh.ribeiro@hotmail.com) — recovery code SNMHD-UDZ6Z-HE5RS-SPL7P-QUZ8H em _SEGURANCA + iCloud ✅ 27/04\n- [x] **2FA Microsoft empresa** (frcontato@fernandoribeirojoias.com.br) — 4 métodos: senha + SMS + Authenticator iPhone + Authenticator Redmi loja ✅ 27/04\n- [x] **🎯 ETAPA 1.2 MFA OFICIALMENTE 100% CONCLUÍDA** ✅ 27/04 ~23h20\n\n### ETAPA 1.3 — Auditoria de chaves expostas (em andamento 28/04)\n- [x] Mapeadas 5 pastas críticas — 26 arquivos com chaves expostas\n- [x] Movidos 9 arquivos `CREDENCIAIS_*` da Comercial Render Joias pra `_SEGURANCA/_arquivos_credenciais_antigos/`\n- [x] Vigia FR migrado: `http://89.117.33.97:3000` → `https://monitor.fernandoribeirojoias.com.br` (PUT 200 + reativado)\n- [x] Scan portas servidor: SSH/HTTP/HTTPS/3000 abertas; Postgres/Redis/N8N protegidos no Docker network\n- [x] Config \"Servir no IP\" do EasyPanel marcada como OFF (sem efeito imediato — Docker mantém porta 3000)\n\n### TAREFA FUTURA — fechar porta 3000 do EasyPanel definitivamente\n- Quando: próxima atualização do EasyPanel ou em 1 mês\n- Como: SSH no servidor + `ufw deny 3000` + restart controlado + validar Vigia\n- Vigia já está blindado (usa HTTPS), então fechamento não vai derrubá-lo\n- Risco residual atual da porta aberta: muito baixo (2FA forte ativo)\n\n### ETAPA 1.3 Auditoria de uso indevido (CONCLUÍDA 28/04 ~12h)\n- [x] Microsoft Activity Log → LIMPO (só Brasil + dispositivos seus)\n- [x] Replicate billing → LIMPO (curva normal Jan $9 → Abr $143)\n- [x] Cloudinary usage → LIMPO (pico ~800/dia razoável)\n- [x] Mercado Pago → LIMPO (3 vendas R$120 = créditos reais)\n- [x] **Decisão FASE B:** NÃO rotacionar (opção A — sem evidência de breach)\n- [x] **🎯 ETAPA 1.3 oficialmente CONCLUÍDA**\n\n### Estado final do plano de segurança (28/04)\n- ✅ ETAPA 1.1 Bitwarden + senhas únicas\n- ✅ ETAPA 1.2 MFA em 8 contas críticas\n- ✅ ETAPA 1.3 Auditoria de chaves expostas + verificação de uso indevido\n- ⏳ ETAPA 1.4 Política \"nunca colar API keys em chat/email/docs\" (próxima sessão)\n- ⏳ ETAPA 2: Backblaze backup + rotação ativa de keys (semana)\n- ⏳ ETAPA 3-6: INPI, NDA, landing stealth (médio prazo)\n- [ ] **(Opcional)** GitHub Mobile como camada extra de aprovação push\n- [ ] **(Opcional)** Microsoft Authenticator também na conta Google (hoje só passkey+SMS)\n- [ ] Auditoria: nenhuma API key em local público (GitHub, fóruns, OneDrive compartilhado)\n- [ ] Política \"nunca colar API keys em chat/email/print\"\n\n**Recovery codes guardados em:**\n- ✅ OneDrive (`Documentos/_SEGURANCA/`) — sincronizado\n- ✅ iCloud — backup separado\n- 🔜 Bitwarden (Notas seguras) — opcional, fazer depois\n\n**Senhas-mestras decoradas:** Bitwarden master password (única que precisa decorar)\n\n### 🟡 ETAPA 2 — ESTA SEMANA (4-6h, ~R$ 30/mês)\n- [ ] Backblaze B2 configurado + backup diário automático criptografado\n- [ ] Rotação de todas API keys atuais (Replicate, Cloudinary, Evolution, N8N)\n- [ ] Webhook tokens longos (32+ chars) substituindo URLs simples\n- [ ] Strip EXIF (`fl_strip_metadata`) no `Envia Imagem Final`\n- [ ] Watermark sutil opcional no output\n\n### 🟠 ETAPA 3 — PRÓXIMA SEMANA (1 sem, ~R$ 1.000)\n- [ ] Marca \"FR Design Joias\" registrada no INPI (Classes 9, 14, 35) — R$ ~426\n- [ ] Termos de Uso com cláusula IP/trade secret/anti-engenharia-reversa\n- [ ] Política de Privacidade LGPD compliant\n- [ ] NDA template cliente (assinar antes de demo)\n- [ ] NDA template freela/fornecedor\n\n### 🟣 ETAPA 4 — MÊS 1 (cliente-facing stealth)\n- [ ] Landing 1 página minimalista (Framer/Webflow)\n- [ ] Sem pricing público / sem features list / sem trial click-and-go\n- [ ] Formulário qualificação (CNPJ + volume + indicação)\n- [ ] Critérios de aprovação manual de leads\n- [ ] Trial pago R$ 197 (5 renders) como filtro de concorrente\n\n### 🔵 ETAPA 5 — MÊS 2-3 (monitoramento)\n- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
+        "futura": "- [ ] Google Alerts pra exposição da marca\n- [ ] GitHub Secret Scanning ativo (se usar Git)\n- [ ] Plano de incidente documentado (vazamento de key, etc)\n- [ ] Logs auditáveis consolidados\n- [ ] Comunidade fechada VIP (clientes ativos)\n\n### ⚪ ETAPA 6 — 6-12 MESES (vantagem competitiva inalcançável)\n- [ ] Feedback Loop com avaliação 1-5⭐ (dataset proprietário)\n- [ ] Modelo proprietário fine-tuned (em flux-2-dev)\n- [ ] Plugin CAD (Rhino/Matrix/3Design) — lock-in absurdo\n- [ ] Patent-as-trade-secret (lab notebook documentado)\n\n---",
+        "concluida": "- ✅ **Retry transparente da PEDRA** — quando PEDRA falha (cancel/timeout), state.fase=PEDRA_FALHOU é salvo no Redis. Cliente digita OK → Timbre Handler retorna pipeline=RETRY_PEDRA → Switch Pipeline branch[3] → Envia Ack Retry (\"Refazendo seu render...\") → Restore Retry Metal → Prep Render Pedra (sem rodar METAL — reaproveita url_metal salvo) → entrega → cobra normal. Validado exec 139655 (31s vs ~80s do completo). **Bug critico corrigido:** Replicate Pedra error output (main[1]) ia DIRETO pra Envia Aviso Erro — reconectado pra passar por Cancel Pedra Zumbi + Save Fase Falhou. (v1.3.4)\n- ✅ **Lição N8N IF v2:** com expressões em leftValue tem comportamento imprevisível. Pra roteamento condicional, usar **Switch v3 com mode=rules ou Switch Pipeline branch** em vez de IF v2.\n\n### ✅ Corrigidos e VALIDADOS em produção (2026-05-23)\n- ✅ **Trocas TROCAR_* preservam timbre cravado** — todos os 6 handlers (METAL/CENTRO/ARO/CONTORNO/PEDRAS) agora usam `url_base_timbrada || url_base`. Quando cliente cravou timbre, trocas mantêm o timbre. Validado em produção. (v1.3.3)\n- ✅ **Caption LUXO/VESTIR restaurado** — linha de opções \"LUXO 1-10 = cena premium | VESTIR 1-22 = mao modelo\" voltou ao caption final. Texto puro, sem emoji, com String.fromCharCode(10) pra evitar bug de newline. (v1.3.2)\n- ✅ **Fix REFAZER do timbre** — `Save Cravar State` agora salva `url_base_timbrada` separado; `url_base` continua limpo. REFAZER usa base limpa, não imagem com timbre. (v1.3.1)\n- ✅ **Cancel Pedra Zumbi** — quando PEDRA dá timeout no N8N (60s), prediction é cancelada via API Replicate. Evita queima de crédito enquanto Replicate continua processing. (v1.3.1)\n- ✅ **Grupo Edição bc_*** — 4 URLs quebradas (404) substituídas por `biblioteca_cores/*` que existe. Bug que rodava silencioso há semanas. (workflow `GcKrC61UbiRXD3o6`)\n- ✅ **Cloudinary reorganizada** — `biblioteca_cenas_luxo/` (10 cenas), `biblioteca_maos/` (20 YAM_), `biblioteca_cores/_arquivo/_OLD_*` (8 antigos renomeados). LU isolado em `espaco_lu_ribeiro/` (NÃO MEXER). MAPA_CLOUDINARY.md atualizado.\n\n### ✅ Corrigidos e VALIDADOS em produção (2026-05-21)\n- ✅ **QA loop V2 na PEDRA** — analisador GPT-4o-mini Vision olha a imagem após PEDRA, bloqueia débito se score < 6. Cliente recebe imagem nos 2 casos. Validado execs 132915 (score 10) e 132923 (score 9), ambos aprovados e cobrados. (estado_20)\n- ✅ **Audit log de dinheiro** — toda movimentação de saldo agora salva em `audit:credit:{jid}:{ts}` e `audit:debit:{jid}:{ts}` no Redis com TTL 90 dias. (estado_12)\n- ✅ **CREDITO X do admin não somava saldo** — `Admin Redis Set` fazia SET (sobrescrevia, ex: saldo 50 → \"10\"); resposta vinha \"Saldo: undefined\". Aplicado estado_10: novo node `Admin Load Saldo` (Redis GET) + `Admin Prep Credit` agora calcula `newBalance = current + valor`. VALIDADO 21/05.\n- ✅ **Parse Comando devolvendo MENU/ERRO pra tudo** — `strip_emoji()` do dia 19 removeu os args do normalizador de acentos, deixando `.split('').join('A')` que destruía strings (\"CREDITO 10\" virava \"CARAEADAIATAOA A1A0\"). Linha redundante removida no estado_09 (loop de charCode já normaliza tudo). VALIDADO 21/05.\n- ✅ **Prepara Entrega \"Invalid or unexpected token\"** — newline literal dentro de string JS (execs 126558+126572). Recriado via `fix_entrega2.py` usando `list.join('\\n')`. Estado_07.\n- ✅ **METAL nunca rodava nos grupos 02-09** — todos iam pra Pergunta Timbre. Adicionado `IF Timbre Grupo` (só Matheus 120363407161812494) + `Skip Timbre` (bypass pros outros 7 grupos). Estado_07.\n\n### 🟢 Próximas decisões (depende de dados reais)\n- [ ] Acumular **20-30 renders com QA rodando** (deixa rodar 2-3 dias normal)\n- [ ] Rodar relatório QA: script Python lê `audit:qa:pedra:*` no Redis, mostra score médio + taxa de reprovação\n- [ ] Decidir ajuste do **corte de score** (hoje 6) — pra cima se gpt-4o-mini for permissivo, pra baixo se for severo\n- [ ] Se V2 da PEDRA validar OK em produção: replicar QA em METAL e BASE\n\n### ✅ Retry transparente ENTREGUE em produção (2026-05-23 noite, v1.3.4)\n- ✅ Implementado via **Switch Pipeline branch[3] RETRY_PEDRA** (Switch v3, não IF v2)\n- ✅ Cobra normal quando entrega (Opção B aprovada por Fernando)\n- ✅ Bug do Replicate Pedra error output direto pra Envia Aviso Erro corrigido (reconectado pra Cancel + Save Fase)\n- ✅ Validado exec 139655\n\n### 🟡 Cleanup Cloudinary\n- [ ] Apagar `comercial/cenas_luxo/` (duplicatas das 10 cenas LUXO — esperar validação extra em produção antes)\n- [ ] Avaliar `comercial_render/filtro_testes/` (~20 arquivos de testes antigos de modelo, 16-20/04) — provavelmente seguro apagar\n- [ ] Implementar cleanup automático de `comercial/` (renders temporários > 7 dias) — script ou cron\n\n### ⚠️ Corrigido (2026-05-13) — aguarda validação em produção\n- ⚠️ **Timbre Cartier vazando na peça** — exec 106283 do grupo 01 mostrou ANEL AMARELO com símbolo Cartier estampado. Causa: prompts de `Prep Base Novo` e `Prep Render Metal` mencionavam `Cartier catalog style` na descrição da sombra. Aplicado estado_06: trocado por `luxury catalog style` + adicionado anti-marca no negative_prompt do BASE. **Falta:** validar com 1 render novo no grupo 01.\n\n### 🎨 Decisão de produto (2026-05-21)\n- **Sem emojis nas mensagens do bot** — depois do incidente de mojibake do dia 19, Fernando optou por texto ASCII puro em todas as respostas. Mais limpo, zero risco de encoding quebrar. Aplicado em: Envia Ack, Admin Confirm, Responde Info, prompts dos Code nodes.\n\n### ✅ Corrigidos e VALIDADOS em produção (2026-04-26 / 2026-04-27)\n- ✅ **msgKeyFromMe vira string** — `Merge Parse+State` campo agora `type: boolean`\n- ✅ **Prep Debit em trocas** — `Get Saldo Atual` (Redis GET) adicionado. **VALIDADO em produção 2026-04-27 01:49**: NOVO_PEDIDO \"Anel amarelo\" rodou 37 nodes, saldo decrementou pra 2, terminou em `Envia Aviso Saldo` (que vem depois de Prep Debit).\n- ✅ **Pedra Retry Incr output vazio** — substituído por sequência GET+Code+SET, Wait 20s, timeout 6min\n- ✅ **Pedra v2 anti-adicionar** — VALIDADO em produção 2026-04-26 16:14 (TROCAR_METAL Branco)\n- ✅ **Grupo 07 Render Clever Keke** — habilitado em GRUPOS_OK + TIMBRE_MANUTENCAO\n\n### ⚠️ Comportamentos intermitentes (não-bugs)\n- **Evolution `fromMe=true` bad decrypt INTERMITENTE** — mídia enviada por device da própria conta WhatsApp **às vezes** falha em `Baixa Imagem` com erro de descriptografia. Histórico mostra ~85% sucesso (17 sucessos vs 3 falhas em janela 23-26/04). Quando falhar, retentar em 1-2 min. Pra teste mais confiável, pedir Matheus enviar (fromMe=false sempre funciona).\n\n### ⏳ Investigar quando retomar\n- [ ] Aviso saldo — verificar threshold (memória cita \"verificar se manda msg de recarga no momento certo\")\n- [ ] `Prep Render Base` legado — existe em paralelo ao `Prep Base Novo`, sem uso. Decidir remover.\n- [ ] Limpeza Cloudinary — sem cleanup automático, storage cresce com pedidos\n\n---"
+      },
+      "kpis": {
+        "titulo": "💎 Comercial Render V3",
+        "metricas": [
+          {
+            "label": "Execuções este mês",
+            "valor": 250,
+            "destaque": true
+          },
+          {
+            "label": "Sucessos",
+            "valor": 250
+          },
+          {
+            "label": "Falhas",
+            "valor": 0,
+            "critico": false
+          }
+        ]
       }
     },
     {
@@ -1776,6 +1824,12 @@ const DASHBOARD_DATA = {
         "ramo": "FR"
       },
       {
+        "kw": "comercial",
+        "slug": "comercial",
+        "nome": "Comercial Render V3 (B2B)",
+        "ramo": "FR"
+      },
+      {
         "kw": "contas comercial render",
         "slug": "contas_comercial",
         "nome": "Contas Comercial Render",
@@ -2022,7 +2076,7 @@ const DASHBOARD_DATA = {
         "desc": "`Documentos/Produtos/`"
       }
     ],
-    "total": 47
+    "total": 48
   }
 };
 /* === DASHBOARD_DATA_END === */
