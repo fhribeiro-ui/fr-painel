@@ -408,6 +408,20 @@
   .kw-chip.comando .kw-tag { color:#5dade2; }
   .kw-chip.atalho .kw-tag { color:#9aa; }
   .kw-desc { color:#888; font-size:12px; line-height:1.4; }
+  /* Aba TI / Mapa */
+  .ti-table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:8px; }
+  .ti-table th { text-align:left; color:#c9a961; padding:9px 10px; border-bottom:1px solid #2a2a2a; text-transform:uppercase; font-size:11px; letter-spacing:1px; }
+  .ti-table td { padding:9px 10px; border-bottom:1px solid #1f1f1f; color:#ccc; vertical-align:top; }
+  .ti-table tbody tr { cursor:pointer; transition:background .12s; }
+  .ti-table tbody tr:hover td { background:#1a1a1a; }
+  .ti-ramo { padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; }
+  .ti-ramo.FR { background:#3a2f12; color:#c9a961; }
+  .ti-ramo.LU { background:#2a1a3a; color:#bb8fce; }
+  .ti-ramo.OUTRO { background:#222; color:#888; }
+  .ti-wf { font-size:11px; color:#6fcf97; }
+  .ti-cofre { background:#1a1a1a; border:1px solid #2a2a2a; border-left:3px solid #e74c3c; border-radius:10px; padding:16px; }
+  .ti-cofre-tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .ti-cofre-tags span { background:#222; border:1px solid #333; border-radius:6px; padding:5px 10px; font-size:12px; color:#ccc; }
 </style>
 </head>
 <body>
@@ -424,6 +438,7 @@
     <button class="tab" onclick="mostrarAba('lu')">💇 LU SALÃO</button>
     <button class="tab" onclick="mostrarAba('novo')">➕ NOVO PROJETO</button>
     <button class="tab" onclick="mostrarAba('keywords')">🔑 PALAVRAS-CHAVE</button>
+    <button class="tab" onclick="mostrarAba('ti')">🛠️ TI / MAPA</button>
   </div>
 
   <!-- ABA GERAL -->
@@ -526,6 +541,34 @@
     <div class="kw-grid" id="kw-atalhos"></div>
   </div>
 
+  <!-- ABA TI / MAPA -->
+  <div id="aba-ti" class="tab-content">
+    <h2 class="section-title" style="margin-bottom:6px;">🛠️ Mapa de TI — inventário completo do sistema</h2>
+    <p class="kw-sub">Tudo o que existe: sub-projetos, workflows N8N e acessos. As credenciais (valores) ficam no cofre protegido — fora do painel por segurança.</p>
+
+    <div class="kpi-grid" id="ti-kpis"></div>
+
+    <h3 class="kw-grupo-titulo">📋 Sub-projetos <span class="kw-count" id="ti-count-proj"></span></h3>
+    <table class="ti-table">
+      <thead><tr><th>Ramo</th><th>Projeto</th><th>Keyword</th><th>Versão</th><th>Workflow N8N</th><th>Tarefas</th></tr></thead>
+      <tbody id="ti-projetos"></tbody>
+    </table>
+
+    <h3 class="kw-grupo-titulo">⚙️ Workflows N8N <span class="kw-count" id="ti-count-wf"></span></h3>
+    <table class="ti-table">
+      <thead><tr><th>ID do Workflow</th><th>Nº</th><th>Quais projetos</th></tr></thead>
+      <tbody id="ti-workflows"></tbody>
+    </table>
+
+    <h3 class="kw-grupo-titulo">🔐 Credenciais & Acessos</h3>
+    <div class="ti-cofre">
+      <div class="ti-cofre-tags">
+        <span>EasyPanel</span><span>N8N</span><span>Evolution API</span><span>OpenAI</span><span>MS Excel</span><span>OneDrive</span><span>Outlook</span><span>Redis</span><span>Cloudinary</span><span>Replicate</span><span>GitHub</span><span>Hostinger</span>
+      </div>
+      <p class="kw-sub" style="margin-top:12px;">🔒 Logins, chaves de API e 2FA ficam no <strong>cofre protegido</strong>: <code>_SEGURANCA/COFRE_TI.md</code> + Bitwarden. Nunca aparecem no painel.</p>
+    </div>
+  </div>
+
   <div class="footer">
     Sistema dinâmico de auto-descoberta — sem hardcode • PAINEL MESTRE v1.0
   </div>
@@ -553,7 +596,7 @@
 <script>
 /* === DASHBOARD_DATA_START === */
 const DASHBOARD_DATA = {
-  "gerado_em": "2026-06-14 18:47",
+  "gerado_em": "2026-06-15 19:14",
   "total_geral": {
     "critica": 14,
     "media": 26,
@@ -575,6 +618,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "N/A (infra transversal — cuida de TODOS os workflows)",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-14",
+      "versao": "v1.0",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -607,6 +651,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "c5xELKdT47YbzMXP",
       "workflow_futuro": "a definir (parallel migration)",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -696,6 +741,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "c5xELKdT47YbzMXP",
       "workflow_futuro": "mantém junto (NÃO separar)",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -751,6 +797,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "c5xELKdT47YbzMXP",
       "workflow_futuro": "a definir (parallel migration)",
       "ultima_atualizacao": "2026-05-25",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -805,6 +852,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "null",
       "workflow_futuro": "a definir",
       "ultima_atualizacao": "2026-05-28",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 0,
@@ -831,6 +879,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "a criar (separado)",
       "workflow_futuro": "produção interna / Meta Ads",
       "ultima_atualizacao": "2026-05-23",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 0,
@@ -857,6 +906,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "null",
       "workflow_futuro": "a criar (provavelmente workflow N8N próprio)",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -903,6 +953,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "c5xELKdT47YbzMXP",
       "workflow_futuro": "a definir (parallel migration)",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -949,6 +1000,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "AtmCpbRWQfsygaes",
       "workflow_futuro": "",
       "ultima_atualizacao": "2026-05-23",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 0,
@@ -990,6 +1042,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "c5xELKdT47YbzMXP",
       "workflow_futuro": "",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 2,
@@ -1022,6 +1075,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "a criar (separado)",
       "workflow_futuro": "integrar em b9R0hFt0fanjK6gG (Comercial Render V3)",
       "ultima_atualizacao": "2026-05-23",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 0,
@@ -1050,6 +1104,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-10",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1082,6 +1137,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-10",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1114,6 +1170,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "null",
       "workflow_futuro": "integrar com Régua Lu (npKtKFL0xj5ovBWK)",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1146,6 +1203,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-04",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1178,6 +1236,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-04",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1210,6 +1269,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "null",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1242,6 +1302,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-04",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1274,6 +1335,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "null",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1306,6 +1368,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "H65KkTgZ2TdfXnDE",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1338,6 +1401,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-04",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1370,6 +1434,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "",
       "workflow_futuro": "",
       "ultima_atualizacao": "2026-06-13",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1424,6 +1489,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "x06hj0XUHDHVNadh",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-10",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1456,6 +1522,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "5OBPZSUljMTwKf99",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1488,6 +1555,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "wC7cDrW7UaqTg7iZ",
       "workflow_futuro": "",
       "ultima_atualizacao": "2026-06-10",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1520,6 +1588,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-04",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1552,6 +1621,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-10",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 0,
@@ -1584,6 +1654,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "npKtKFL0xj5ovBWK",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -1616,6 +1687,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "TE1zbmHCzhc76PkN",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-06-04",
+      "versao": "",
       "tarefas": {
         "critica": 0,
         "media": 1,
@@ -1648,6 +1720,7 @@ const DASHBOARD_DATA = {
       "workflow_atual": "npKtKFL0xj5ovBWK",
       "workflow_futuro": "N/A",
       "ultima_atualizacao": "2026-05-14",
+      "versao": "",
       "tarefas": {
         "critica": 1,
         "media": 1,
@@ -2208,6 +2281,43 @@ function filtrarKeywords(){
   });
 }
 renderKeywords();
+
+// ============================================
+// Aba TI / Mapa
+// ============================================
+function _wfValido(wf){
+  return wf && wf !== 'null' && wf !== '—' && !String(wf).startsWith('N/A') && !String(wf).startsWith('a ');
+}
+function renderTI(){
+  const todos = [...DASHBOARD_DATA.fr, ...DASHBOARD_DATA.lu, ...DASHBOARD_DATA.outros];
+  document.getElementById('ti-projetos').innerHTML = todos.map(s => {
+    const t = s.tarefas || {};
+    const pend = (t.critica||0)+(t.media||0)+(t.baixa||0);
+    const wf = _wfValido(s.workflow_atual) ? s.workflow_atual : '—';
+    const pendTxt = pend>0 ? `<span style="color:#f39c12">${pend} pend.</span>` : '<span style="color:#27ae60">✅</span>';
+    return `<tr onclick="abrirDetalhe('${s.slug}')">
+      <td><span class="ti-ramo ${s.ramo}">${s.ramo}</span></td>
+      <td><strong>${s.nome}</strong></td>
+      <td><code>${s.keyword||s.slug}</code></td>
+      <td><span style="color:#c9a961;font-weight:600">${s.versao || '—'}</span></td>
+      <td><code class="ti-wf">${wf}</code></td>
+      <td>${pendTxt}</td>
+    </tr>`;
+  }).join('');
+  const wfMap = {};
+  todos.forEach(s => { if (_wfValido(s.workflow_atual)) (wfMap[s.workflow_atual] = wfMap[s.workflow_atual]||[]).push(s.nome); });
+  document.getElementById('ti-workflows').innerHTML = Object.entries(wfMap)
+    .sort((a,b)=>b[1].length-a[1].length)
+    .map(([id,ps]) => `<tr><td><code class="ti-wf">${id}</code></td><td>${ps.length}</td><td style="color:#aaa">${ps.join(' · ')}</td></tr>`).join('');
+  document.getElementById('ti-kpis').innerHTML =
+    kpiCard(todos.length, 'Sub-projetos') +
+    kpiCard(Object.keys(wfMap).length, 'Workflows N8N') +
+    kpiCard(DASHBOARD_DATA.fr.length, 'FR') +
+    kpiCard(DASHBOARD_DATA.lu.length, 'LU');
+  const c1=document.getElementById('ti-count-proj'); if(c1) c1.textContent='('+todos.length+')';
+  const c2=document.getElementById('ti-count-wf'); if(c2) c2.textContent='('+Object.keys(wfMap).length+')';
+}
+renderTI();
 
 // ============================================
 // Gráficos Chart.js
